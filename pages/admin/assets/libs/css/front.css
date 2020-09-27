@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css?family=Kanit&display=swap");
+
+.container,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+div,
+body,
+.table,
+.crad {
+    font-family: "Kanit";
+}
+
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    border-top: 1px solid rgba(152, 166, 173, 0.2);
+    padding: 14px 30px 14px;
+    color: #71748d;
+    background-color: #fff;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+
+
+/*-----------------------
+5.1.  General
+--------------------*/
+
+.table {
+    margin-bottom: 0px;
+}
+
+.table td,
+.table th {
+    padding: 10px;
+    vertical-align: middle;
+    border-top: 1px solid #e6e6f2;
+    font-weight: normal;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e6e6f2;
+}
+
+.table thead th,
+.table th {
+    color: #3d405c;
+    font-family: "Kanit";
+}
+
+.table-bordered {
+    border: 1px solid #e6e6f2;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: 1px solid #e6e6f2;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(230, 230, 242, 0.5);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(230, 230, 242, 0.5);
+}
+
+/*-----------------------
+5.2.  Data Tables
+--------------------*/
+
+/*-- row group table */
+
+tr.group,
+tr.group:hover {
+    background-color: #5969ff !important;
+    color: #fff;
+    font-family: "Kanit";
+    font-size: 18px;
+}
+
+/*-----------------------
