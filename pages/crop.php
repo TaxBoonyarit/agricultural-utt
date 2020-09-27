@@ -28,65 +28,23 @@ if ($startdate) {
 }
 $status = $plant_id ? "update" : "register";
 ?>
+<!-- ajax -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<style type="text/css">
-    .demoHeaders {
-        margin-top: 2em;
-    }
 
-    #dialog_link {
-        padding: .4em 1em .4em 20px;
-        text-decoration: none;
-        position: relative;
-    }
-
-    #dialog_link span.ui-icon {
-        margin: 0 5px 0 0;
-        position: absolute;
-        left: .2em;
-        top: 50%;
-        margin-top: -8px;
-    }
-
-    ul#icons {
-        margin: 0;
-        padding: 0;
-    }
-
-    ul#icons li {
-        margin: 2px;
-        position: relative;
-        padding: 4px 0;
-        cursor: pointer;
-        float: left;
-        list-style: none;
-    }
-
-    ul#icons span.ui-icon {
-        float: left;
-        margin: 0 4px;
-    }
-
-    ul.test {
-        list-style: none;
-        line-height: 30px;
-    }
-</style>
-
-<!-- date picker -->
-<script src="../service/calender/jquery-1.4.4.min.js"></script>
-<script src="../service/calender/jquery-ui-1.8.10.offset.datepicker.min.js"></script>
-<link href="../service/ui-lightness/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css">
+<!-- datepicker thai -->
+<script type="text/javascript" src="../service/datepicker-thai/js/bootstrap-datepicker.js"></script>
+<link href="../service/datepicker-thai/css/datepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../service/datepicker-thai/js/locales/bootstrap-datepicker.th.js"></script>
 
 <body>
-    <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2">
+    <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2" id="box">
         <div class="card">
-            <div class="col-md-12 text-center mt-3">
+            <div class="col-md-12 text-center mt-2">
                 <h5><i class="fas fa-seedling"></i>เพิ่มพืชเพาะปลูก</h5>
                 <hr>
-
             </div>
-            <form action="crop_db.php" method="POST">
+            <form id="form" method="POST">
                 <!-- parameter -->
                 <input hidden type="text" name="plot_id" value="<?php echo $plot_id ?>">
                 <input hidden type="text" name="status" value="<?php echo $status ?>">
@@ -94,13 +52,13 @@ $status = $plant_id ? "update" : "register";
 
                 <div class="col-md-12">
                     <label for="plants">พืชเพาะปลูก</label>
-                    <select id="plants" name="plants" class="selectpicker show-tick" onchange="check()" data-size="8" data-live-search="true" title="เลือกพืช" data-width="100%" required>
+                    <select id="plants" name="plants" class="selectpicker show-tick" data-size="8" data-live-search="true" title="เลือกพืช" data-width="100%" required>
                         <?php
                         $sql = "SELECT * FROM tb_plants LEFT JOIN tb_plants_group ON tb_plants.plantgroup_id = tb_plants_group.plantgroup_id  WHERE status= 'active' and  `plant_id` ORDER BY  name";
                         $result = mysqli_query($dbcon, $sql);
                         $g = '';
                         while ($row = mysqli_fetch_array($result)) {
-                            print_r($row);
+                            $unit = $row['unit'];
                             if ($g <> $row['plantgroup_id']) {
                                 if ($g <> "") {
                                     echo '</optgroup>';
@@ -112,11 +70,9 @@ $status = $plant_id ? "update" : "register";
                             echo '<option  ' . $selected . '  value="' . $row['plant_id'] . '">' . $row['plant_name'] . '</option>';
                         }
                         ?>
-
                     </select>
-
                 </div>
-                <div class="col-md-12 mt-2" id="form-plant">
+                <div class="col-md-12 mt-3" id="form-plant">
                     <label for="datepicker-th">เริ่มปลูก</label>
                     <div class="input-group">
                         <input id="datepicker-th" class="form-control" name="start_date" value="<?php echo $startdate ? $toDay : $date  ?>" required>
@@ -125,20 +81,12 @@ $status = $plant_id ? "update" : "register";
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 mt-2" id="form-amount">
-                    <label for="amount">จำนวน</label>
-                    <input type="number" class="form-control" value="<?php echo $amount ?>" id="amount" name="amount" placeholder="ตัวอย่าง (100)" maxlength="10" size="10" required>
+                <div class="col-md-12 mt-3" id="form-amount">
+                    <label for="amount">จำนวน (หน่วย : <?php echo  $unit ?>)</label>
+                    <input type="number" class="form-control" value="<?php echo $amount ?>" id="amount" name="amount" placeholder="ตัวอย่าง (100)" onKeyPress="if(this.value.length==7) return false;" required>
                 </div>
-                <div class="col-md-12 mt-2" id="form-unit">
-                    <label for="unit">หน่วย</label>
 
-                    <select id="unit" class="selectpicker show-tick" name="unit" title="หน่วย (ต้น,ไร่)" data-width="100%" required>
-                        <option <?php if ($unit === "ต้น")  echo 'selected'; ?> value="ต้น">ต้น</option>
-                        <option <?php if ($unit === "ไร่")  echo 'selected'; ?> value="ไร่">ไร่</option>
-                    </select>
-                </div>
                 <div class="col-md-12 text-center mt-4 mb-2" id="form-plant">
-
                     <?php
                     $status == "update" ? $btn = "อัพเดตข้อมูล" : $btn = "เพิ่มพืชเพาะปลูก";
                     ?>
@@ -148,43 +96,80 @@ $status = $plant_id ? "update" : "register";
         </div>
     </div>
 
-    <div class="col-md-12 text-center mt-3 mb-2">
-        <a class="btn btn-primary  btn-sm back" href="plot_plant.php?plot_id=<?php echo $plot_id  ?>"><i class="fas fa-arrow-left"></i> กลับ</a>
+    <div class="col-md-12 text-center mt-3 mb-5">
+        <div class="btn-group" role="group" id="btn">
+            <a class="btn btn-sm btn-primary text-white" onclick="goBack()"><i class="fas fa-arrow-left"></i> กลับ</a>
+            <a class="btn btn-sm btn-primary text-white" href="../index.php"><i class="fas fa-home"></i> หน้าหลัก</a>
+            <a class="btn btn-sm btn-primary text-white scrollup" href="#up"><i class="fas fa-arrow-up"></i> บน</a>
+        </div>
     </div>
 
-    </div>
 
 </body>
-<?php include('layout/footer.php') ?>
 
 <script>
     var status = <?php echo $show  ?> | 0;
     var d = new Date();
     var toDay = d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
 
-    if (status != 1) {
-        $('#form-plant').hide();
-        $('#form-amount').hide();
-        $('#form-unit').hide();
+
+    $("form#form").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $('#register').prop("disabled", true);
+        $('#register').html('<i class="fa fa-spinner fa-spin"></i> กำลังโหลด...');
+        $.ajax({
+            url: 'crop_db.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                var result = JSON.parse(response);
+                if (result.status == 'success' && result.messages == 'register') {
+                    Swal.fire({
+                        title: 'สำเร็จ',
+                        text: 'เพิ่มพืชเพาะปลูกสำเร็จ',
+                        icon: 'success',
+                        confirmButtonText: 'ปิด',
+                        timer: 3000
+                    })
+                    window.location.replace('plot_plant.php?plot_id=' + result.id);
+                } else if (result.status == 'success' && result.messages == 'update') {
+                    Swal.fire({
+                        title: 'สำเร็จ',
+                        text: 'อัพเดตข้อมูลสำเร็จ',
+                        icon: 'success',
+                        confirmButtonText: 'ปิด',
+                        timer: 3000
+                    })
+                    window.location.replace('plot_plant.php?plot_id=' + result.id);
+                }
+
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return false;
+    });
+
+
+    function goBack() {
+        window.history.back()
     }
+    $('.scrollup').click(function() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 600);
+        return false;
+    });
 
     if (status == 1) {
         toDay = <?php echo $toDay ?>;
     }
     $('#datepicker-th').datepicker({
-        dateFormat: 'dd/mm/yy',
-        isBuddhist: true,
-        defaultDate: toDay,
-        dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
-        dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
-        monthNames: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
-        monthNamesShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
+        date: toDay,
+        language: 'th-th',
+        format: 'dd/mm/yyyy',
+        autoclose: true
     });
-
-    //check plant select 
-    function check() {
-        $('#form-plant').fadeIn();
-        $('#form-amount').fadeIn();
-        $('#form-unit').fadeIn();
-    }
 </script>

@@ -5,9 +5,7 @@ include('../../config/conectDB.php');
 $register = isset($_POST['register']) ? $_POST['register'] : '';
 $update = isset($_POST['update']) ? $_POST['update'] : '';
 $delete = isset($_POST['delstatus']) ? $_POST['delstatus'] : '';
-
 if ($register) {
-
     $s_d =  $_POST['start_date'];
     $s = str_replace('/', '-', $s_d);
     $start_date = date('Y-m-d', strtotime($s));
@@ -35,25 +33,32 @@ if ($register) {
             $new_image_name = 'step_plants' . uniqid() . "." . $ext;
             $image_path = "../../images/step_plants/";
             $upload_path = $image_path . $new_image_name;
-
             //uploading picture
             $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
+            echo $success;
             if (!$success) {
                 $_SESSION['error'] = "ไม่สามารถอัพโหลดรูปได้";
                 header('location: step_plants.php');
                 exit();
             }
             $img = $new_image_name;
-        }
-        $sql = "INSERT INTO tb_plants_step (plantgroup_id,title,description,start_date,end_date,img) 
-                VALUES ('$plantgroup_id','$title','$description','$start_date','$end_date','$img')";
-
-        $result = mysqli_query($dbcon, $sql);
-        if ($result) {
-            echo $result;
-            $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
-            header('location: step_plants.php');
-            exit();
+            $sql = "INSERT INTO tb_plants_step (plantgroup_id,title,description,start_date,end_date,img) 
+            VALUES ('$plantgroup_id','$title','$description','$start_date','$end_date','$img')";
+            $result = mysqli_query($dbcon, $sql);
+            if ($result) {
+                $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
+                header('location: step_plants.php');
+                exit();
+            }
+        } else {
+            $sql = "INSERT INTO tb_plants_step (plantgroup_id,title,description,start_date,end_date,img) 
+            VALUES ('$plantgroup_id','$title','$description','$start_date','$end_date','$img')";
+            $result = mysqli_query($dbcon, $sql);
+            if ($result) {
+                $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
+                header('location: step_plants.php');
+                exit();
+            }
         }
     }
 }

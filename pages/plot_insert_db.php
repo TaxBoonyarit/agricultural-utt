@@ -1,10 +1,11 @@
 <?php
-include('../pages/loading.php');
 include('../pages/auth.php');
 include('../config/conectDB.php');
 
-//insert data
-if (isset($_POST['register']) && $_REQUEST['status'] == false) {
+$result = [];
+// //insert data
+if ($_POST['status'] == false) {
+
     $user_id = $_SESSION['user_id'];
     $name = mysqli_real_escape_string($dbcon, $_POST['name']);
     $lat = mysqli_real_escape_string($dbcon, $_POST['lat']);
@@ -16,15 +17,25 @@ if (isset($_POST['register']) && $_REQUEST['status'] == false) {
     $farm_area = mysqli_real_escape_string($dbcon, $_POST['farm_area']);
     $unit = mysqli_real_escape_string($dbcon, $_POST['unit']);
 
-    $sql = "INSERT INTO tb_plots (user_id,name,lat,lon,address,area,home_area,water_area,farm_area,unit) 
-                        VALUES('$user_id','$name','$lat','$lon','$address','$area','$home_area','$water_area','$farm_area','$unit')";
+    $sql = "SELECT  * FROM tb_plots WHERE  name='$name'AND user_id ='$user_id' AND status='1'";
     $query = mysqli_query($dbcon, $sql);
-    $_SESSION['success'] = 'ลงทะเบียนแปลงเกษตรสำเร็จ';
-    header('location: plot.php');
+    if ($query->num_rows > 0) {
+        $result = array('status' => 'name_duplicate', 'text' => 'ลงทะเบียนแปลงเกษตร');
+        echo json_encode($result);
+        exit();
+    } else {
+        $sql = "INSERT INTO tb_plots (user_id,name,lat,lon,address,area,home_area,water_area,farm_area,unit) 
+        VALUES('$user_id','$name','$lat','$lon','$address','$area','$home_area','$water_area','$farm_area','$unit')";
+        $query = mysqli_query($dbcon, $sql);
+        $_SESSION['success'] = 'ลงทะเบียนแปลงเกษตรสำเร็จ';
+        $result = array('status' => 'register_success');
+        echo json_encode($result);
+    }
 }
 
 //update data
-if ($_REQUEST['status']) {
+if ($_POST['status']) {
+    $user_id = $_SESSION['user_id'];
     $plot_id = mysqli_real_escape_string($dbcon, $_POST['plot_id']);
     $name = mysqli_real_escape_string($dbcon, $_POST['name']);
     $lat = mysqli_real_escape_string($dbcon, $_POST['lat']);
@@ -36,10 +47,18 @@ if ($_REQUEST['status']) {
     $farm_area = mysqli_real_escape_string($dbcon, $_POST['farm_area']);
     $unit = mysqli_real_escape_string($dbcon, $_POST['unit']);
 
-    $sql = "UPDATE tb_plots SET name='$name',lat='$lat',lon='$lon',address='$address',area='$area',home_area='$home_area',water_area='$water_area',farm_area='$farm_area',unit='$unit'
-                              WHERE plot_id ='$plot_id'";
-    echo $sql;
+    $sql = "SELECT  * FROM tb_plots WHERE  name='$name'AND user_id ='$user_id'AND NOT plot_id ='$plot_id' AND status='1'";
     $query = mysqli_query($dbcon, $sql);
-    $_SESSION['success'] = 'อัพเดพข้อมูลสำเร็จ';
-    header('location: plot.php');
+    if ($query->num_rows > 0) {
+        $result = array('status' => 'name_duplicate', 'text' => 'อัพเดตแปลงเกษตร');
+        echo json_encode($result);
+        exit();
+    } else {
+        $sql = "UPDATE tb_plots SET name='$name',lat='$lat',lon='$lon',address='$address',area='$area',home_area='$home_area',water_area='$water_area',farm_area='$farm_area',unit='$unit'
+        WHERE plot_id ='$plot_id'";
+        $query = mysqli_query($dbcon, $sql);
+        $_SESSION['success'] = 'อัพเดพข้อมูลสำเร็จ';
+        $result = array("id" => $plot_id, "status" => 'update_success');
+        echo json_encode($result);
+    }
 }

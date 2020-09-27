@@ -15,7 +15,7 @@ function thai_date_short($time)
     global $dayTH, $monthTH_brev;
     $thai_date_return = date("j", $time);
     $thai_date_return .= " " . $monthTH_brev[date("n", $time)];
-    $thai_date_return .= " " . (date("Y", $time));
+    $thai_date_return .= " " . (date("Y") + 543);
     return $thai_date_return;
 }
 
@@ -30,7 +30,7 @@ $result = mysqli_fetch_array($query);
 
     <div class="container mb-5">
         <div class="row">
-            <div class="col-md-12 col-12  col-lg-12 ">
+            <div class="col-md-12 col-12  col-lg-12" id="box">
                 <h5 class="text-center"> <i class="fas fa-lightbulb"></i> แนะนำช่วงเวลาปลูก <?php echo $result['name'] ?> </h5>
                 <ul class="timeline">
                     <?php
@@ -53,9 +53,10 @@ $result = mysqli_fetch_array($query);
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <img src="../images/step_plants/<?php echo $result['img'] ?>" class="rounded mx-auto d-block img-thumbnail">
-
+                                        <?php if ($result['img']) : ?>
+                                            <img src="../images/step_plants/<?php echo $result['img'] ?>" class="rounded mx-auto d-block img-thumbnail" onerror="imgError(this);">
                                         <?php
+                                        endif;
                                         echo $result['description'];
                                         ?>
                                     </div>
@@ -66,16 +67,25 @@ $result = mysqli_fetch_array($query);
                         }
                     }
                     ?>
-
-
-
                 </ul>
             </div>
         </div>
         <div class="col-md-12 text-center mb-5">
-            <a class="btn btn-primary  btn-sm back" href="plot_plant.php?plot_id=<?php echo $plot_id ?>"><i class="fas fa-arrow-left"></i> กลับ</a>
+            <div class="btn-group" role="group" id="btn">
+                <a class="btn btn-primary  btn-sm back" href="../index.php"><i class="fas fa-arrow-left"></i> กลับ</a>
+                <a class="btn btn-sm btn-primary text-white" href="../index.php"><i class="fas fa-home"></i> หน้าหลัก</a>
+                <a class="btn btn-sm btn-primary text-white scrollup" href="#up"><i class="fas fa-arrow-up"></i> บน</a>
+            </div>
         </div>
     </div>
 
 </body>
 <?php include('layout/footer.php') ?>
+
+<script>
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "../images/plants/default.jpg";
+        return true;
+    }
+</script>

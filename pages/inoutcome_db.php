@@ -8,6 +8,8 @@ $var =  $_REQUEST['start_date'];
 $date = str_replace('/', '-', $var);
 $toDay = date('Y-m-d', strtotime($date));
 
+$response = [];
+
 //insert data base
 if ($status === "insert") {
     $plot_id = $_POST['plot_id'];
@@ -22,7 +24,8 @@ if ($status === "insert") {
     $query = mysqli_query($dbcon, $sql);
     if ($query) {
         $_SESSION['success'] = "เพิ่มรายการ รายรับ / รายจ่าย สำเร็จ";
-        header('location: plot_plant.php?plot_id=' . $plot_id . '&plotplant_id=' . $plotplant_id . '');
+        $response = array('status' => 'success', 'plot_id' => $plot_id, 'plotplant_id' => $plotplant_id, 'messages' => 'register');
+        echo json_encode($response);
     }
 }
 
@@ -35,13 +38,13 @@ if ($status === "update") {
     $amount = $_POST['amount'];
     $name = $_POST['name'];
 
-    $inoutcome_type = $reuslt['inoutcome_group_type'];
-    $sql = "UPDATE tb_inoutcomes SET inoutcome_group='$inoutcome',name='$name'
-                                        ,amount='$amount',date='$start_date' WHERE inoutcome_id='$inoutcome_id'";
+    $sql = "UPDATE tb_inoutcomes SET inoutcome_group='$inoutcome',name='$name',amount='$amount',
+            date='$start_date' WHERE inoutcome_id='$inoutcome_id'";
     $query =  mysqli_query($dbcon, $sql);
     if ($query) {
         $_SESSION['success'] = "อัพเดตรายการสำเร็จ";
-        header('location: inoutcome_detail.php?plot_id=' . $plot_id . '&plotplant_id=' . $plotplant_id . '');
+        $response = array('status' => 'success', 'plot_id' => $plot_id, 'plotplant_id' => $plotplant_id, 'messages' => 'update');
+        echo json_encode($response);
     }
 }
 

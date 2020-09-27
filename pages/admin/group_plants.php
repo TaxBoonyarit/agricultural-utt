@@ -4,6 +4,8 @@ include('../../config/conectDB.php');
 $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 ?>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
 <body>
     <div class="dashboard-main-wrapper">
         <?php
@@ -42,16 +44,16 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                         <?php endif ?>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="col-2 mt-3"> <button href="#" class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#modal_data"><i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่พืช</button></div>
+                        <div class="card" id="data">
+                            <div class="col-2 mt-3"> <button id="insert" class="btn btn-rounded btn-primary"><i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่พืช</button></div>
                             <div class="card-body">
                                 <table id="users" class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
                                             <th class="text-center">ลำดับ</th>
-                                            <th class="text-center">ชื่อกลุ่มพืช</th>
+                                            <th class="text-center">หมวดหมู่พืช</th>
+                                            <th class="text-center">ไอคอน</th>
                                             <th></th>
-
                                         </tr>
                                     </thead>
                                     <?php
@@ -68,119 +70,91 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                             foreach ($data_table as $data) {
                                                 $i++;
                                         ?>
-
                                                 <tr>
                                                     <td class="text-center"><?php echo $i; ?></td>
                                                     <td><?php echo $data[1]; ?></td>
+                                                    <td class="text-center" style="width: 40%;">
+                                                        <img src="../../images/plants/<?php echo $data[2] ?>" alt="" width="70px" loading="lazy" height="auto">
+                                                    </td>
                                                     <td class="text-right">
 
-                                                        <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>">
-                                                            <button type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
+                                                        <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-icon="<?php echo $data[2] ?>">
+                                                            <button type="button" class="btn btn-sm btn-warning "><i class="fas fa-edit"></i> แก้ไข</button>
                                                         </a>
-                                                        <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button></a>
+                                                        <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-icon="<?php echo $data[2] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button></a>
 
                                                     </td>
                                                 </tr>
-
-
                                         <?php
                                             }
                                         }
                                         ?>
-
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <!-- Modal Delete -->
-            <form action="group_plants_db.php" method="post">
-                <div class="modal fade" id="delete" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-trash-alt"></i> คุณต้องการลบข้อมูล?</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <h3 id="delName"></h3>
-                                <!-- parameter -->
-                                <input hidden type="text" name="delid" id="delid">
-                                <input hidden type="text" name="delstatus" id="delstatus">
+            <div class="modal fade" id="delete" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-trash-alt"></i> คุณต้องการลบข้อมูล?</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <h3 id="delName"></h3>
 
-                            </div>
-
-                            <div class="modal-footer">
-                                <a class="cls"> <button type="button" class="btn btn-rounded btn-primary" data-dismiss="modal">ยกเลิก</button></a>
-                                <button type="submit" class="btn btn-rounded btn-danger">ตกลง</button>
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="cls"> <button type="button" class="btn btn-rounded btn-primary" data-dismiss="modal">ยกเลิก</button></a>
+                            <button type="submit" class="btn btn-rounded btn-danger" id="btn_delete">ตกลง</button>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
 
-            <form action="group_plants_db.php" method="post">
-                <div class="modal fade" id="edit_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+            <form action="group_plants_db.php" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 id="title" class="modal-title" id="exampleModalLongTitle"><i class="fas fa-redo-alt"></i> อัพเดตหมวดหมู่พืช</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <h5 class="modal-title" id="title"></h5>
+                                <button type="button" class="close" id="reset" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <!-- parameter -->
-                            <input hidden type="text" name="id" id="id">
-                            <input hidden type="text" name="update" id="update" value="ture">
-
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label">ชื่อกลุ่มพืช</label>
-                                    <input id="name" type="text" name="name" class="form-control" required>
+                                    <label for="name" class="col-form-label">ชื่อหมวดหมู่พืช :</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                    <div class="text-danger" id="messages">
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <a class="cls"> <button id="cls" type="button" class="btn btn-rounded btn-danger" data-dismiss="modal">ยกเลิก</button></a>
-                                <button type="submit" class="btn btn-rounded btn-primary">อัพเดตข้อมูล</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-
-
-            <form action="group_plants_db.php" method="post">
-                <div class="modal fade" id="modal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 id="title" class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus-circle"></i> เพิ่มข้อมูลหมวดหมู่พืช</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <!-- parameter -->
-                            <input hidden type="text" name="register" id="register" value="ture">
-
-                            <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label">ชื่อกลุ่มพืช</label>
-                                    <input id="name" type="text" name="name" class="form-control" required>
+                                    <label for="">ไอคอน</label>
+                                    <strong>เลือกรูปภาพ :</strong>
+                                    <input type="file" id="image">
+                                    <div class="text-danger" id="messages2">
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col text-center">
+                                        <div id="upload-demo"></div>
+                                    </div>
+                                    <div class="col text-center" id="per">
+                                        <img id="perview" loading="lazy">
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="modal-footer">
-                                <a class="cls"> <button type="button" class="btn btn-rounded btn-danger" data-dismiss="modal">ยกเลิก</button></a>
-                                <button type="submit" class="btn btn-rounded btn-primary" id="bth">บันทึกข้อมูล</button>
+                                <button type="button" class="btn btn-rounded btn-danger reset" data-dismiss="modal">ยกเลิก</button>
+                                <button type="button" class="btn  btn-rounded btn-primary insert_data">บันทึกข้อมูล</button>
                             </div>
                         </div>
                     </div>
@@ -201,12 +175,17 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
     <!-- end main wrapper -->
 </body>
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function() {
+        var icon, name, action, reader;
+        var id = '';
         $(".alert").fadeTo(3000, 0).slideUp(500, function() {
             $(this).remove();
         });
-
 
         $('#users').DataTable({
             "language": {
@@ -227,25 +206,156 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                 }
             }
         });
-        $('.edit').click(function() {
-            let id = $(this).attr('data-id');
-            let name = $(this).attr('data-name');
-            $('#id').val(id);
-            $('#name').val(name);
-            $('#update').val(true);
-            $('#edit_data').modal('show');
+
+
+
+        $('#insert').click(function() {
+            action = 'insert';
+            $('#title').html('<i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่พืช');
+            $('#per').hide();
+            $('#modal').modal('show');
         });
-        $('.delete').click(function() {
-            let id = $(this).attr('data-id');
-            let name = $(this).attr('data-name');
-            $('#delName').text(name);
-            $('#delid').val(id);
-            $('#delstatus').val(true);
+
+        var resize = $('#upload-demo').croppie({
+            enableExif: true,
+            enableOrientation: true,
+            viewport: {
+                width: 200,
+                height: 200,
+                type: 'circle'
+            },
+            boundary: {
+                width: 200,
+                height: 200
+            }
+        });
+
+
+        $('#image').on('change', function() {
+            reader = new FileReader();
+            reader.onload = function(e) {
+                resize.croppie('bind', {
+                    url: e.target.result
+                }).then(function() {});
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        $('.delete').on('click', function(e) {
             $('#delete').modal('show');
+            let name = $(this).attr('data-name');
+            $('#delName').html(name);
+            id = $(this).attr('data-id');
+            icon = $(this).attr('data-icon');
         });
-        $('.cls').click(function() {
-            $('#id').val('');
+
+        $('.edit').on('click', function(e) {
+            action = 'update';
+            $('#title').html('<i class="fas fa-redo-alt"></i> อัพเดตหมวดหมู่พืช');
+            $('#per').show();
+            id = $(this).attr('data-id')
+            name = $(this).attr('data-name');
+            icon = $(this).attr('data-icon');
+            $('#name').val(name);
+            $("#perview").attr("src", "../../images/plants/" + icon);
+            $('#modal').modal('show');
+        });
+
+        $('.reset').on('click', function() {
+            id = '';
+            action = '';
             $('#name').val('');
+            $('#image').val('');
+            $('#messages').hide();
+            $('#messages2').hide();
+
+        });
+
+        $('#btn_delete').on('click', function() {
+            $.ajax({
+                url: "group_plants_db.php",
+                type: "POST",
+                data: {
+                    action: 'delete',
+                    id: id,
+                    icon: icon
+                },
+                success: function(resposne) {
+                    let result = JSON.parse(resposne)
+                    if (result.status === 'success') {
+                        // Swal.fire({
+                        //     title: 'สำเร็จ',
+                        //     text: "ลบข้อมูลสำเร็จ",
+                        //     icon: 'success',
+                        //     confirmButtonText: 'ปิด'
+                        // })
+                        $('#delete').modal('hide');
+                        window.location.replace('group_plants.php');
+                    }
+                }
+            });
+        });
+
+
+        $('.insert_data').on('click', function(ev) {
+            let name = $('#name').val();
+            let file = $('#image').val();
+            if (name.length === 0) {
+                $('#messages').text('**โปรดกรอกข้อมูล***');
+            } else if (!file && action == 'insert') {
+                $('#messages2').text('**โปรดเลือกรูปภาพ***');
+            } else {
+                resize.croppie('result', {
+                    type: 'canvas',
+                    size: 'viewport'
+                }).then(function(img) {
+                    var pic = img;
+                    !file ? pic = '' : pic;
+                    $.ajax({
+                        url: "group_plants_db.php",
+                        type: "POST",
+                        data: {
+                            id: id,
+                            action: action,
+                            name: name,
+                            icon: icon,
+                            newIcon: pic
+                        },
+                        success: function(data) {
+                            var result = JSON.parse(data);
+                            if (result.status === 'success') {
+                                // Swal.fire({
+                                //     title: 'สำเร็จ',
+                                //     text: "บันทึกข้อมูลสำเร็จ",
+                                //     icon: 'success',
+                                //     confirmButtonText: 'ปิด'
+                                // })
+                                // $('#modal').modal('hide');
+
+                                window.location.replace('group_plants.php');
+                            } else if (result.status === 'error' && result.messages === 'notUpload') {
+                                // Swal.fire({
+                                //     title: 'เกิดข้อผิดพลาด',
+                                //     text: "ไม่สามารถอัพโหลดรูปภาพ",
+                                //     icon: 'error',
+                                //     confirmButtonText: 'ปิด'
+                                // })
+                                window.location.replace('group_plants.php');
+
+                            } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
+                                // Swal.fire({
+                                //     title: 'เกิดข้อผิดพลาด',
+                                //     text: "ชื่อซ้ำกัน",
+                                //     icon: 'error',
+                                //     confirmButtonText: 'ปิด'
+                                // })
+                                window.location.replace('group_plants.php');
+
+                            }
+                        }
+                    });
+                });
+            }
         });
     });
 </script>

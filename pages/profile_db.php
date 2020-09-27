@@ -1,5 +1,4 @@
 <?php
-include('../pages/loading.php');
 session_start();
 include('../config/conectDB.php');
 
@@ -28,7 +27,7 @@ if (isset($_POST['update_profile'])) {
         $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
         if (!$success) {
             array_push($errors, 'error not upload file');
-            echo "error";
+            echo json_encode("errorNotUploadImag");
             exit();
         }
         $img = $new_image_name;
@@ -42,9 +41,8 @@ if (isset($_POST['update_profile'])) {
                                     img='$img'
                                 WHERE id='$user_id'";
         $query = mysqli_query($dbcon, $sql);
-        echo $sql;
         $_SESSION['success'] = "อัพเดตข้อมูลสำเร็จ";
-        header('location: profile.php');
+        echo json_encode("success");
     } else {
         $sql = "UPDATE tb_users SET firstname='$firstname',
                                     lastname='$lastname',
@@ -66,6 +64,6 @@ if (isset($_POST['update_profile'])) {
                                  WHERE id='$user_id'";
         $query = mysqli_query($dbcon, $sql);
         $_SESSION['success'] = "อัพเดตข้อมูลสำเร็จ";
-        header('location: profile.php');
+        echo json_encode('success');
     }
 }

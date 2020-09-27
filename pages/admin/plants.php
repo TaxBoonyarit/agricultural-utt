@@ -59,6 +59,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                 <th class="text-center">ลำดับ</th>
                                                 <th class="text-center">ชื่อพืช</th>
                                                 <th class="text-center">หมวดหมู่</th>
+                                                <th class="text-center" style="width: 10%">หน่วย</th>
                                                 <th class="text-center" style="width: 20%">รายละเอียด</th>
                                                 <th class="text-center">สถานนะ</th>
                                                 <th class="text-center">รูปภาพ</th>
@@ -67,7 +68,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                             </tr>
                                         </thead>
                                         <?php
-                                        $sql = "SELECT plant_id,plant_name,name,description,status,img,tb_plants_group.plantgroup_id FROM tb_plants 
+                                        $sql = "SELECT plant_id,plant_name,name,description,status,img,tb_plants_group.plantgroup_id,tb_plants.unit FROM tb_plants 
                                                 LEFT JOIN tb_plants_group ON tb_plants.plantgroup_id = tb_plants_group.plantgroup_id";
                                         $result = mysqli_query($dbcon, $sql);
                                         $data_table = [];
@@ -86,14 +87,16 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                         <td class="text-center"><?php echo $i; ?></td>
                                                         <td><?php echo $data[1]; ?></td>
                                                         <td><?php echo $data[2]; ?></td>
+                                                        <td class="text-center"><?php echo $data[7] ? $data[7] : '-' ?></td>
+
                                                         <td><?php echo substr($data[3], 0, 500), strlen($data[3]) > 500 ? $des = '......' : $des =  '' ?></td>
                                                         <td class="text-center"><?php echo $data[4] === 'active' ? "<span class='badge badge-success'>ใช้งาน</span>" : "<span class='badge badge-danger'>ระงับการใช้งาน</span>"; ?></td>
 
-                                                        <td class="text-center"><img src="../../images/plants/<?php echo $data[5] ?>" class="rounded mx-auto d-block" alt="..." style="height:130px;width:auto"></td>
+                                                        <td class="text-center"><img src="../../images/plants/<?php echo $data[5] ?>" class="rounded mx-auto d-block" loading="lazy" alt="..." style="height:130px;width:auto"></td>
 
                                                         <td class="text-right">
 
-                                                            <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-plantgroup_id="<?php echo $data[6] ?>" data-description="<?php echo $data[3] ?>" data-status="<?php echo $data[4] ?>" data-img="<?php echo $data[5] ?>">
+                                                            <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-plantgroup_id="<?php echo $data[6] ?>" data-description="<?php echo $data[3] ?>" data-status="<?php echo $data[4] ?>" data-img="<?php echo $data[5] ?>" data-unit="<?php echo $data[7] ?>">
                                                                 <button type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
                                                             </a>
                                                             <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-img="<?php echo $data[5] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button></a>
@@ -179,16 +182,28 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="status" class="col-form-label">สถานะ</label>
-                                    <select name="status" id="status" class="selectpicker show-tick" data-size="8" data-live-search="true" data-width="100%" required>
-                                        <option value="active">ใช้งาน</option>
-                                        <option value="inactive">ระงับการใช้งาน</option>
-                                    </select>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="unit" class="col-form-label">หน่วย</label>
+                                            <input id="unit" type="text" name="unit" class="form-control" required>
+                                        </div>
+                                        <div class="col">
+                                            <label for="status" class="col-form-label">สถานะ</label>
+                                            <select name="status" id="status" class="selectpicker show-tick" data-size="8" data-live-search="true" data-width="100%" required>
+                                                <option selected value="active">ใช้งาน</option>
+                                                <option value="inactive">ระงับการใช้งาน</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="img" class="col-form-label">รูปภาพ</label>
-
-                                    <input type="file" class="form-control" id="img" name="img">
+                                    <div class="col">
+                                        <label for="img" class="col-form-label">รูปภาพ</label>
+                                        <input type="file" class="form-control" id="img" name="img">
+                                    </div>
+                                    <div class="col text-center">
+                                        <img id="show_img" alt="pic" class="mt-2" width="150px" height="auto">
+                                    </div>
 
                                 </div>
                             </div>
@@ -240,17 +255,23 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="status" class="col-form-label">สถานะ</label>
-                                    <select name="status" id="status" class="selectpicker show-tick" data-size="8" data-live-search="true" data-width="100%" required>
-                                        <option selected value="active">ใช้งาน</option>
-                                        <option value="inactive">ระงับการใช้งาน</option>
-                                    </select>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="unit" class="col-form-label">หน่วย</label>
+                                            <input id="unit" type="text" name="unit" class="form-control" required>
+                                        </div>
+                                        <div class="col">
+                                            <label for="status" class="col-form-label">สถานะ</label>
+                                            <select name="status" id="status" class="selectpicker show-tick" data-size="8" data-live-search="true" data-width="100%" required>
+                                                <option selected value="active">ใช้งาน</option>
+                                                <option value="inactive">ระงับการใช้งาน</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="img" class="col-form-label">รูปภาพ</label>
-
                                     <input type="file" class="form-control" id="img" name="img">
-
                                 </div>
                             </div>
 
@@ -268,7 +289,6 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             include('layout/footer.php');
             ?>
             <!-- end footer -->
-
         </div>
     </div>
     <?php
@@ -303,17 +323,19 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             }
         });
         $('.edit').click(function() {
-
             let id = $(this).attr('data-id');
             let name = $(this).attr('data-name');
             let plantgroup_id = $(this).attr('data-plantgroup_id');
             let description = $(this).attr('data-description');
             let status = $(this).attr('data-status');
+            let unit = $(this).attr('data-unit');
             let img = $(this).attr('data-img');
+            $('#show_img').attr('src', '../../images/plants/' + img);
             $('#id').val(id);
             $('#name').val(name);
             $('#plantgroup').val(plantgroup_id).change();
             $('#description2').text(description);
+            $('#unit').val(unit);
             $('#status').val(status).change();
             $('#eimg').val(img);
             $('#update').val(true);
@@ -332,6 +354,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
         $('.cls').click(function() {
             $('#id').val('');
             $('#name').val('');
+            $('#unit').val('');
             $('#description').text('-');
             $('#eimg').val('');
             $('#dimg').val('');

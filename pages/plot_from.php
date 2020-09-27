@@ -20,7 +20,6 @@ $home_area = isset($result['home_area']) ? $result['home_area'] : '';
 $water_area = isset($result['water_area']) ? $result['water_area'] : '';
 $farm_area = isset($result['farm_area']) ? $result['farm_area'] : '';
 $status = isset($_REQUEST['plot_id']) ? 1 : 0;
-$unit = isset($result['unit']) ? $result['unit'] : '';
 $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
 
 ?>
@@ -30,7 +29,7 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <body>
-    <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2 col-sm-12">
+    <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2 col-sm-12" id="box">
         <div class="card">
             <div class="col text-center">
                 <h5 class="mt-3"><i class="fas fa-book-reader"></i> ลงทะเบียนแปลงเกษตร</h5>
@@ -39,7 +38,7 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
             <div class="crad-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="plot_insert_db.php" method="POST">
+                        <form action="plot_insert_db.php" id="form" method="POST">
                             <!-- parameter -->
                             <input hidden type="text" value="<?php echo $status ?>" name="status">
                             <input hidden type="text" value="<?php echo $id ?>" name="plot_id">
@@ -47,15 +46,6 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                             <div class="form-group">
                                 <div class="col">
                                     <label for="address"><i class="fas fa-map-marked-alt"></i> แผนที่</label>
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert">
-                                        <div class="row">
-                                            <i class="fas fa-exclamation-triangle"></i>&nbsp;
-                                            <p id="alertPicture"></p>
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
                                     <div class="col">
                                         <div class="input-group mb-3">
                                             <input class="form-control" id="locat" type="textbox" placeholder="ค้นหาสถานที่">
@@ -89,7 +79,7 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">ชื่อสถานที่</span>
                                     </div>
-                                    <input type="text" class="form-control" value="<?php echo $name ? $name : '' ?>" name="name" id="name" placeholder="ตัวอย่าง (สวนร้อยรัก)" required>
+                                    <input type="text" class="form-control" value="<?php echo $name ? $name : '' ?>" name="name" id="name" maxlength="150" placeholder="ตัวอย่าง (สวนร้อยรัก)" required>
                                 </div>
                             </div>
                             <div class="col">
@@ -97,22 +87,22 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">ภูมิลำเนา</span>
                                     </div>
-                                    <input type="text" class="form-control" value="<?php echo $address ? $address : '' ?>" name="address" id="address" placeholder="ตัวอย่าง 27 ต.ท่าอิฐ อ.เมือง จ.อุตรดิตถ์" required>
+                                    <input type="text" class="form-control" value="<?php echo $address ? $address : '' ?>" name="address" id="address" maxlength="150" placeholder="ตัวอย่าง 27 ต.ท่าอิฐ อ.เมือง จ.อุตรดิตถ์" required>
                                 </div>
                             </div>
                             <div class="col">
-                                <label for="">การจัดการพื้นที่</label>
+                                <label for="">การจัดการพื้นที่ (หน่วย : ไร่)</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">พื้นที่ทั้งหมด</span>
                                     </div>
-                                    <input type="number" class="form-control" value="<?php echo $area ? $area : '' ?>" name="area" id="area" onchange="checkArea()" placeholder="ตัวอย่าง 400 " required>
+                                    <input type="number" class="form-control" step="0.01" min="0" value="<?php echo $area ? $area : '' ?>" name="area" id="area" placeholder="ตัวอย่าง 400 " onKeyPress="if(this.value.length==5) return false;" required>
                                 </div>
                                 <div class="input-group mb-2 mt-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">พักอาศัย</span>
                                     </div>
-                                    <input type="number" class="form-control" value="<?php echo $home_area  | $result['home_area'] ?>" name="home_area" id="home_area" onchange="checkArea()" placeholder="ตัวอย่าง 400 " required>
+                                    <input type="number" class="form-control" step="0.01" min="0" value="<?php echo $home_area  | $result['home_area'] ?>" name="home_area" onKeyPress="if(this.value.length==5) return false;" id="home_area" onchange="checkArea()" placeholder="ตัวอย่าง 1 " required>
 
                                 </div>
 
@@ -120,39 +110,22 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">แหล่งน้ำ</span>
                                     </div>
-                                    <input type="number" class="form-control" value="<?php echo $water_area | $result['water_area']  ?>" name="water_area" onchange="checkArea()" id="water_area" placeholder="ตัวอย่าง 400 " required>
+                                    <input type="number" class="form-control" step="0.01" min="0" onKeyPress="if(this.value.length==5) return false;" value="<?php echo $water_area | $result['water_area']  ?>" name="water_area" onchange="checkArea()" id="water_area" placeholder="ตัวอย่าง  1" required>
+
                                 </div>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">การเกษตร</span>
                                     </div>
-                                    <input type="number" class="form-control" value="<?php echo $farm_area | $result['farm_area'] ?>" name="farm_area" onchange="checkArea()" id="farm_area" placeholder="ตัวอย่าง 400 " required>
+                                    <input type="number" class="form-control" step="0.01" min="0" onKeyPress="if(this.value.length==5) return false;" value="<?php echo $farm_area | $result['farm_area'] ?>" name="farm_area" onchange="checkArea()" id="farm_area" placeholder="ตัวอย่าง 400 " required>
                                 </div>
                                 <div class="input-group mb-1">
                                     <span id='message'></span>
                                 </div>
-
-                                <div class="input-group mb-2">
-                                    <label for="">หน่วย</label>
-                                    <select class="selectpicker show-tick" data-width="100%" required name="unit">
-                                        <option <?php if ($unit === "ตารางเมตร")  echo 'selected'; ?> value="ตารางเมตร">ตารางเมตร</option>
-                                        <option <?php if ($unit === "ไร่")  echo 'selected'; ?> value="ไร่">ไร่</option>
-                                    </select>
-                                </div>
-
-
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertMaps">
-                                    <div class="row">
-                                        <i class="fas fa-exclamation-triangle"></i>&nbsp;
-                                        <p id="alertMaker"></p>
-                                    </div>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
+                                <input hidden type="text" name="unit" value="ไร่">
                             </div>
                             <div class="col-md-12 text-center mt-4">
-                                <?php $unit ? $btn = 'อัพเดตแปลงเกษตร' : $btn = 'ลงทะเบียนแปลงเกษตร' ?>
+                                <?php $name ? $btn = 'อัพเดตแปลงเกษตร' : $btn = 'ลงทะเบียนแปลงเกษตร' ?>
                                 <button type="submit" class="btn btn-outline-secondary btn-md btn-block" id="register" onclick="checkLatLon()" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
                             </div>
                         </form>
@@ -161,36 +134,76 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
             </div>
         </div>
 
-        <div class="col-md-12 text-center mt-4 ">
-            <a class="btn btn-primary  btn-sm back" href="../index.php"><i class="fas fa-book-reader"></i> หน้าหลัก</a>
+        <div class="col-md-12 text-center mt-3 mb-5">
+            <div class="btn-group" role="group" id="btn">
+                <a class="btn btn-sm btn-primary text-white" onclick="goBack()"><i class="fas fa-arrow-left"></i> กลับ</a>
+                <a class="btn btn-sm btn-primary text-white" href="../index.php"><i class="fas fa-home"></i> หน้าหลัก</a>
+                <a class="btn btn-sm btn-primary text-white scrollup" href="#up"><i class="fas fa-arrow-up"></i> บน</a>
+            </div>
         </div>
-        <div class="col mt-3"></div>
-    </div>
-
 
 </body>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2zz3_XvN77PvY40PwjjDoziN_f_kGpWQ&callback=initMap&language=th" async defer></script>
 <script>
-    $('#alert').hide();
-    $('#alertMaps').hide();
+    $('.scrollup').click(function() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 600);
+        return false;
+    });
 
-    function alert() {
-        $('#alert').fadeIn();
-        document.getElementById('alertPicture').innerHTML = "ไม่พบสถานที่ที่ค้นหา";
-        setTimeout(function() {
-            $('#alert').hide();
-        }, 2000);
+    function goBack() {
+        window.history.back()
     }
 
-    function checkLatLon() {
-        if (!document.getElementById("lat").value && !document.getElementById("lon").value) {
-            $('#alertMaps').fadeIn();
-            document.getElementById('alertMaker').innerHTML = "กรุณาปักหมุดแผนที่ด้วยค่ะ";
-            setTimeout(function() {
-                $('#alertMaps').hide();
-            }, 3000)
-        }
-    }
+    $("form#form").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $('#register').prop("disabled", true);
+        $('#register').html('<i class="fa fa-spinner fa-spin"></i> กำลังโหลด...');
+        $.ajax({
+            url: 'plot_insert_db.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                var result = JSON.parse(response);
+                if (result.status == 'update_success') {
+                    Swal.fire({
+                        title: 'สำเร็จ',
+                        text: 'อัพเดตข้อมูลสำเร็จ',
+                        icon: 'success',
+                        confirmButtonText: 'ปิด',
+                        timer: 3000
+                    })
+                    window.location.reload('plot_from.php?plot_id=' + result.id);
+                } else if (result.status == 'register_success') {
+                    Swal.fire({
+                        title: 'สำเร็จ',
+                        text: 'ลงทะเบียนสำเร็จ',
+                        icon: 'success',
+                        confirmButtonText: 'ปิด',
+                        timer: 3000
+                    })
+                    window.location.replace('plot.php');
+                } else if (result.status == "name_duplicate") {
+                    $('#register').prop("disabled", false);
+                    $('#register').html('<i class="fas fa-sign-in-alt"></i> ' + result.text);
+                    Swal.fire({
+                        title: 'คำเตือน',
+                        text: 'ชื่อซ้ำกัน',
+                        icon: 'info',
+                        confirmButtonText: 'ปิด',
+                        timer: 3000
+                    })
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return false;
+    });
 
     function checkArea() {
         var area = parseInt(document.getElementById("area").value) | 0;
@@ -198,7 +211,6 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
         var water_area = parseInt(document.getElementById("water_area").value) | 0;
         var farm_area = parseInt(document.getElementById("farm_area").value) | 0;
         var sum = home_area + water_area + farm_area;
-
         if (sum > area) {
             document.getElementById('message').style.color = 'red';
             document.getElementById('message').innerHTML = '***พื้นที่เกินกว่าทั้งหมด***';
@@ -209,6 +221,28 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
         }
     }
 
+
+
+    function alert() {
+        Swal.fire({
+            title: 'ไม่พบสถานที่ที่ค้นหา',
+            text: 'กรุณากรอกข้อมูลที่จะค้นหาใหม่ด้วยค่ะ',
+            icon: 'question',
+            confirmButtonText: 'ปิด'
+        })
+    }
+
+    function checkLatLon() {
+        checkArea();
+        if (!document.getElementById("lat").value && !document.getElementById("lon").value) {
+            Swal.fire({
+                title: 'คำเตือน!',
+                text: 'กรุณาปักหมุดแผนที่ด้วยค่ะ',
+                icon: 'warning',
+                confirmButtonText: 'ปิด'
+            })
+        }
+    }
 
     // config Maps 
     var lat = <?php echo $lat ? $lat : 17.6200886 ?>;
@@ -276,7 +310,6 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
 
             google.maps.event.addListener(map, 'click', function(event) {
                 infowindow.open(map, marker);
-                // infowindow.setContent("LatLng = " + event.latLng);
                 infowindow.setPosition(event.latLng);
                 marker.setPosition(event.latLng);
                 $("#lat").val(event.latLng.lat());

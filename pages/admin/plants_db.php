@@ -11,8 +11,10 @@ $description = isset($_POST['description']) ? $_POST['description'] : '';
 $status = isset($_POST['status']) ? $_POST['status'] : '';
 
 
+
 if ($register) {
     $name = $_POST['name'];
+    $unit = $_POST['unit'];
     //check name 
     $check = "SELECT * FROM tb_plants WHERE plant_name = '$name'";
     $check_name = mysqli_query($dbcon, $check);
@@ -38,10 +40,9 @@ if ($register) {
             }
             $img = $new_image_name;
         }
-        $sql = "INSERT INTO tb_plants (plant_name,plantgroup_id,description,status,img) VALUES ('$name','$plantgroup_id','$description','$status','$img')";
+        $sql = "INSERT INTO tb_plants (plant_name,plantgroup_id,description,status,img,unit) VALUES ('$name','$plantgroup_id','$description','$status','$img','$unit')";
         $result = mysqli_query($dbcon, $sql);
         if ($result) {
-            echo $result;
             $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
             header('location: plants.php');
             exit();
@@ -53,6 +54,7 @@ if ($update) {
     $id = $_POST['id'];
     $img = $_POST['eimg'];
     $name = $_POST['name'];
+    $unit = $_POST['unit'];
 
     //check name 
     $check = "SELECT * FROM tb_plants WHERE plant_name = '$name' AND NOT plant_id='$id'";
@@ -62,6 +64,7 @@ if ($update) {
         header('location: plants.php');
         exit();
     } else {
+
         if ($_FILES['img']['size']) {
             @unlink('../../images/plants/' . $img);
             //upload image
@@ -79,7 +82,10 @@ if ($update) {
             }
             $img = $new_image_name;
         }
-        $sql = "UPDATE tb_plants SET plant_name='$name',plantgroup_id='$plantgroup_id',description='$description',status='$status',img='$img' WHERE plant_id='$id'";
+        $sql = "UPDATE tb_plants SET plant_name='$name',plantgroup_id='$plantgroup_id',
+                description='$description',status='$status',img='$img',unit='$unit'
+                WHERE plant_id='$id'";
+
         $result = mysqli_query($dbcon, $sql);
         if ($result) {
             $_SESSION['success'] = "อัพเดตข้อมูลสำเร็จ";

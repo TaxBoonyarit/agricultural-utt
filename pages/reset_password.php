@@ -3,14 +3,14 @@
 include('../pages/auth.php');
 include('../config/conectDB.php');
 include '../pages/layout/header.php';
-$user_id = $_SESSION['user_id'];
 
+$user_id = $_SESSION['user_id'];
 ?>
 <!-- ajax -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <body>
-    <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2">
+    <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2" id="box">
         <?php if (isset($_SESSION['success'])) : ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-user-check"></i>
@@ -32,7 +32,7 @@ $user_id = $_SESSION['user_id'];
 
                 <form action="reset_password_db.php" method="post">
                     <input hidden type="text" name="action" value="update">
-                    <input hidden type="text" name="userid" value="<?php echo $user_id ?>">
+                    <input hidden type="text" id="userid" name="userid" value="<?php echo $user_id ?>">
                     <div class="col mt-4">
                         <label for="password">รหัสผ่านเดิม</label>
                         <div class="input-group mb-2">
@@ -67,18 +67,16 @@ $user_id = $_SESSION['user_id'];
                 </form>
             </div>
         </div>
-        <div class="col-md-12 text-center mt-2 mb-5">
-            <a class="btn btn-primary btn-sm back" href="../index.php"><i class="fas fa-book-reader"></i> หน้าหลัก</a>
+        <div class="col-md-12 text-center mt-3 mb-5">
+            <div class="btn-group" role="group" id="btn">
+                <a class="btn btn-sm btn-primary text-white" href="../index.php"><i class="fas fa-home"></i> หน้าหลัก</a>
+            </div>
         </div>
     </div>
-
 </body>
-<?php include('layout/footer.php') ?>
-
 
 <script>
     document.getElementById("register").disabled = true;
-
     document.getElementById('newpassword').disabled = true;
     document.getElementById('confirmpassword').disabled = true;
 
@@ -89,15 +87,13 @@ $user_id = $_SESSION['user_id'];
     function checkPWD() {
         var status = [];
         let password = document.getElementById('password').value;
-        let userid = <?php echo $user_id ?>;
-        console.log(userid);
+        let userid = document.getElementById('userid').value;
 
         $.post("reset_password_db.php", {
             userid: userid,
             password: password,
             action: 'checkPWD'
         }, function(data, status) {
-            console.log(data);
             if (data == "ture") {
                 document.getElementById('newpassword').disabled = false;
                 document.getElementById('confirmpassword').disabled = false;
@@ -108,7 +104,6 @@ $user_id = $_SESSION['user_id'];
                 document.getElementById('newpassword').disabled = true;
                 document.getElementById('confirmpassword').disabled = true;
             }
-
         });
     }
 
@@ -117,7 +112,6 @@ $user_id = $_SESSION['user_id'];
             document.getElementById('confirmpassword').value) {
             document.getElementById("message").innerHTML = null;
             document.getElementById("register").disabled = false;
-
         } else {
             document.getElementById('message').style.color = 'red';
             document.getElementById('message').innerHTML = '***รหัสไม่ตรงกัน***';

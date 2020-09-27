@@ -2,67 +2,63 @@
 include('auth.php');
 include('../../config/conectDB.php');
 
-$count_user = "SELECT u.email as label,COUNT(p.plot_id) as y FROM tb_plots p  
-        LEFT JOIN tb_users u  ON p.user_id = u.id
-        WHERE p.status = '1' 
-        GROUP BY p.user_id
-        LIMIT 10";
-$query_c_u = mysqli_query($dbcon, $count_user);
-$dataPoints = [];
-if ($query_c_u->num_rows > 0) {
-    while ($result_c_u = mysqli_fetch_assoc($query_c_u)) {
-        array_push($dataPoints, $result_c_u);
+$sql = "SELECT * FROM tb_plants_group";
+$query = mysqli_query($dbcon, $sql);
+$result = mysqli_fetch_assoc($query);
+$plantsgroup_id = $result['plantgroup_id'];
+
+
+
+$sql = "SELECT am.AMPHUR_NAME FROM amphurs am WHERE am.PROVINCE_ID =41";
+$query = mysqli_query($dbcon, $sql);
+$amhurs = [];
+if ($query->num_rows > 0) {
+    while ($result = mysqli_fetch_assoc($query)) {
+        array_push($amhurs, $result);
     }
 }
 
-$count_plant  = "SELECT p.plant_name  as label ,COUNT( pp.plotplant_id) as y FROM tb_plotplants pp
+$count_plant  = "SELECT p.plant_name  as plants ,COUNT( pp.plotplant_id) as amount FROM tb_plotplants pp
                 LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id
                 WHERE pp.status = 'active'
-                GROUP BY p.plant_id               
+                GROUP BY p.plant_id              
+                ORDER BY plants
                 LIMIT 10";
+
 $query_c_p = mysqli_query($dbcon, $count_plant);
 $dataPoints2 = [];
 if ($query_c_p->num_rows > 0) {
-    while ($result_c_p = mysqli_fetch_array($query_c_p)) {
+    while ($result_c_p = mysqli_fetch_assoc($query_c_p)) {
         array_push($dataPoints2, $result_c_p);
     }
 }
 
-
-$dataPoints3 = array(
-    // array("y" => 0, "label" => "เมืองอุตรดิตถ์"),
-    // array("y" => 0, "label" => "ตรอน"),
-    // array("y" => 0, "label" => "ท่าปลา"),
-    // array("y" => 0, "label" => "พิชัย"),
-    // array("y" => 0, "label" => "น้ำปาด"),
-    // array("y" => 0, "label" => "ทองแสนขัน"),
-    // array("y" => 0, "label" => "ฟากท่า"),
-    // array("y" => 0, "label" => "บ้านโคก"),
-    // array("y" => 0, "label" => "ลับแล")
-);
-$conut_people = "SELECT  COUNT(u.id) as y ,am.AMPHUR_NAME as label FROM tb_users u 
-                LEFT JOIN amphurs am ON u.amphure = am.AMPHUR_CODE
+$dataPoints3 = array();
+$conut_people = "SELECT am.AMPHUR_NAME as amphure, COUNT(u.id) AS amount  FROM tb_users u 
+                LEFT JOIN amphurs am ON u.amphure = am.AMPHUR_ID
                 WHERE u.status = 'user' AND u.amphure IS  NOT NULL
                 GROUP BY u.amphure";
-
 
 $query_c_pe = mysqli_query($dbcon, $conut_people);
 
 if ($query_c_pe->num_rows > 0) {
-    while ($result_c_pe = mysqli_fetch_array($query_c_pe)) {
-
+    while ($result_c_pe = mysqli_fetch_assoc($query_c_pe)) {
         array_push($dataPoints3, $result_c_pe);
     }
 }
-$dataPoints4 = array();
 
-$count_plant_i  = "SELECT p.plant_name as label,SUM(i.amount)  as y  FROM tb_plotplants pp 
-LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id
-LEFT JOIN tb_inoutcomes i ON pp.plotplant_id = i.plotplant_id
-LEFT JOIN tb_inoutcome_group ig ON i.inoutcome_group = ig.inoutcome_group_id
-WHERE pp.status = 'active' AND ig.inoutcome_group_type = 'i'
-GROUP BY p.plant_name 
-ORDER BY `y`  DESC LIMIT 5";
+$dataPoints4 = array();
+$count_plant_i  = "SELECT 
+                        p.plant_name as plants ,
+                        AVG(IF(ig.inoutcome_group_type = 'i',i.amount,0)) AS  income  ,
+                        AVG(IF(ig.inoutcome_group_type = 'o',i.amount,0)) AS  outcome
+                        FROM tb_plotplants pp 
+                        LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id
+                        LEFT JOIN tb_inoutcomes i ON pp.plotplant_id = i.plotplant_id
+                        LEFT JOIN tb_inoutcome_group ig ON i.inoutcome_group = ig.inoutcome_group_id
+                        WHERE pp.status = 'active' AND  i.inoutcome_id IS NOT NULL
+                        GROUP BY p.plant_name
+                        DESC LIMIT 12";
 $query_plant_iq = mysqli_query($dbcon, $count_plant_i);
 if ($query_plant_iq->num_rows > 0) {
     while ($result_c_p_i = mysqli_fetch_array($query_plant_iq)) {
@@ -70,22 +66,11 @@ if ($query_plant_iq->num_rows > 0) {
     }
 }
 
-$dataPoints5 = array();
-$count_plant_o  = "SELECT p.plant_name as label,SUM(i.amount)  as y  FROM tb_plotplants pp 
-LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id
-LEFT JOIN tb_inoutcomes i ON pp.plotplant_id = i.plotplant_id
-LEFT JOIN tb_inoutcome_group ig ON i.inoutcome_group = ig.inoutcome_group_id
-WHERE pp.status = 'active' AND ig.inoutcome_group_type = 'o'
-GROUP BY p.plant_name 
-ORDER BY `y`  DESC LIMIT 5";
-$query_plant_oq = mysqli_query($dbcon, $count_plant_o);
-if ($query_plant_oq->num_rows > 0) {
-    while ($result_c_p_o = mysqli_fetch_array($query_plant_oq)) {
-        array_push($dataPoints5, $result_c_p_o);
-    }
-}
-
 ?>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 <body>
     <div class="dashboard-main-wrapper">
@@ -93,7 +78,7 @@ if ($query_plant_oq->num_rows > 0) {
         include('layout/header.php');
         include('layout/menu.php');
         ?>
-
+        <input hidden type="text" id="plantsgroup_id" value="<?php echo $plantsgroup_id ?>">
         <div class="dashboard-wrapper">
             <div class="container-fluid dashboard-content">
                 <div class="row">
@@ -123,19 +108,33 @@ if ($query_plant_oq->num_rows > 0) {
                         <?php endif ?>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="text-center">ผู้ใช้งานที่มีจำนวนแปลงเกษตรเยอะที่สุด</h3>
-                                    </div>
-                                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                                <div class="card-header">
+
+                                    <h3 class="text-center">จำนวนพืชที่ปลูกแต่ละอำเภอ </h3>
+                                    <select id="plantgroup" name="plantgroup" class="form-control" data-size="8" data-live-search="true" title="เลือกหมวดหมู่พืช" data-width="100%" required>
+                                        <?php
+                                        $sql = "SELECT * FROM tb_plants_group ";
+                                        $result = mysqli_query($dbcon, $sql);
+                                        $g = '';
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            echo '<option   value="' . $row['plantgroup_id'] . '">' . $row['name'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+
                                 </div>
+                                <div class="card">
+                                    <div id="data_table">
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="card-header">
-                                    <h3 class="text-center">จำนวนพืชที่นิยมปลูกกันมากที่สุด</h3>
+                                    <h3 class="text-center">10 อันดับ จำนวนพืชที่นิยมปลูกกันมากที่สุด</h3>
                                 </div>
                                 <div class="card">
-                                    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+                                    <canvas id="chart2" style="height: 370px; width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -147,29 +146,26 @@ if ($query_plant_oq->num_rows > 0) {
                                             <?php
                                             $sum = 0;
                                             foreach ($dataPoints3 as  $data) {
-                                                $sum +=  $data['y'];
+                                                $sum +=  $data['amount'];
                                             }
                                             echo $sum . " คน";
-
                                             ?>
 
                                         </h3>
                                     </div>
 
-                                    <div id="chartContainer3" style="height: 370px; width: 100%;"></div>
+                                    <canvas id="chart3" style="height: 370px; width: 100%;"></canvas>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="card-header">
-                                    <h3 class="text-center">รายรับ - รายจ่าย ของพืชเพาะปลูก</h3>
+                                    <h3 class="text-center">ค่าเฉลี่ย ของ รายรับ - รายจ่าย ของพืชเพาะปลูก</h3>
                                 </div>
                                 <div class="card">
-                                    <div id="chartContainer4" style="height: 370px; width: 100%;"></div>
+                                    <canvas id="chart4" style="height: 370px; width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -187,116 +183,212 @@ if ($query_plant_oq->num_rows > 0) {
     <!-- end main wrapper -->
 
 </body>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<link src='https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css' type="css">
 <script>
     $(".alert").fadeTo(3000, 0).slideUp(500, function() {
         $(this).remove();
     });
-
     window.onload = function() {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            theme: "light2",
-            axisY: {
-                title: "จำนวนแปลงเกษตร"
+        var amhurs = <?php echo json_encode($amhurs) ?>;
+        var plantsgroup_id = $('#plantsgroup_id').val();
+        var data_set = [];
+        $.ajax({
+            url: 'fetch_data_dashboad1.php',
+            type: 'POST',
+            data: {
+                action: 'fetch',
+                id: plantsgroup_id
             },
-            data: [{
-                type: "column",
-                yValueFormatString: "#,##0.## แปลง",
-                indexLabel: "{y}",
-                indexLabelPlacement: "inside",
-                indexLabelFontWeight: "bolder",
-                indexLabelFontColor: "white",
-                dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-            }]
+            success: function(reponse) {
+                $('#data_table').html(reponse)
+            }
         });
-        chart.render();
-
-        var chart2 = new CanvasJS.Chart("chartContainer2", {
-            animationEnabled: true,
-            axisY: {
-                title: "จำนวนแปลงเกษตร"
-
-            },
-            data: [{
-                type: "bar",
-                yValueFormatString: "#,##0 แปลง",
-                indexLabel: "{y}",
-                indexLabelPlacement: "inside",
-                indexLabelFontWeight: "bolder",
-                indexLabelFontColor: "white",
-                dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
-            }]
-        });
-        chart2.render();
-
-        //     var chart3 = new CanvasJS.Chart("chartContainer3", {
-        //         animationEnabled: true,
-        //         theme: "light1",
-
-        //         axisY: {
-        //             title: "จำนวนผู้ใช้งาน (คน)"
-        //         },
-        //         data: [{
-        //             type: "column",
-        //             yValueFormatString: "#,##0.## คน",
-        //             dataPoints: <?php echo json_encode($dataPoints3, JSON_NUMERIC_CHECK); ?>
-        //         }]
-        //     });
-        //     chart3.render();
-        // }
-
-        var chart3 = new CanvasJS.Chart("chartContainer3", {
-            animationEnabled: true,
-            exportEnabled: true,
-
-            data: [{
-                type: "pie",
-                showInLegend: "true",
-                legendText: "{label}",
-                indexLabelFontSize: 16,
-                indexLabel: "{label} - #percent%",
-                yValueFormatString: "#,##0 คน",
-                dataPoints: <?php echo json_encode($dataPoints3, JSON_NUMERIC_CHECK); ?>
-            }]
-        });
-        chart3.render();
+        chart2();
+        chart3();
+        chart4();
     }
 
-    var chart4 = new CanvasJS.Chart("chartContainer4", {
-        animationEnabled: true,
-        theme: "light2",
+    $('#plantgroup').on('change', function(e) {
+        let id = $(this).val();
+        $.ajax({
+            url: 'fetch_data_dashboad1.php',
+            type: 'POST',
+            data: {
+                action: 'fetch',
+                id: id
+            },
+            success: function(reponse) {
+                $('#data_table').html(reponse)
+            }
+        });
+    })
 
-        legend: {
-            cursor: "pointer",
-            verticalAlign: "center",
-            horizontalAlign: "right",
-            itemclick: toggleDataSeries
-        },
-        data: [{
-            type: "column",
-            name: "รายรับ",
-            indexLabel: "{y}",
-            yValueFormatString: "฿#0.##",
-            showInLegend: true,
-            dataPoints: <?php echo json_encode($dataPoints4, JSON_NUMERIC_CHECK); ?>
-        }, {
-            type: "column",
-            name: "รายจ่าย",
-            indexLabel: "{y}",
-            yValueFormatString: "฿#0.##",
-            showInLegend: true,
-            dataPoints: <?php echo json_encode($dataPoints5, JSON_NUMERIC_CHECK); ?>
-        }]
-    });
-    chart4.render();
+    function chart2() {
+        var plants = [];
+        var amount = [];
 
-    function toggleDataSeries(e) {
-        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-            e.dataSeries.visible = false;
-        } else {
-            e.dataSeries.visible = true;
+        var data_set = <?php echo json_encode($dataPoints2) ?>;
+        for (var i = 0; i < Object.keys(data_set).length; i++) {
+            plants.push(data_set[i].plants);
+            amount.push(data_set[i].amount);
         }
-        chart4.render();
+        var ctx = document.getElementById('chart2').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: plants,
+                datasets: [{
+                    label: 'พืช',
+                    backgroundColor: 'rgb(237, 130, 0)',
+                    borderColor: 'rgb(237, 130, 0)',
+                    data: amount
+                }, ]
+            },
+            options: {
+                tooltips: {
+                    callbacks: {
+                        label: (item) => `${item.yLabel} แปลง`,
+                    },
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return number_format(value);
+                            }
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function chart3() {
+        var amphure = [];
+        var amount = [];
+        var coloR = [];
+        var data_set = <?php echo json_encode($dataPoints3) ?>;
+        for (var i = 0; i < Object.keys(data_set).length; i++) {
+            amphure.push(data_set[i].amphure);
+            amount.push(data_set[i].amount);
+            coloR.push(dynamicColors());
+        }
+
+        var ctx = document.getElementById('chart3').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: amphure,
+                datasets: [{
+                    label: 'อำเภอ',
+                    backgroundColor: coloR,
+                    borderColor: 'rgb(255,255,255)',
+                    data: amount
+                }, ]
+            },
+            options: {
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue + " คน";
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function chart4() {
+        var plants = [];
+        var income = [];
+        var outcome = [];
+        var data_set = <?php echo json_encode($dataPoints4) ?>;
+
+        for (var i = 0; i < Object.keys(data_set).length; i++) {
+            plants.push(data_set[i].plants);
+            income.push(data_set[i].income);
+            outcome.push(data_set[i].outcome);
+        }
+
+        var ctx = document.getElementById('chart4').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: plants,
+                datasets: [{
+                        label: 'รายรับ',
+                        backgroundColor: 'rgb(4, 179, 15)',
+                        borderColor: 'rgb(4, 179, 15)',
+                        data: income
+                    },
+                    {
+                        label: 'รายจ่าย',
+                        backgroundColor: 'rgb(199, 0, 33)',
+                        borderColor: 'rgb(199, 0, 33)',
+                        data: outcome
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontFamily: "Kanit",
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return '฿ ' + number_format(value);
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ฿' + number_format(tooltipItem.yLabel, 2);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    var dynamicColors = function() {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
     }
 </script>

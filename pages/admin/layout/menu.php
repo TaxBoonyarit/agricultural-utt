@@ -18,7 +18,7 @@
                             <a class="nav-link" href="users.php"><i class="fas fa-user"></i> ข้อมูลผู้ใช้งาน</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" aria-expanded="false" href="#" data-target="#submenu-11" aria-controls="submenu-11"> <i class="fas fa-leaf"></i> ข้อมูลพืช</a>
+                            <a class="nav-link" data-toggle="collapse" aria-expanded="false" href="#" data-target="#submenu-11" aria-controls="submenu-11"> <i class="fas fa-leaf"></i> จัดการข้อมูลพืช</a>
                             <div id="submenu-11" class="collapse submenu">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
@@ -34,7 +34,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="inoutcome.php"><i class="far fa-money-bill-alt"></i> หมวดหมู่รายรับ / รายจ่าย</a>
+                            <a class="nav-link" href="inoutcome.php"><i class="far fa-money-bill-alt"></i>จัดการ หมวดหมู่รายรับ-จ่าย</a>
                         </li>
                     </ul>
                 </ul>

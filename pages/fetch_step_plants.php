@@ -8,9 +8,21 @@ $firstday = (date("Y") + 543) . "-" . date("n") . "-" .  date("01");
 $lastday =   (date("Y") + 543) . "-" . date("n") . "-" .  date("t");
 
 $id  = $_REQUEST['id'];
-$plot_id = $_REQUEST['plot'];
 
-$sql = "SELECT *  FROM  tb_plants_step WHERE  start_date BETWEEN '$firstday' AND '$lastday' AND end_date  BETWEEN '$firstday' AND '$lastday' AND  plantgroup_id ='$id'";
+$sql = "
+SELECT * FROM tb_users u 
+                                                    LEFT JOIN tb_plots p ON u.id = p.user_id
+                                                    LEFT JOIN tb_plotplants pp ON p.plot_id = pp.plot_id 
+                                                    LEFT JOIN tb_plants pl ON pp.plant_id = pl.plant_id
+                                                    LEFT JOIN tb_plants_group pg ON pl.plantgroup_id = pg.plantgroup_id
+                                                    LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
+                                                    WHERE p.`status` ='1' AND u.id = '$id' AND pp.`status` = 'active'
+                                                    AND ps.start_date >= CAST('$firstday' AS DATE)  
+                                                    OR ps.end_date <= CAST('$lastday' AS DATE)    
+                                                    GROUP BY ps.plantgroup_id
+                                                    ORDER BY ps.start_date
+";
+
 $query = mysqli_query($dbcon, $sql);
 $monthTH_brev = [null, 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 $monthTH = [null, 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
@@ -20,7 +32,7 @@ function thai_date_short($time)
     global $dayTH, $monthTH_brev;
     $thai_date_return = date("j", $time);
     $thai_date_return .= " " . $monthTH_brev[date("n", $time)];
-    $thai_date_return .= " " . (date("Y", $time));
+    $thai_date_return .= " " . (date("Y") + 543);
     return $thai_date_return;
 }
 
@@ -32,17 +44,18 @@ if ($query->num_rows > 0) {
         <i class="fas fa-lightbulb"></i>  แนะนำช่วงเวลาปลูกพืช
                     </div>';
         echo $i == 1 ?  $header : '';
-        echo $output = '<div class="col">       
+
+        echo $output = '<div class="col">  
+             
         <div class="col text-right mt-3 ">
         <small class="text-primary" > <i class="fas fa-clock"></i> ' . thai_date_short(strtotime($result['start_date'])) . ' ถึง ' . thai_date_short(strtotime($result['end_date'])) . '</small>
         </div>
-        <div class="row">
-        <div class="col-3">
-        <img src="../images/step_plants/' . $result['img'] . '" class="img-fluid" >
-        </div>
-        <div class="col-9">
-        <a href="time_line.php?plantgroup_id=' . $result['plantgroup_id'] . '&plants_step_id=' . $result['plants_step_id'] . '&plot_id=' . $plot_id . '" style="color: inherit;">
-        <p class="mt-2">' . $result['title'] . '</p>  
+        <div class="row">     
+        
+        <div class="col-12">
+        <a href="pages/time_line.php?plantgroup_id=' . $result['plantgroup_id'] . '&plants_step_id=' . $result['plants_step_id'] . '&plot_id=' . $result['plot_id'] . '" style="color: inherit;">
+        <p><span class="badge badge-success">พืช ' . $result['name'] . '</span> ' . $result['title'] . '</p>
+             
         </a>  
         </div>
         </div>
@@ -51,10 +64,9 @@ if ($query->num_rows > 0) {
     </div>';
         echo $i < $query->num_rows ?  "<hr>" :  "";
     }
-}
-if ($query->num_rows == 0) {
+} else {
     echo '<div class="col">
-            <p class="text-center mt-2"><i class="fas fa-exclamation"></i>  คุณไม่มีการแจ้งเตือน </p>
-        </div>
-    ';
+    <p class="text-center mt-2"><i class="fas fa-exclamation"></i>  คุณไม่มีการแจ้งเตือน </p>
+</div>
+';
 }

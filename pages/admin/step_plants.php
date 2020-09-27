@@ -59,41 +59,29 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
-                            <div class="col-2 mt-3"> <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#modal_data"><i class="fas fa-plus-circle"></i> เพิ่มขั้นตอนการปลูกพืช
+                            <div class="row">
+                                <div class="col-11 ml-3 mt-3">
+                                    <div class="form-group">
+                                        <select id="step" class="selectpicker show-tick" data-size="8" data-live-search="true" title="เลือกหมวดหมู่พืช" data-width="100%" required>
+                                            <?php
+                                            $sql = "SELECT * FROM tb_plants_group";
+                                            $result = mysqli_query($dbcon, $sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row  = mysqli_fetch_array($result)) {
+                                                    echo '<option  value="' . $row['plantgroup_id'] . '">' . $row['name'] . '</option>';
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 mt-3 mb-2">
+                                <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#modal_data"><i class="fas fa-plus-circle"></i> เพิ่มขั้นตอนการปลูกพืช
                                 </button>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <!-- ============================================================== -->
-                                    <!-- vertical tabs  -->
-                                    <!-- ============================================================== -->
-                                    <div class="col-md-12 col-12">
-
-                                        <div class="tab-vertical">
-                                            <ul class="nav nav-tabs" id="data" role="tablist">
-                                                <?php
-                                                $sql = "SELECT * FROM tb_plants_group";
-                                                $result = mysqli_query($dbcon, $sql);
-                                                if ($result->num_rows > 0) {
-                                                    while ($row  = mysqli_fetch_array($result)) {
-
-                                                ?>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" data-id=<?php echo $row['plantgroup_id'] ?> id="home-vertical-tab" data-toggle="tab" href="#"><?php echo $row['name'] ?></a>
-                                                        </li>
-                                                <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </ul>
-                                            <div class="tab-content" id="step_plants">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- ============================================================== -->
-                                    <!-- end basic tabs  -->
-                                    <!-- ============================================================== -->
+                                <div class="tab-content" id="step_plants">
                                 </div>
                             </div>
                         </div>
@@ -179,8 +167,13 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="img" class="col-form-label">รูปภาพ</label>
-                                            <input type="file" class="form-control" id="img" name="img">
+                                            <div class="col text-center">
+                                                <label for="img" class="col-form-label">รูปภาพ</label>
+                                                <input type="file" class="form-control" id="img" name="img">
+                                            </div>
+                                            <div class="col text-center">
+                                                <img id="show_img" alt="pic" class="mt-2" width="150px" height="auto" loading="lazy">
+                                            </div>
                                         </div>
 
                                         <div class="modal-footer">
@@ -215,7 +208,7 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                                                 $result = mysqli_query($dbcon, $sql);
                                                 $g = '';
                                                 while ($row = mysqli_fetch_array($result)) {
-                                                    echo '<option   value="' . $row['plantgroup_id'] . '">' . $row['name'] . '</option>';
+                                                    echo '<option  value="' . $row['plantgroup_id'] . '">' . $row['name'] . '</option>';
                                                 }
                                                 ?>
                                             </select>
@@ -273,6 +266,14 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
 </body>
 
 <script type="text/javascript">
+    $.ajax({
+        url: "fetch_all_step_plants.php",
+        method: "post",
+        success: function(data) {
+            $('#step_plants').html(data);
+        }
+    })
+
     var d = new Date();
     var toDay = d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
 
@@ -283,8 +284,8 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
         $(this).remove();
     });
 
-    $('.nav-link').click(function() {
-        let id = $(this).attr('data-id');
+    $("#step").on('change', function() {
+        let id = $(this).val();
         $.ajax({
             url: "fetch.php",
             method: "post",
@@ -321,16 +322,13 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                 CKEDITOR.instances.description2.setData(data);
             }
         });
-
-
         let id = $(this).attr('data-id');
         let plantgroup_id = $(this).attr('data-plantgroup_id');
         let title = $(this).attr('data-title');
         let start_date = convertDate($(this).attr('data-start_date'));
         let end_date = convertDate($(this).attr('data-end_date'));
         let img = $(this).attr('data-img');
-
-
+        $('#show_img').attr('src', '../../images/step_plants/' + img);
         $('#start_date2').datepicker({
             date: start_date,
             language: 'th-th',
@@ -351,13 +349,11 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
         $('#end_date2').val(end_date);
         $('#eimg').val(img);
         $('#edit_data').modal('show');
-        // CKEDITOR.replace('description2');
-
     });
 
     $(document).on('click', '.del', function() {
         let id = $(this).attr('data-id');
-        let name = $(this).attr('data-name')
+        let name = $(this).attr('data-name');
         $('#id').val(id);
         $('#delName').text(name);
         $('#delid').val(id);

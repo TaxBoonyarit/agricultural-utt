@@ -6,6 +6,7 @@ if (!isset($_SESSION['email']) || $_SESSION['status'] !== 'admin') {
     exit();
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -22,9 +23,6 @@ if (!isset($_SESSION['email']) || $_SESSION['status'] !== 'admin') {
     <link rel="stylesheet" href="assets/libs/css/style.css">
     <link rel="stylesheet" href="assets/libs/css/front.css">
     <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-
-
-
 
     <!-- Optional JavaScript -->
     <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>

@@ -13,7 +13,21 @@ function thai_date_short($time)
     $thai_date_return .= " " . (date("Y", $time) + 543);
     return $thai_date_return;
 }
+function phone_number_format($number)
+{
+    // Allow only Digits, remove all other characters.
+    $number = preg_replace("/[^\d]/", "", $number);
 
+    // get number length.
+    $length = strlen($number);
+
+    // if number = 10
+    if ($length == 10) {
+        $number = preg_replace("/^1?(\d{3})(\d{3})(\d{4})$/", "$1-$2-$3", $number);
+    }
+
+    return $number;
+}
 
 ?>
 
@@ -39,12 +53,12 @@ function thai_date_short($time)
                                 <table id="users" class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class=" text-center" scope="col">ลำดับ</th>
-                                            <th class=" text-center" scope="col">ชื่อ - นามสกุล</th>
-                                            <th class=" text-center" scope="col">เบอร์โทร</th>
-                                            <th class=" text-center" scope="col">ที่อยู่</th>
-                                            <th class=" text-center" scope="col">อีเมล์ </th>
-                                            <th class=" text-center" scope="col">วันที่เริ่มใช้งาน</th>
+                                            <th class=" text-center" scope="col"><i class="fas fa-sort-numeric-up"></i> ลำดับ</th>
+                                            <th class=" text-center" scope="col"><i class="fas fa-user-circle"></i> ชื่อ - นามสกุล</th>
+                                            <th class=" text-center" scope="col"><i class="fas fa-phone-square"></i> เบอร์โทร </th>
+                                            <th class=" text-center" scope="col"><i class="fas fa-address-book"></i> ที่อยู่ </th>
+                                            <th class=" text-center" scope="col"><i class="fas fa-envelope"></i> อีเมล์ </th>
+                                            <th class=" text-center" scope="col"><i class="far fa-clock"></i> วันที่เริ่มใช้งาน</th>
                                         </tr>
                                     </thead>
                                     <?php
@@ -66,19 +80,22 @@ function thai_date_short($time)
                                                 <tr>
                                                     <td class="text-center"><?php echo $i; ?></td>
                                                     <td><?php echo $data[2] . ' ' . $data[3] ?></td>
-                                                    <td><?php echo $data[8] ? $data[8] : '-' ?></td>
-                                                    <td><?php
-                                                        $sql = "SELECT u.address,d.DISTRICT_NAME,a.AMPHUR_NAME, p.PROVINCE_NAME FROM tb_users u LEFT JOIN districts d ON u.district = d.DISTRICT_CODE
-                                                                            LEFT JOIN amphurs a ON u.amphure = a.AMPHUR_CODE
-                                                                            LEFT JOIN provinces p ON u.provinces = p.PROVINCE_CODE
-                                                                            WHERE u.id = '$data[0]'";
+                                                    <td><?php echo $data[8] ? phone_number_format($data[8]) : '-' ?></td>
+                                                    <td style="width: 30%">
+                                                        <?php
+                                                        $sql = "SELECT u.address,d.DISTRICT_NAME,a.AMPHUR_NAME, p.PROVINCE_NAME 
+                                                        FROM tb_users u 
+                                                        LEFT JOIN districts d ON u.district = d.DISTRICT_ID
+                                                        LEFT JOIN amphurs a ON u.amphure = a.AMPHUR_ID
+                                                        LEFT JOIN provinces p ON u.provinces = p.PROVINCE_ID
+                                                        WHERE u.id = '$data[0]'";
                                                         $query = mysqli_query($dbcon, $sql);
                                                         $address = mysqli_fetch_assoc($query);
 
-                                                        echo $address['address'] ? $address['address'] : ' ',
-                                                            $address['DISTRICT_NAME'] ? $address['DISTRICT_NAME'] : ' ',
-                                                            $address['AMPHUR_NAME'] ? $address['AMPHUR_NAME'] : ' ',
-                                                            $address['PROVINCE_NAME'] ? $address['PROVINCE_NAME'] : ' '
+                                                        echo $address['address'] ? $address['address'] : ' ', " ",
+                                                            $address['DISTRICT_NAME'] ? "ต." . $address['DISTRICT_NAME'] : ' ',
+                                                            $address['AMPHUR_NAME'] ? "อ." . $address['AMPHUR_NAME'] : ' ',
+                                                            $address['PROVINCE_NAME'] ? "จ." . $address['PROVINCE_NAME'] : ' '
                                                                 | '-';
                                                         ?></td>
                                                     <td><?php echo $data[10] ?></td>

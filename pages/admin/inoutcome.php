@@ -45,7 +45,10 @@ $open = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
-                            <div class="col-2 mt-3"> <button href="#" class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#modal_data"><i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่รายรับ/รายจ่าย</button></div>
+                            <div class="row">
+                                <div class="col-2 mt-3 ml-3"> <button href="#" class="btn btn-rounded btn-success" data-toggle="modal" data-target="#modal_data"><i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่รายรับ</button></div>
+                                <div class="col mt-3"> <button href="#" class="btn btn-rounded btn-danger" data-toggle="modal" data-target="#modal_data2"><i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่รายจ่าย</button></div>
+                            </div>
                             <div class="card-body">
                                 <table id="inoutcome" class="table table-hover table-bordered">
                                     <thead>
@@ -175,7 +178,7 @@ $open = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 id="title" class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus-circle"></i> หมวดหมู่รายรับ/รายจ่าย</h4>
+                                <h4 id="title" class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus-circle"></i> หมวดหมู่รายรับ </h4>
                                 <a class="cls"> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button> </a>
@@ -184,6 +187,8 @@ $open = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
                             <div class="modal-body">
                                 <!-- parameter -->
                                 <input hidden type="text" name="register" id="register" value="ture">
+                                <input hidden type="text" name="type" id="type" value="i">
+
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">รายการ</label>
                                     <input id="name" type="text" name="name" class="form-control" required>
@@ -191,13 +196,43 @@ $open = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
                                         <p class="text-danger" id="error"></p>
                                     </div>
                                 </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <a class="cls"> <button type="button" class="btn btn-rounded btn-danger" data-dismiss="modal">ยกเลิก</button></a>
+                                <button type="submit" class="btn btn-rounded btn-primary">บันทึกข้อมูล</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- insert modal -->
+            <form action="inoutcome_db.php" method="POST">
+                <div class="modal fade <?php echo $open ?>" id="modal_data2" tabindex="-1" role="dialog" aria-hidden="ture">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="title" class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus-circle"></i> หมวดหมู่รายรับ </h4>
+                                <a class="cls"> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button> </a>
+                            </div>
+
+                            <div class="modal-body">
+                                <!-- parameter -->
+                                <input hidden type="text" name="register" id="register" value="ture">
+                                <input hidden type="text" name="type" id="type" value="o">
+
                                 <div class="form-group">
-                                    <label for="type">หมวดหมู่</label>
-                                    <select class="form-control" name="type" id="type" required>
-                                        <option selected value="i">รายรับ</option>
-                                        <option value="o">รายจ่าย</option>
-                                    </select>
+                                    <label for="name" class="col-form-label">รายการ</label>
+                                    <input id="name" type="text" name="name" class="form-control" required>
+                                    <div id="checkForm">
+                                        <p class="text-danger" id="error"></p>
+                                    </div>
                                 </div>
+
                             </div>
 
                             <div class="modal-footer">
@@ -262,7 +297,6 @@ $open = isset($_SESSION['modal']) ? $_SESSION['modal'] : '';
         $('.delete').click(function() {
             let id = $(this).attr('data-id');
             let name = $(this).attr('data-name');
-
             $('#delName').text(name);
             $('#delid').val(id);
             $('#delstatus').val(true);

@@ -1,8 +1,9 @@
+
 <?php
 session_start();
 include('../config/conectDB.php');
 $errors = array();
-if (isset($_POST['reg_user'])) {
+if (isset($_POST["submit"])) {
     $email = mysqli_real_escape_string($dbcon, $_POST['email']);
     $password = mysqli_real_escape_string($dbcon, $_POST['password']);
     $confirmpassword = mysqli_real_escape_string($dbcon, $_POST['confirmpassword']);
@@ -14,9 +15,6 @@ if (isset($_POST['reg_user'])) {
     $provinces_id = $_POST['PROVINCE_CODE'];
     $amphure_id = $_POST['AMPHUR_CODE'];
     $district_id = $_POST['DISTRICT_CODE'];
-
-
-
     if (empty($email)) {
         array_push($errors, 'Email is required');
     }
@@ -45,39 +43,48 @@ if (isset($_POST['reg_user'])) {
 
     if ($result) {
         if ($result['email'] === $email) {
-            array_push($errors, 'อีเมล์นี้มีคนใช้งานแล้ว');
-            header('location: register.php');
+            echo json_encode("emailDuplicate");
+            exit();
         }
-    }
-    if (count($errors) == 0) {
-
-        if (isset($_FILES['img'])) {
-            //upload image
-            $ext = pathinfo(basename($_FILES['img']['name']), PATHINFO_EXTENSION);
-            $new_image_name = 'user_' . uniqid() . "." . $ext;
-            $image_path = "../images/users/";
-            $upload_path = $image_path . $new_image_name;
-
-            //uploading picture
-            $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
-            if (!$success) {
-                array_push($errors, 'error not upload file');
-                echo "error";
-                exit();
-            }
-            $img = $new_image_name;
-        }
-
-        $hash_password = md5($password);
-        $sql = "INSERT INTO tb_users (email,password,firstname,lastname,tel,address,district,amphure,provinces,start_date,img) 
-            VALUES ('$email','$hash_password','$firstname','$lastname','$tel','$address','$district_id','$amphure_id','$provinces_id','$start_date','$img')";
-        mysqli_query($dbcon, $sql);
-        $_SESSION['success'] = "สมัครสมาชิกสำเร็จ";
-        header('location: ../index.php');
     } else {
-        array_push($errors, "อีเมล์นี้ถูกใช้งานแล้ว");
-        $_SESSION['error']  = "อีเมล์นี้ถูกใช้งานแล้ว";
-        $_SESSION['checkemail'] = $email;
-        header('location: register.php');
+        if (count($errors) == 0) {
+            if (isset($_FILES['img'])) {
+
+                $ext = pathinfo(basename($_FILES['img']['name']), PATHINFO_EXTENSION);
+                $images =  $_FILES["img"]["tmp_name"];
+
+                $new_image_name = 'user_' . uniqid() . "." . $ext;
+                $image_path = "../images/users/";
+                $upload_path = $image_path . $new_image_name;
+
+                //uploading images
+                $success = move_uploaded_file($images, $upload_path);
+                $img = $new_image_name;
+                if (!$success) {
+                    echo json_encode("errorUploadImage");
+                    exit();
+                } else {
+                    $hash_password = md5($password);
+                    $sql = "INSERT INTO tb_users (email,password,firstname,lastname,tel,address,district,amphure,provinces,start_date,img) 
+                                VALUES ('$email','$hash_password','$firstname','$lastname','$tel','$address','$district_id','$amphure_id','$provinces_id','$start_date','$img')";
+                    mysqli_query($dbcon, $sql);
+                    $_SESSION['success'] = "สมัครสมาชิกสำเร็จ";
+                    echo  json_encode("success");
+                }
+            } else {
+                $hash_password = md5($password);
+                $sql = "INSERT INTO tb_users (email,password,firstname,lastname,tel,address,district,amphure,provinces,start_date,img) 
+                        VALUES ('$email','$hash_password','$firstname','$lastname','$tel','$address','$district_id','$amphure_id','$provinces_id','$start_date','$img')";
+                mysqli_query($dbcon, $sql);
+                $_SESSION['success'] = "สมัครสมาชิกสำเร็จ";
+                echo  json_encode("success");
+            }
+        } else {
+            array_push($errors, "อีเมล์นี้ถูกใช้งานแล้ว");
+            $_SESSION['checkemail'] = $email;
+        }
     }
 }
+
+
+?>

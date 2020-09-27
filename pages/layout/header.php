@@ -9,77 +9,85 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
 <!-- icon web -->
 <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<!-- css w3 -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <!-- icons -->
 <link href="../service/fontawesome/css/fontawesome.css" rel="stylesheet">
 <link href="../service/fontawesome/css/brands.css" rel="stylesheet">
 <link href="../service/fontawesome/css/solid.css" rel="stylesheet">
 
-<!-- google api login -->
-<meta name="google-signin-scope" content="profile email">   
-<meta name="google-signin-client_id" content="609533328746-hadarsu7sj0h2q058be12k892v83c1gp.apps.googleusercontent.com">
- <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="https://apis.google.com/js/platform.js?onload=bindGpLoginBtn" async defer></script>
-
 <!-- css  style sheet-->
-<link href="../service/style/style.css" rel="stylesheet">
+<link rel="stylesheet" href="../service/style/style.css" type="text/css">
 
+<!-- chart -->
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<!-- data table -->
+<script src="../service/DataTables/datatables.min.js"></script>
+<link href="../service/DataTables/datatables.min.css" type="text/css" />
+
+<!-- sweet alert -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<?php
-if (isset($_GET['logout'])) {
-    session_destroy();
-    unset($_SESSION['email']);
-    header("location: login.php");
-}
+<head>
+    <?php
+    if (isset($_GET['logout'])) {
+        session_destroy();
+        unset($_SESSION['email']);
+        header("location: login.php");
+    }
 
-if (isset($_GET['update_profile'])) {
-    $_SESSION['email'];
-    header('location: profile.php');
-}
-$id_f_g_l =  isset($_SESSION['id_F_L_G']) ?  $_SESSION['id_F_L_G'] : '';
+    if (isset($_GET['update_profile'])) {
+        $_SESSION['email'];
+        header('location: profile.php');
+    }
+    $id_f_g_l =  isset($_SESSION['id_F_L_G']) ?  $_SESSION['id_F_L_G'] : '';
 
-?>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Agricultural</title>
-<nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <h3><i class="fas fa-leaf"></i>
-        เกษตรมูลค่าสูง
-    </h3>
-    <?php if (isset($_SESSION['email'])) : ?>
+    ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover,user-scalable=no">
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto">
-                <span class="navbar-text">
-                    &nbsp; เมนูจัดการเกษตร
-                </span>
-                <li class="nav-item active">
-                    <a href="plot.php" class="btn"><i class="fas fa-tractor"></i> จัดการแปลงเกษตร</a>
-                </li>
-                <li class="nav-item">
-                    <a href="profile.php?update_profile='1'" class="btn "><i class="fas fa-user-edit"></i> จัดการโปรไฟล์</a>
-                </li>
-                <li class="nav-item">
-                    <?php if ($id_f_g_l === 'active') : ?>
-                        <a href="reset_password.php" class="btn "><i class="fas fa-unlock-alt"></i> เปลี่ยนรหัสผ่าน</a>
-                    <?php endif ?>
-                </li>
-                <li class="nva-item">
-                    <a href="login.php?logout='1'" class="btn"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a>
-                </li>
-            </ul>
-        </div>
-    <?php endif ?>
-
-</nav>
-<div class="row mt-5"></div>
+    <title>Agricultural@UTT</title>
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <h3><i class="fas fa-leaf"></i>
+            เกษตรมูลค่าสูง
+        </h3>
+        <?php if (isset($_SESSION['email'])) : ?>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <span class="navbar-text">
+                        &nbsp; เมนูจัดการเกษตร
+                    </span>
+                    <li class="nav-item active">
+                        <a href="plot.php" class="btn"><i class="fas fa-tractor"></i> จัดการแปลงเกษตร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.php?update_profile='1'" class="btn "><i class="fas fa-user-edit"></i> จัดการโปรไฟล์</a>
+                    </li>
+                    <li class="nav-item">
+                        <?php if ($id_f_g_l === 'active') : ?>
+                            <a href="reset_password.php" class="btn "><i class="fas fa-unlock-alt"></i> เปลี่ยนรหัสผ่าน</a>
+                        <?php endif ?>
+                    </li>
+                    <li class="nva-item">
+                        <a href="login.php?logout='1'" class="btn"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a>
+                    </li>
+                </ul>
+            </div>
+        <?php endif ?>
+    </nav>
+    <a name="up"></a>
 </head>
