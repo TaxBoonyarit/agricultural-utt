@@ -20,11 +20,11 @@ include('../../config/conectDB.php');
 
     #markerLayer img {
         border: 3px solid white !important;
-        object-fit: cover;
-
         border-radius: 50px;
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
     }
+
+    #markerLayer2 {}
 </style>
 
 <body>
@@ -110,7 +110,7 @@ include('../../config/conectDB.php');
 <!-- maps -->
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2zz3_XvN77PvY40PwjjDoziN_f_kGpWQ&callback=initMap&language=th"></script>
 <script type="text/javascript">
-    var map, info;
+    var map, info, myoverlay;
     var markers = [];
     var json;
     var count_area = 0;
@@ -141,6 +141,11 @@ include('../../config/conectDB.php');
 
 
     function seleteLocation() {
+        myoverlay = new google.maps.OverlayView();
+        myoverlay.draw = function() {
+            this.getPanes().markerLayer.id = 'markerLayer2';
+        };
+        myoverlay.setMap(map);
         $.ajax({
             type: "POST",
             url: "json_location.php",
@@ -203,7 +208,7 @@ include('../../config/conectDB.php');
                     fillOpacity: 0.35,
                     map,
                     center: LatLng,
-                    radius: (200)
+                    radius: (100)
                 });
 
                 info = new google.maps.InfoWindow();
@@ -218,6 +223,7 @@ include('../../config/conectDB.php');
     }
 
     function search() {
+
         var plants = $('#plants').val();
         var user = $('#user').val();
         user ? '' : user = 'ทั้งหมด';
@@ -332,6 +338,13 @@ include('../../config/conectDB.php');
                         plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
                         // plants !== 'ทั้งหมด' ? icon = 'icon.php?icon=' + icon : icon = 'marker.png';
 
+                        // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
+                        myoverlay = new google.maps.OverlayView();
+                        myoverlay.draw = function() {
+                            this.getPanes().markerLayer.id = 'markerLayer';
+                        };
+                        myoverlay.setMap(map);
+
 
                         if (icon !== 'marker.png') {
                             var icons = {
@@ -339,6 +352,8 @@ include('../../config/conectDB.php');
                                 scaledSize: new google.maps.Size(40, 40) // scaled size
                             };
                         } else {
+
+                            myoverlay.setMap(null);
                             var icons = {
                                 url: '../../images/plants/' + icon, // url                                
                             };
@@ -351,7 +366,7 @@ include('../../config/conectDB.php');
                             fillOpacity: 0.35,
                             map,
                             center: LatLng,
-                            radius: (200)
+                            radius: (100)
                         });
 
 
@@ -362,15 +377,6 @@ include('../../config/conectDB.php');
                             position: LatLng,
                             optimized: false
                         };
-
-                        // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
-                        var myoverlay = new google.maps.OverlayView();
-                        myoverlay.draw = function() {
-                            this.getPanes().markerLayer.id = 'markerLayer';
-                        };
-                        myoverlay.setMap(map);
-
-
 
                         info = new google.maps.InfoWindow();
                         marker = new google.maps.Marker(markeroption);
