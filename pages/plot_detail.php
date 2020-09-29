@@ -14,7 +14,6 @@ $result = mysqli_fetch_assoc($query);
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <body>
-
     <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2" id="box">
         <div class="card">
             <div class="col text-center mt-2">
@@ -177,10 +176,23 @@ $result = mysqli_fetch_assoc($query);
             content: contenString
         });
 
+
+        var circle = new google.maps.Circle({
+            strokeColor: "#00b33c",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#b3ffb3",
+            fillOpacity: 0.35,
+            map,
+            center: new google.maps.LatLng(lat, lon),
+            radius: (100)
+        });
+
         var marker = new google.maps.Marker({
             map: map,
             position: new google.maps.LatLng(lat, lon),
-            draggalbe: true
+            draggalbe: true,
+            icon: '../images/plants/marker.png'
         });
 
         marker.addListener('click', function() {
