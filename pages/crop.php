@@ -82,7 +82,9 @@ $status = $plant_id ? "update" : "register";
                     </div>
                 </div>
                 <div class="col-md-12 mt-3" id="form-amount">
-                    <label for="amount">จำนวน (หน่วย : <?php echo  $unit ?>)</label>
+                    <label id='u' for="amount">จำนวน
+
+                    </label>
                     <input type="number" class="form-control" value="<?php echo $amount ?>" id="amount" name="amount" placeholder="ตัวอย่าง (100)" onKeyPress="if(this.value.length==7) return false;" required>
                 </div>
 
@@ -112,6 +114,20 @@ $status = $plant_id ? "update" : "register";
     var d = new Date();
     var toDay = d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
 
+    $('#plants').on('change', function(e) {
+        var plants = $(this).val();
+
+        $.ajax({
+            url: 'get_unit_plants.php',
+            type: 'GET',
+            data: {
+                plants_id: plants
+            },
+            success: function(resposne) {
+                $('#u').html('จำนวน (หน่วย :' + resposne + ' )');
+            }
+        })
+    });
 
     $("form#form").submit(function(e) {
         e.preventDefault();
