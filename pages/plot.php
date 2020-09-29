@@ -63,7 +63,7 @@ $user_id = $_SESSION['user_id'];
                                                 <button class="w3-button"><i class="fas fa-ellipsis-v"></i></button>
                                                 <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
                                                     <a href="plot_from.php?plot_id=<?php echo $row['plot_id'] ?>"><button class="dropdown-item" type="button" data-toggle="modal"><i class="fas fa-edit"></i> แก้ไข</button></a>
-                                                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#delete<?php echo $row['plot_id'] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
+                                                    <button class="dropdown-item" style="color:red" type="button" data-toggle="modal" data-target="#delete<?php echo $row['plot_id'] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,7 +90,7 @@ $user_id = $_SESSION['user_id'];
                                                     <div class='w3-dropdown-content w3-bar-block w3-border ' style='right:0'>
                                                     <a href='plant_detail.php?plants_id=" . $detail_r['plant_id'] . "&plot_id=" . $plot_id . "'><button class='dropdown-item' type='button'><i class='fas fa-info-circle'></i> ข้อมูลพืช</button></a>
                                                         <a href='crop.php?plot_id=" . $plot_id . "&plotplant_id=" . $plot_plants . "'><button class='dropdown-item' type='button' data-toggle='modal'><i class='fas fa-edit'></i> แก้ไข</button></a>
-                                                        <button class='dropdown-item' type='button' data-toggle='modal' data-target='#delete_plants" . $plot_plants . "'><i class='fas fa-trash-alt'></i> ลบ</button>
+                                                        <button class='dropdown-item' type='button' style='color:red' data-toggle='modal' data-target='#delete_plants" . $plot_plants . "'><i class='fas fa-trash-alt'></i> ลบ</button>
                                                     </div>
                                                 </div>                                                    
                                                     </li></ul>";

@@ -84,7 +84,7 @@ function thai_date_fullmonth($time)
                                             }
                                             ?>
                                             <a href="crop.php?plotplant_id=<?php echo $row['plotplant_id'] ?>&plot_id=<?php echo $plot_id ?>"><button class="dropdown-item" type="button"><i class="fas fa-edit"></i> แก้ไข</button></a>
-                                            <button class="dropdown-item" type="button" data-toggle="modal" data-target="#delete<?php echo $row['plotplant_id'] ?>"><i class="fas fa-trash-alt"></i> ลบ </button>
+                                            <button class="dropdown-item" style='color:red' type="button" data-toggle="modal" data-target="#delete<?php echo $row['plotplant_id'] ?>"><i class="fas fa-trash-alt"></i> ลบ </button>
                                         </div>
                                     </div>
                             </div>

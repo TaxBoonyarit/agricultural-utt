@@ -337,7 +337,7 @@ $data_outcome = $result;
                                                             <button class='w3-button btn-xs '><i class='fas fa-ellipsis-v'></i></button>
                                                             <div class='w3-dropdown-content w3-bar-block w3-border ' style='right:0'>
                                                                 <a href="income.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>&inoutcome_id=<?php echo $data[0] ?>"><button class="dropdown-item" type="button" data-toggle="modal"><i class="fas fa-edit"></i> แก้ไข</button></a>
-                                                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#delete<?php echo $data[0] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
+                                                                <button class="dropdown-item" style='color:red' type="button" data-toggle="modal" data-target="#delete<?php echo $data[0] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
                                                             </div>
                                                         </div>
 
@@ -403,7 +403,7 @@ $data_outcome = $result;
                                                             <button class='w3-button btn-xs '><i class='fas fa-ellipsis-v'></i></button>
                                                             <div class='w3-dropdown-content w3-bar-block w3-border ' style='right:0'>
                                                                 <a href="outcome.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>&inoutcome_id=<?php echo $data[0] ?>"><button class="dropdown-item" type="button" data-toggle="modal"><i class="fas fa-edit"></i> แก้ไข</button></a>
-                                                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#delete<?php echo $data[0] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
+                                                                <button class="dropdown-item" style='color:red' type="button" data-toggle="modal" data-target="#delete<?php echo $data[0] ?>"><i class="fas fa-trash-alt"></i> ลบ</button>
                                                             </div>
                                                         </div>
                                                     </td>
