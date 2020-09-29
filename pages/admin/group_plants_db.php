@@ -24,7 +24,7 @@ if ($action == 'insert') {
         list(, $image) = explode(',', $image);
 
         $image = base64_decode($image);
-        $image_name = 'icon_' . uniqid() . '.png';
+        $image_name = 'icon_' . uniqid() . '.jpg';
         $status = file_put_contents('../../images/plants/' . $image_name, $image);
         if (!$status) {
             $_SESSION['error'] = "ไม่สามารถอัพโหลดรูปภาพ";
@@ -65,7 +65,7 @@ if ($action == 'update') {
         list($type, $icon) = explode(';', $icon);
         list(, $icon) = explode(',', $icon);
         $icon = base64_decode($icon);
-        $image_name = 'icon_' . uniqid() . '.png';
+        $image_name = 'icon_' . uniqid() . '.jpg';
         $status = file_put_contents('../../images/plants/' . $image_name, $icon);
         if (!$status) {
             $_SESSION['error'] = "ไม่สามารถอัพโหลดรูปภาพ";

@@ -1,3 +1,3 @@
 <?php
-$dbcon = mysqli_connect('us-cdbr-east-02.cleardb.com', 'bb0795b70d8d09', 'e17f19a7', 'heroku_49f65ce59122061') or die('disconnect MySQL' . mysqli_connect_error());
+$dbcon = mysqli_connect('us-cdbr-east-02.cleardb.com', 'bfb0e826f1c656', '2d8ec7a0', 'heroku_bd4ae28e630dc6d') or die('disconnect MySQL' . mysqli_connect_error());
 mysqli_set_charset($dbcon, 'utf8');

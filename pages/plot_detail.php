@@ -50,12 +50,13 @@ $result = mysqli_fetch_assoc($query);
                             echo "<hr>";
                             echo "<span style='color:#33d;'><i class='fas fa-seedling'></i> พืชที่ปลูก ทั้งหมดมีจำนวน " . $q->num_rows . " แปลง </span> <br>";
                             echo "<a style='margin-top: -7px' href='crop.php?plot_id=$plot_id'><h5><span class='badge badge-success ml-3' id='btn'> <i class='fas fa-plus-circle'></i> เพิ่มพืชลงแปลงเพาะปลูก </span></h5></a>";
-
+                            $j = 0;
                             while ($detail_r = mysqli_fetch_array($q)) {
+                                $j++;
                                 $plot_plants = $detail_r['plotplant_id'];
                                 if ($detail_r['plotplant_id']) {
                                     $detail_r['img'] ? $img = "<img src='../images/plants/" . $detail_r['img'] . "' alt='Avatar' class='pic-plants'  loading='lazy'  onerror='imgError(this);'>" : $img = "";
-                                    echo "<ul><li> <a  style='font-size:14px' href='plot_plant.php?plot_id=$plot_id#plants_" . $plot_plants . "'>" . $img . " " . $detail_r['plant_name'] . "   " . number_format($detail_r['amount'])  . "  " . $detail_r['unit'] . "</a>
+                                    echo "<ul><li> <a  style='font-size:14px' href='plot_plant.php?plot_id=$plot_id&page=" . $j . "'>" . $img . " " . $detail_r['plant_name'] . "   " . number_format($detail_r['amount'])  . "  " . $detail_r['unit'] . "</a>
                                     <div class='w3-dropdown-hover w3-right' style='float: right;'>
                                     <button class='w3-button btn-xs mt-2'><i class='fas fa-ellipsis-v'></i></button>
                                     <div class='w3-dropdown-content w3-bar-block w3-border' style='right:0'>

@@ -4,8 +4,6 @@ include('../config/conectDB.php');
 include '../pages/layout/header.php';
 
 $plot_id = $_REQUEST['plot_id'];
-$img_default = "default.jpg";
-
 // First day of the month.
 $firstday = (date("Y") + 543) . "-" . date("n") . "-" .  date("01");
 // Last day of the month.
@@ -50,9 +48,20 @@ function thai_date_fullmonth($time)
                 <hr>
             </div>
             <?php
+
+            if (isset($_GET['page'])) {
+                $page = $_GET['page'];
+            } else {
+                $page = 1;
+            }
+            $num_per_page = 1;
+            $start =  ($page - 1) * $num_per_page;
+
+
             $sql = "SELECT * FROM tb_plotplants  pp LEFT JOIN tb_plants pl 
                     ON pp.plant_id = pl.plant_id
-                    WHERE pp.plot_id = '$plot_id' AND pp.status = 'active'";
+                    WHERE pp.plot_id = '$plot_id' AND pp.status = 'active'
+                    limit $start,$num_per_page";
             $result = mysqli_query($dbcon, $sql);
             if ($result->num_rows > 0) :
                 $i = 0;
@@ -158,6 +167,36 @@ function thai_date_fullmonth($time)
                 <?php
                     echo $i < $result->num_rows ?  "<hr>" :  "<br>";
                 }
+
+                $sql_all = "SELECT * FROM tb_plotplants  pp LEFT JOIN tb_plants pl 
+                ON pp.plant_id = pl.plant_id
+                WHERE pp.plot_id = '$plot_id' AND pp.status = 'active'
+                ";
+                $query_all = mysqli_query($dbcon, $sql_all);
+                $total_record = mysqli_num_rows($query_all);
+                $total_page  = ceil($total_record / $num_per_page);
+
+                $back_page = $page - 1;
+                $page == 1  ? $text = 'disabled' : $text = '';;
+                $page == $total_page ? $text2 = 'disabled' : $text2 = '';
+                $page !== $total_page ? $next_page = $page + 1 : $next_page = $page;
+
+                echo '<nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ' . $text . '">
+                    <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $back_page . '" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
+                    </li>';
+                for ($p = 1; $p <= $total_page; $p++) {
+                    echo '<li class="page-item"><a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $p . '">' . $p . '</a></li>';
+                }
+                echo '
+                    <li class="page-item ' . $text2 . '">
+                    <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $next_page . '">ถัดไป</a>
+                    </li>
+                </ul>
+                </nav>';
+
+
             else :
                 ?>
                 <div class=" col mt-2 text-center">

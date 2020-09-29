@@ -8,6 +8,25 @@ include('../../config/conectDB.php');
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
+
+<style>
+    .pic-plants {
+        object-fit: cover;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.12);
+    }
+
+    #markerLayer img {
+        border: 3px solid white !important;
+        object-fit: cover;
+
+        border-radius: 50px;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    }
+</style>
+
 <body>
     <div class="dashboard-main-wrapper">
         <?php
@@ -105,7 +124,9 @@ include('../../config/conectDB.php');
             mapTypeId: google.maps.MapTypeId.HYBRID,
             streetViewControl: false
         });
-        seleteLocation()
+
+
+        seleteLocation();
     }
 
     function setMapOnAll(map) {
@@ -141,7 +162,7 @@ include('../../config/conectDB.php');
                 var LatLng = new google.maps.LatLng(lat, lng);
                 for (var j = 0; j < json.length; j++) {
                     if (id == json[j].plot_id) {
-                        data.push("<img src='../../images/plants/" + json[j].icon + "' style='width:50px;height:auto; border: 2px solid #f8f8f8;border-radius: 50%;'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
+                        data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
                     }
                 }
                 var modal = '<div id="content">' +
@@ -173,6 +194,17 @@ include('../../config/conectDB.php');
                     modal: modal,
                     location: LatLng
                 }
+
+                var circle = new google.maps.Circle({
+                    strokeColor: "#00b33c",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#b3ffb3",
+                    fillOpacity: 0.35,
+                    map,
+                    center: LatLng,
+                    radius: (200)
+                });
 
                 info = new google.maps.InfoWindow();
                 marker = new google.maps.Marker(markeroption);
@@ -271,9 +303,10 @@ include('../../config/conectDB.php');
                         var full_name = json[i].firstname + ' ' + json[i].lastname;
                         var LatLng = new google.maps.LatLng(lat, lng);
 
+
                         for (var j = 0; j < json.length; j++) {
                             if (id === json[j].plot_id) {
-                                data.push("<img src='../../images/plants/" + json[j].icon + "'style='width:50px;height:auto; border: 2px solid #f8f8f8;border-radius: 50%;'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
+                                data.push("<img class='pic-plants mt-2' src='../../images/plants/" + json[i].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
                             }
                         }
                         var modal = '<div id="content">' +
@@ -293,8 +326,12 @@ include('../../config/conectDB.php');
                             modal += "<li>" + data[k] + "</li>";
                         }
 
+
+
                         modal += '</div>';
-                        plants !== 'ทั้งหมด' ? icon : icon = 'marker.png';
+                        plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
+                        // plants !== 'ทั้งหมด' ? icon = 'icon.php?icon=' + icon : icon = 'marker.png';
+
 
                         if (icon !== 'marker.png') {
                             var icons = {
@@ -306,12 +343,35 @@ include('../../config/conectDB.php');
                                 url: '../../images/plants/' + icon, // url                                
                             };
                         }
+                        var circle = new google.maps.Circle({
+                            strokeColor: "#00b33c",
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: "#b3ffb3",
+                            fillOpacity: 0.35,
+                            map,
+                            center: LatLng,
+                            radius: (200)
+                        });
+
+
                         var markeroption = {
                             icon: icons,
                             map: map,
                             html: modal,
-                            position: LatLng
+                            position: LatLng,
+                            optimized: false
                         };
+
+                        // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
+                        var myoverlay = new google.maps.OverlayView();
+                        myoverlay.draw = function() {
+                            this.getPanes().markerLayer.id = 'markerLayer';
+                        };
+                        myoverlay.setMap(map);
+
+
+
                         info = new google.maps.InfoWindow();
                         marker = new google.maps.Marker(markeroption);
                         markers.push(marker);

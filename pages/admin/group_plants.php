@@ -220,13 +220,13 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             enableExif: true,
             enableOrientation: true,
             viewport: {
-                width: 200,
-                height: 200,
-                type: 'circle'
+                width: 300,
+                height: 300,
+                type: 'square'
             },
             boundary: {
-                width: 200,
-                height: 200
+                width: 350,
+                height: 350
             }
         });
 

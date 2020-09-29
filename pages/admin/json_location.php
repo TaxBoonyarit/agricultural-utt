@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 $sql = "SELECT 
 ps.plot_id,u.firstname,u.lastname,ps.lat,ps.lon,ps.name,ps.address,ps.area,
 ps.home_area,ps.water_area,ps.farm_area ,ps.unit,
-p.plant_name ,pp.amount,p.unit as p_unit,pg.icon,p.plant_id
+p.plant_name ,pp.amount,p.unit as p_unit,pg.icon,p.plant_id,p.img
 FROM tb_plants p 
 LEFT JOIN tb_plotplants pp ON p.plant_id = pp.plant_id
 LEFT JOIN tb_plots ps ON pp.plot_id = ps.plot_id

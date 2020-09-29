@@ -84,7 +84,7 @@ $user_id = $_SESSION['user_id'];
                                                 $plot_plants = $detail_r['plotplant_id'];
                                                 if ($detail_r['plotplant_id']) {
                                                     $detail_r['img'] ? $img = "<img src='../images/plants/" . $detail_r['img'] . "' alt='Avatar' class='pic-plants'  loading='lazy'  onerror='imgError(this);'> " : $img = "";
-                                                    echo "<ul><li> <a style='font-size:14px' href='plot_plant.php?plot_id=$plot_id#plants_" . $plot_plants . "'>" . $img . " " . $detail_r['plant_name'] . "   " . number_format($detail_r['amount'])  . "  " . $detail_r['unit'] . "</a>
+                                                    echo "<ul><li> <a style='font-size:14px' href='plot_plant.php?plot_id=$plot_id&page=" . $j . "'>" . $img . " " . $detail_r['plant_name'] . "   " . number_format($detail_r['amount'])  . "  " . $detail_r['unit'] . "</a>
                                                     <div class='w3-dropdown-hover w3-right' style='float: right;'>
                                                     <button class='w3-button btn-xs mt-2'><i class='fas fa-ellipsis-v'></i></button>
                                                     <div class='w3-dropdown-content w3-bar-block w3-border ' style='right:0'>
