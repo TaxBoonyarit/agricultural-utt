@@ -90,7 +90,7 @@ include('../config/conectDB.php');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
                                 </div>
-                                <input type="tel" class="form-control" id="tel" name="tel" placeholder="123-45-678" maxlength="10" size="10" required>
+                                <input type="tel" class="form-control" id="tel" name="tel" placeholder="123-456-7890" maxlength="10" size="10" required>
                             </div>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">

@@ -336,24 +336,26 @@ include('../../config/conectDB.php');
 
                         modal += '</div>';
                         plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
-                        // plants !== 'ทั้งหมด' ? icon = 'icon.php?icon=' + icon : icon = 'marker.png';
-
-                        // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
-                        myoverlay = new google.maps.OverlayView();
-                        myoverlay.draw = function() {
-                            this.getPanes().markerLayer.id = 'markerLayer';
-                        };
-                        myoverlay.setMap(map);
-
 
                         if (icon !== 'marker.png') {
+                            // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
+                            myoverlay = new google.maps.OverlayView();
+                            myoverlay.draw = function() {
+                                this.getPanes().markerLayer.id = 'markerLayer';
+                            };
+                            myoverlay.setMap(map);
+
                             var icons = {
                                 url: '../../images/plants/' + icon, // url
                                 scaledSize: new google.maps.Size(40, 40) // scaled size
                             };
-                        } else {
 
-                            myoverlay.setMap(null);
+                        } else {
+                            myoverlay = new google.maps.OverlayView();
+                            myoverlay.draw = function() {
+                                this.getPanes().markerLayer.id = 'markerLayer2';
+                            };
+                            myoverlay.setMap(map);
                             var icons = {
                                 url: '../../images/plants/' + icon, // url                                
                             };

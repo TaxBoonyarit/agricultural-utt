@@ -115,7 +115,7 @@ if (isset($_GET['update_profile'])) {
 <body>
     <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2 col-sm-8 offset-sm-2 mt-2" id="box">
         <?php if (isset($_SESSION['success'])) : ?>
-            <div class="alert alert-success alert-dismissible fade show mt-2 mb-2" role="alert">
+            <div class="alert alert-success alert-dismissible fade show mt-4 mb-2" role="alert">
                 <i class="fas fa-user-check"></i>
                 <?php
                 echo  $_SESSION['success'];
