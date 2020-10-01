@@ -64,7 +64,6 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                 <th class="text-center">สถานนะ</th>
                                                 <th class="text-center">รูปภาพ</th>
                                                 <th></th>
-
                                             </tr>
                                         </thead>
                                         <?php
@@ -82,20 +81,15 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                 foreach ($data_table as $data) {
                                                     $i++;
                                             ?>
-
                                                     <tr>
                                                         <td class="text-center"><?php echo $i; ?></td>
                                                         <td><?php echo $data[1]; ?></td>
                                                         <td><?php echo $data[2]; ?></td>
                                                         <td class="text-center"><?php echo $data[7] ? $data[7] : '-' ?></td>
-
                                                         <td><?php echo substr($data[3], 0, 500), strlen($data[3]) > 500 ? $des = '......' : $des =  '' ?></td>
                                                         <td class="text-center"><?php echo $data[4] === 'active' ? "<span class='badge badge-success'>ใช้งาน</span>" : "<span class='badge badge-danger'>ระงับการใช้งาน</span>"; ?></td>
-
                                                         <td class="text-center"><img src="../../images/plants/<?php echo $data[5] ?>" class="rounded mx-auto d-block" loading="lazy" alt="..." style="height:130px;width:auto"></td>
-
                                                         <td class="text-right">
-
                                                             <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-plantgroup_id="<?php echo $data[6] ?>" data-description="<?php echo $data[3] ?>" data-status="<?php echo $data[4] ?>" data-img="<?php echo $data[5] ?>" data-unit="<?php echo $data[7] ?>">
                                                                 <button type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
                                                             </a>

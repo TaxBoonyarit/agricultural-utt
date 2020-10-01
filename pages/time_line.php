@@ -26,8 +26,6 @@ $result = mysqli_fetch_array($query);
 ?>
 
 <body>
-
-
     <div class="container mb-5">
         <div class="row">
             <div class="col-md-12 col-12  col-lg-12" id="box">
@@ -44,11 +42,9 @@ $result = mysqli_fetch_array($query);
                                 <div class="row">
                                     <div class="col-6">
                                         <p><?php echo $result['title'] ?></p>
-
                                     </div>
                                     <div class="col-6 text-right">
                                         <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
-
                                     </div>
                                 </div>
                                 <div class="row">
@@ -60,7 +56,6 @@ $result = mysqli_fetch_array($query);
                                         echo $result['description'];
                                         ?>
                                     </div>
-
                                 </div>
                             </li>
                     <?php

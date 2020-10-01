@@ -4,7 +4,6 @@ include('../../config/conectDB.php');
 $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 ?>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <body>
     <div class="dashboard-main-wrapper">
@@ -12,36 +11,13 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
         include('layout/header.php');
         include('layout/menu.php');
         ?>
-
+        <div class="loading" id='loader'>Loading&#8230;</div>
         <div class="dashboard-wrapper">
             <div class="container-fluid dashboard-content">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h3 class="text"><i class="fas fa-tree"></i> หมวดหมู่พืช</h3>
                         <hr>
-                        <?php if (isset($_SESSION['success'])) : ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-user-check"></i>
-                                <?php
-                                echo  $_SESSION['success'];
-                                unset($_SESSION['success']);
-                                ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        <?php endif ?>
-                        <?php if (isset($_SESSION['error'])) : ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?php
-                                echo  $_SESSION['error'];
-                                unset($_SESSION['error']);
-                                ?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        <?php endif ?>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card" id="data">
@@ -180,6 +156,9 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
 
 <script type="text/javascript">
+    var loader = document.getElementById('loader');
+    loader.style.display = 'none';
+
     $(document).ready(function() {
         var icon, name, action, reader;
         var id = '';
@@ -268,10 +247,11 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             $('#image').val('');
             $('#messages').hide();
             $('#messages2').hide();
-
         });
 
         $('#btn_delete').on('click', function() {
+            $('#delete').modal('hide');
+            loader.style.display = 'block';
             $.ajax({
                 url: "group_plants_db.php",
                 type: "POST",
@@ -283,13 +263,13 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                 success: function(resposne) {
                     let result = JSON.parse(resposne)
                     if (result.status === 'success') {
-                        // Swal.fire({
-                        //     title: 'สำเร็จ',
-                        //     text: "ลบข้อมูลสำเร็จ",
-                        //     icon: 'success',
-                        //     confirmButtonText: 'ปิด'
-                        // })
-                        $('#delete').modal('hide');
+                        Swal.fire({
+                            title: 'สำเร็จ',
+                            text: "ลบข้อมูลสำเร็จ",
+                            icon: 'success',
+                            confirmButtonText: 'ปิด'
+                        });
+                        loader.style.display = 'none';
                         window.location.replace('group_plants.php');
                     }
                 }
@@ -301,8 +281,10 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             let name = $('#name').val();
             let file = $('#image').val();
             if (name.length === 0) {
+                $('#messages').show();
                 $('#messages').text('**โปรดกรอกข้อมูล***');
             } else if (!file && action == 'insert') {
+                $('#messages2').show();
                 $('#messages2').text('**โปรดเลือกรูปภาพ***');
             } else {
                 resize.croppie('result', {
@@ -311,6 +293,8 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                 }).then(function(img) {
                     var pic = img;
                     !file ? pic = '' : pic;
+                    $('#modal').modal('hide');
+                    loader.style.display = 'block';
                     $.ajax({
                         url: "group_plants_db.php",
                         type: "POST",
@@ -322,35 +306,34 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                             newIcon: pic
                         },
                         success: function(data) {
+                            loader.style.display = 'none';
                             var result = JSON.parse(data);
                             if (result.status === 'success') {
-                                // Swal.fire({
-                                //     title: 'สำเร็จ',
-                                //     text: "บันทึกข้อมูลสำเร็จ",
-                                //     icon: 'success',
-                                //     confirmButtonText: 'ปิด'
-                                // })
-                                // $('#modal').modal('hide');
-
+                                Swal.fire({
+                                    title: 'สำเร็จ',
+                                    text: "บันทึกข้อมูลสำเร็จ",
+                                    icon: 'success',
+                                    confirmButtonText: 'ปิด'
+                                });
                                 window.location.replace('group_plants.php');
                             } else if (result.status === 'error' && result.messages === 'notUpload') {
-                                // Swal.fire({
-                                //     title: 'เกิดข้อผิดพลาด',
-                                //     text: "ไม่สามารถอัพโหลดรูปภาพ",
-                                //     icon: 'error',
-                                //     confirmButtonText: 'ปิด'
-                                // })
-                                window.location.replace('group_plants.php');
-
+                                $('#modal').modal('show');
+                                Swal.fire({
+                                    title: 'เกิดข้อผิดพลาด',
+                                    text: "ไม่สามารถอัพโหลดรูปภาพ",
+                                    icon: 'error',
+                                    confirmButtonText: 'ปิด'
+                                });
                             } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
-                                // Swal.fire({
-                                //     title: 'เกิดข้อผิดพลาด',
-                                //     text: "ชื่อซ้ำกัน",
-                                //     icon: 'error',
-                                //     confirmButtonText: 'ปิด'
-                                // })
-                                window.location.replace('group_plants.php');
-
+                                $('#modal').modal('show');
+                                Swal.fire({
+                                    title: 'เกิดข้อผิดพลาด',
+                                    text: "ชื่อซ้ำกัน",
+                                    icon: 'error',
+                                    confirmButtonText: 'ปิด'
+                                });
+                                $('#messages').show();
+                                $('#messages').text('**ชื่อซ้ำกัน***');
                             }
                         }
                     });

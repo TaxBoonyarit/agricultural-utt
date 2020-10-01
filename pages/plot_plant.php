@@ -181,20 +181,23 @@ function thai_date_fullmonth($time)
                 $page == $total_page ? $text2 = 'disabled' : $text2 = '';
                 $page !== $total_page ? $next_page = $page + 1 : $next_page = $page;
 
+
                 echo '<nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item ' . $text . '">
-                    <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $back_page . '" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
-                    </li>';
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item ' . $text . '">
+                        <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $back_page . '" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
+                        </li>';
                 for ($p = 1; $p <= $total_page; $p++) {
                     echo '<li class="page-item"><a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $p . '">' . $p . '</a></li>';
                 }
                 echo '
-                    <li class="page-item ' . $text2 . '">
-                    <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $next_page . '">ถัดไป</a>
-                    </li>
-                </ul>
-                </nav>';
+                        <li class="page-item ' . $text2 . '">
+                        <a class="page-link" href="plot_plant.php?plot_id=' . $plot_id . '&page=' . $next_page . '">ถัดไป</a>
+                        </li>
+                    </ul>
+                    </nav>';
+
+
 
 
             else :

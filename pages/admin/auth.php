@@ -37,6 +37,9 @@ if (!isset($_SESSION['email']) || $_SESSION['status'] !== 'admin') {
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
+    <!-- sweet alert -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
 
 
 

@@ -12,7 +12,7 @@
                             <a class="nav-link" href="dashboard1.php"><i class="fas fa-chart-bar"></i> Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="dashboard2.php"><i class="fas fa-map"></i> รายงานข้อมูลแผนที่</a>
+                            <a class="nav-link" href="maps.php"><i class="fas fa-map"></i> รายงานข้อมูลแผนที่</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="users.php"><i class="fas fa-user"></i> ข้อมูลผู้ใช้งาน</a>
