@@ -202,7 +202,7 @@ include('../../config/conectDB.php');
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
                     fillColor: "#b3ffb3",
-                    fillOpacity: 0.3,
+                    fillOpacity: 0.2,
                     map,
                     center: LatLng,
                     radius: (100)
@@ -362,7 +362,7 @@ include('../../config/conectDB.php');
                             strokeOpacity: 0.8,
                             strokeWeight: 2,
                             fillColor: "#b3ffb3",
-                            fillOpacity: 0.3,
+                            fillOpacity: 0.2,
                             map,
                             center: LatLng,
                             radius: (100)

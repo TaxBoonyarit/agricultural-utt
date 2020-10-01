@@ -176,13 +176,12 @@ $result = mysqli_fetch_assoc($query);
             content: contenString
         });
 
-
         var circle = new google.maps.Circle({
             strokeColor: "#00b33c",
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: "#b3ffb3",
-            fillOpacity: 0.35,
+            fillOpacity: 0.2,
             map,
             center: new google.maps.LatLng(lat, lon),
             radius: (100)
