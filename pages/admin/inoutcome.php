@@ -265,7 +265,7 @@ include('../../config/conectDB.php');
                             });
                             setTimeout(() => {
                                 window.location.replace('inoutcome.php');
-                            }, 2000)
+                            }, 1500)
                         } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
                             $('#modal').modal('show');
                             $('#alert_name').text('***ชื่อซ้ำกัน****');
