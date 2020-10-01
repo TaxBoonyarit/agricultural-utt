@@ -450,9 +450,9 @@ $data_outcome = $result;
                                 AND p.plant_id = '$platnt_id'
                                 GROUP BY i.inoutcome_id
                                 ORDER BY ps.user_id";
-
                                 $query = mysqli_query($dbcon, $sql);
                                 $result = mysqli_fetch_all($query);
+                                // print_r($result);
                                 $sum_outcome = 0;
                                 $sum_tatol = 0;
 
@@ -473,7 +473,7 @@ $data_outcome = $result;
                                     } else {
                                         $sum_tatol = 0;
                                         $sum_outcome = 0;
-                                        $data_set[$count_user] = array('outcome' => ($sum_outcome + $r[1]), 'total' => $sum_tatol);
+                                        $data_set[$count_user] = array('outcome' => ($sum_outcome + $r[1]), 'total' => $sum_tatol + $r[2]);
                                         $sum_outcome = $r[1];
                                         $sum_tatol = $r[2];
                                     }
@@ -483,6 +483,7 @@ $data_outcome = $result;
                                 }
                                 $avg_set = [];
                                 $j = 0;
+
                                 foreach ($data_set as $d) {
                                     $avg_set[$j] = array('amount_unit' => ($d['outcome']  /  $d['total']));
                                     $j++;
