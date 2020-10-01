@@ -331,33 +331,36 @@ include('../../config/conectDB.php');
                             modal += "<li>" + data[k] + "</li>";
                         }
 
+                        myoverlay = new google.maps.OverlayView();                  
 
 
                         modal += '</div>';
                         plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
 
-                        if (icon !== 'marker.png') {
-                            // I create an OverlayView, and set it to add the "markerLayer" class to the markerLayer DIV
-                            myoverlay = new google.maps.OverlayView();
-                            myoverlay.draw = function() {
-                                this.getPanes().markerLayer.id = 'markerLayer';
-                            };
-                          
-
+                        if (icon !== 'marker.png') {                            
                             var icons = {
                                 url: '../../images/plants/' + icon, // url
                                 scaledSize: new google.maps.Size(40, 40) // scaled size
                             };
-
-                        } else {
-                            myoverlay = new google.maps.OverlayView();
                             myoverlay.draw = function() {
-                                this.getPanes().markerLayer.id = 'markerLayer2';
+                                this.getPanes().markerLayer.id = 'markerLayer';
                             };
+                        } else {
                             var icons = {
                                 url: '../../images/plants/' + icon, // url                                
                             };
+                            myoverlay.draw = function() {
+                                this.getPanes().markerLayer.id = 'markerLayer2';
+                            };
                         }
+                        var markeroption = {
+                            icon: icons,
+                            map: map,
+                            html: modal,
+                            position: LatLng,
+                            optimized: false
+                        };
+
                         var circle = new google.maps.Circle({
                             strokeColor: "#00b33c",
                             strokeOpacity: 0.8,
@@ -368,15 +371,7 @@ include('../../config/conectDB.php');
                             center: LatLng,
                             radius: (100)
                         });
-
-
-                        var markeroption = {
-                            icon: icons,
-                            map: map,
-                            html: modal,
-                            position: LatLng,
-                            optimized: false
-                        };
+                     
                         myoverlay.setMap(map);
 
                         info = new google.maps.InfoWindow();
