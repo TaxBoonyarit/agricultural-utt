@@ -3,11 +3,11 @@ include('../../config/conectDB.php');
 header('Content-Type: application/json');
 $plants = mysqli_real_escape_string($dbcon, $_POST['plants']);
 $amphure = mysqli_real_escape_string($dbcon, $_POST['amphure']);
-$user = mysqli_real_escape_string($dbcon, $_POST['user']);
+$user = $_POST['user'];
 
 $plants == "ทั้งหมด" ? $plants = null : $plants = "AND pg.name LIKE '%{$plants}%'";
 $amphure == "ทั้งหมด" ? $amphure = null : $amphure = "AND u.amphure LIKE '%{$amphure}%'";
-$user  == "ทั้งหมด" ? $user = null : $user = "AND u.firstname LIKE '%{$user}%'";
+$user  == "ทั้งหมด" ? $user = null : $user = "AND CONCAT(u.firstname,' ',u.lastname ) LIKE '%$user%' ";
 
 $sql = "SELECT 
 ps.plot_id,u.firstname,u.lastname,ps.lat,ps.lon,ps.name,ps.address,ps.area,

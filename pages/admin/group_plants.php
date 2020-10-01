@@ -79,7 +79,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-trash-alt"></i> คุณต้องการลบข้อมูล?</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close reset" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -101,7 +101,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="title"></h5>
-                                <button type="button" class="close" id="reset" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close reset" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -189,6 +189,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
 
 
         $('#insert').click(function() {
+            resize2.hide();
             action = 'insert';
             $('#title').html('<i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่พืช');
             $('#per').hide();
@@ -208,7 +209,6 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                 height: 350
             }
         });
-
 
         $('#image').on('change', function() {
             reader = new FileReader();

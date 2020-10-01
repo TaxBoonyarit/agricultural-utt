@@ -222,7 +222,6 @@ include('../../config/conectDB.php');
     }
 
     function search() {
-
         var plants = $('#plants').val();
         var user = $('#user').val();
         user ? '' : user = 'ทั้งหมด';
@@ -292,8 +291,16 @@ include('../../config/conectDB.php');
                         confirmButtonText: 'ปิด',
                         timer: 3000
                     })
+                    var list_icon = [];
+                    var id_dup = '';
+                    for (var j = 0; j < json.length; j++) {
+                        id_dup = json[j].plot_id;
+                        if (id_dup === json[j].plot_id) {
+                            list_icon.push("<img class='pic-plants mt-2' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
+                        }
+                    }
+
                     for (var i = 0; i < json.length; i++) {
-                        var data = [];
                         var id = json[i].plot_id;
                         var lat = json[i].lat;
                         var lng = json[i].lon;
@@ -308,12 +315,6 @@ include('../../config/conectDB.php');
                         var full_name = json[i].firstname + ' ' + json[i].lastname;
                         var LatLng = new google.maps.LatLng(lat, lng);
 
-
-                        for (var j = 0; j < json.length; j++) {
-                            if (id === json[j].plot_id) {
-                                data.push("<img class='pic-plants mt-2' src='../../images/plants/" + json[i].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
-                            }
-                        }
                         var modal = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
@@ -327,17 +328,14 @@ include('../../config/conectDB.php');
                             '<span style="color:#33d;"> การเกษตร :  </span> ' + Math.trunc(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
                             '<hr>' +
                             '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
-                        for (var k = 0; k < data.length; k++) {
-                            modal += "<li>" + data[k] + "</li>";
-                        }
+                        list_icon.forEach((v) => modal += "<li>" + v + "</li>");
 
-                        myoverlay = new google.maps.OverlayView();                  
-
+                        myoverlay = new google.maps.OverlayView();
 
                         modal += '</div>';
                         plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
 
-                        if (icon !== 'marker.png') {                            
+                        if (icon !== 'marker.png') {
                             var icons = {
                                 url: '../../images/plants/' + icon, // url
                                 scaledSize: new google.maps.Size(40, 40) // scaled size
@@ -371,7 +369,7 @@ include('../../config/conectDB.php');
                             center: LatLng,
                             radius: (100)
                         });
-                     
+
                         myoverlay.setMap(map);
 
                         info = new google.maps.InfoWindow();
