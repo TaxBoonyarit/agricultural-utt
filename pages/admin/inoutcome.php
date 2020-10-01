@@ -229,16 +229,14 @@ include('../../config/conectDB.php');
                     var result = JSON.parse(res);
                     loader.style.display = 'none';
                     if (result.status === 'success') {
-                     
+
                         Swal.fire({
                             title: 'สำเร็จ',
                             text: "ลบข้อมูลสำเร็จ",
                             icon: 'success',
-                            confirmButtonText: 'ปิด'
+                            timer: 3000
                         });
-                        setTimeout(() => {
-                        window.location.replace('inoutcome.php');                            
-                        }, 2000);
+                        window.location.replace('inoutcome.php');
                     }
                 }
             });
@@ -266,7 +264,7 @@ include('../../config/conectDB.php');
                                 title: 'สำเร็จ',
                                 text: "ทำรายการสำเร็จ",
                                 icon: 'success',
-                                confirmButtonText: 'ปิด'
+                                timer: 3000
                             });
                             window.location.replace('inoutcome.php');
                         } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
@@ -276,7 +274,7 @@ include('../../config/conectDB.php');
                                 title: 'เกิดข้อผิดพลาด',
                                 text: "ชื่อซ้ำกัน",
                                 icon: 'error',
-                                confirmButtonText: 'ปิด'
+                                timer: 3000
                             });
                         }
                     }
