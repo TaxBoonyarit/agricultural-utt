@@ -22,8 +22,6 @@ include('../../config/conectDB.php');
         border-radius: 50px;
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
     }
-
-    #markerLayer2 {}
 </style>
 
 <body>
@@ -204,7 +202,7 @@ include('../../config/conectDB.php');
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
                     fillColor: "#b3ffb3",
-                    fillOpacity: 0.35,
+                    fillOpacity: 0.3,
                     map,
                     center: LatLng,
                     radius: (100)
@@ -348,7 +346,7 @@ include('../../config/conectDB.php');
                                 url: '../../images/plants/' + icon, // url                                
                             };
                             myoverlay.draw = function() {
-                                this.getPanes().markerLayer.id = 'markerLayer2';
+                                this.getPanes().markerLayer.id = null;
                             };
                         }
                         var markeroption = {
@@ -364,7 +362,7 @@ include('../../config/conectDB.php');
                             strokeOpacity: 0.8,
                             strokeWeight: 2,
                             fillColor: "#b3ffb3",
-                            fillOpacity: 0.35,
+                            fillOpacity: 0.3,
                             map,
                             center: LatLng,
                             radius: (100)
