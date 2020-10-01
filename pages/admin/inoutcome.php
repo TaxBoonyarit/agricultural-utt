@@ -264,9 +264,11 @@ include('../../config/conectDB.php');
                                 title: 'สำเร็จ',
                                 text: "ทำรายการสำเร็จ",
                                 icon: 'success',
-                                timer: 3000
                             });
-                            window.location.replace('inoutcome.php');
+                            setTimeout(() => {
+                                window.location.replace('inoutcome.php');
+
+                            }, 3000)
                         } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
                             $('#modal').modal('show');
                             $('#alert_name').text('***ชื่อซ้ำกัน****');

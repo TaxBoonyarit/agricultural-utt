@@ -4,7 +4,7 @@ include('../../config/conectDB.php');
 
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $id = isset($_POST['id']) ? $_POST['id'] : '';
-$name = isset($_POST['name']) ? $_POST['name'] : '';
+$name = isset($_POST['name']) ? mysqli_real_escape_string($dbcon, $_POST['name']) : '';
 $type = isset($_POST['data_type']) ? $_POST['data_type'] : '';
 $reponse = [];
 
