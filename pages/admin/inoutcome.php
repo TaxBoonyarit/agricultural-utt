@@ -234,7 +234,7 @@ include('../../config/conectDB.php');
                             text: "ลบข้อมูลสำเร็จ",
                             icon: 'success',
                             confirmButtonText: 'ปิด'
-                        });
+                        },3000);
                         window.location.replace('inoutcome.php');
                     }
                 }
