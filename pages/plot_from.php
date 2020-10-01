@@ -176,16 +176,20 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                         confirmButtonText: 'ปิด',
                         timer: 3000
                     })
-                    window.location.reload('plot_from.php?plot_id=' + result.id);
+                    setTimeout(() => {
+                        window.location.reload('plot_from.php?plot_id=' + result.id);
+                    }, 1500)
                 } else if (result.status == 'register_success') {
                     Swal.fire({
                         title: 'สำเร็จ',
                         text: 'ลงทะเบียนสำเร็จ',
                         icon: 'success',
                         confirmButtonText: 'ปิด',
-                        timer: 3000
                     })
-                    window.location.replace('plot.php');
+                    setTimeout(() => {
+                        window.location.replace('plot.php');
+                    }, 1500)
+
                 } else if (result.status == "name_duplicate") {
                     $('#register').prop("disabled", false);
                     $('#register').html('<i class="fas fa-sign-in-alt"></i> ' + result.text);
@@ -194,7 +198,6 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                         text: 'ชื่อซ้ำกัน',
                         icon: 'info',
                         confirmButtonText: 'ปิด',
-                        timer: 3000
                     })
                 }
             },

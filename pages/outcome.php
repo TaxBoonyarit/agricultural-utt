@@ -144,18 +144,21 @@ if ($startdate) {
                         text: 'เพิ่มรายจ่ายสำเร็จ',
                         icon: 'success',
                         confirmButtonText: 'ปิด',
-                        timer: 3000
                     })
-                    window.location.replace('inoutcome_detail.php?plot_id=' + result.plot_id + '&plotplant_id=' + result.plotplant_id);
+                    setTimeout(() => {
+                        window.location.replace('inoutcome_detail.php?plot_id=' + result.plot_id + '&plotplant_id=' + result.plotplant_id);
+
+                    }, 1500)
                 } else if (result.status == 'success' && result.messages == 'update') {
                     Swal.fire({
                         title: 'สำเร็จ',
                         text: 'อัพเดตข้อมูลสำเร็จ',
                         icon: 'success',
                         confirmButtonText: 'ปิด',
-                        timer: 3000
                     })
-                    window.location.replace('inoutcome_detail.php?plot_id=' + result.plot_id + '&plotplant_id=' + result.plotplant_id);
+                    setTimeout(() => {
+                        window.location.replace('inoutcome_detail.php?plot_id=' + result.plot_id + '&plotplant_id=' + result.plotplant_id);
+                    }, 1500)
                 }
             },
             cache: false,

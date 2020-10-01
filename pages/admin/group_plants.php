@@ -270,7 +270,9 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                             confirmButtonText: 'ปิด'
                         });
                         loader.style.display = 'none';
-                        window.location.replace('group_plants.php');
+                        setTimeout(() => {
+                            window.location.replace('group_plants.php');
+                        }, 1500)
                     }
                 }
             });
@@ -315,7 +317,10 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                     icon: 'success',
                                     confirmButtonText: 'ปิด'
                                 });
-                                window.location.replace('group_plants.php');
+                                setTimeout(() => {
+                                    window.location.replace('group_plants.php');
+
+                                }, 1500)
                             } else if (result.status === 'error' && result.messages === 'notUpload') {
                                 $('#modal').modal('show');
                                 Swal.fire({

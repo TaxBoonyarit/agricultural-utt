@@ -146,9 +146,11 @@ $status = $plant_id ? "update" : "register";
                         text: 'เพิ่มพืชเพาะปลูกสำเร็จ',
                         icon: 'success',
                         confirmButtonText: 'ปิด',
-                        timer: 3000
+
                     })
-                    window.location.replace('plot_plant.php?plot_id=' + result.id);
+                    setTimeout(() => {
+                        window.location.replace('plot_plant.php?plot_id=' + result.id);
+                    }, 1500)
                 } else if (result.status == 'success' && result.messages == 'update') {
                     Swal.fire({
                         title: 'สำเร็จ',
@@ -157,7 +159,9 @@ $status = $plant_id ? "update" : "register";
                         confirmButtonText: 'ปิด',
                         timer: 3000
                     })
-                    window.location.replace('plot_plant.php?plot_id=' + result.id);
+                    setTimeout(() => {
+                        window.location.replace('plot_plant.php?plot_id=' + result.id);
+                    }, 1500)
                 }
 
             },
