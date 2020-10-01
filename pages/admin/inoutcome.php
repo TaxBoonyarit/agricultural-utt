@@ -229,16 +229,16 @@ include('../../config/conectDB.php');
                     var result = JSON.parse(res);
                     loader.style.display = 'none';
                     if (result.status === 'success') {
-                        setTimeout(() => {
-                            Swal.fire({
+                     
+                        Swal.fire({
                             title: 'สำเร็จ',
                             text: "ลบข้อมูลสำเร็จ",
                             icon: 'success',
                             confirmButtonText: 'ปิด'
                         });
+                        setTimeout(() => {
+                        window.location.replace('inoutcome.php');                            
                         }, 2000);
-                    
-                        window.location.replace('inoutcome.php');
                     }
                 }
             });
