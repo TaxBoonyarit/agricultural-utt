@@ -229,12 +229,10 @@ include('../../config/conectDB.php');
                     var result = JSON.parse(res);
                     loader.style.display = 'none';
                     if (result.status === 'success') {
-
                         Swal.fire({
                             title: 'สำเร็จ',
                             text: "ลบข้อมูลสำเร็จ",
                             icon: 'success',
-                            timer: 3000
                         });
                         window.location.replace('inoutcome.php');
                     }
@@ -267,8 +265,7 @@ include('../../config/conectDB.php');
                             });
                             setTimeout(() => {
                                 window.location.replace('inoutcome.php');
-
-                            }, 3000)
+                            }, 2000)
                         } else if (result.status === 'error' && result.messages === 'nameDuplicate') {
                             $('#modal').modal('show');
                             $('#alert_name').text('***ชื่อซ้ำกัน****');
@@ -276,7 +273,6 @@ include('../../config/conectDB.php');
                                 title: 'เกิดข้อผิดพลาด',
                                 text: "ชื่อซ้ำกัน",
                                 icon: 'error',
-                                timer: 3000
                             });
                         }
                     }
