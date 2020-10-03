@@ -46,17 +46,14 @@ if ($query->num_rows > 0) {
                     </div>';
         echo $i == 1 ?  $header : '';
 
-        echo $output = '<div class="col">  
-             
+        echo $output = '<div class="col">               
         <div class="col text-right mt-3 ">
         <small class="text-primary" > <i class="fas fa-clock"></i> ' . thai_date_short(strtotime($result['start_date'])) . ' ถึง ' . thai_date_short(strtotime($result['end_date'])) . '</small>
         </div>
-        <div class="row">     
-        
+        <div class="row">             
         <div class="col-12">
         <a href="pages/time_line.php?plantgroup_id=' . $result['plantgroup_id'] . '&plants_step_id=' . $result['plants_step_id'] . '&plot_id=' . $result['plot_id'] . '" style="color: inherit;">
-        <p><span class="badge badge-success">พืช ' . $result['name'] . '</span> ' . $result['title'] . '</p>
-             
+        <p><span class="badge badge-success">พืช ' . $result['name'] . '</span> ' . $result['title'] . '</p>             
         </a>  
         </div>
         </div>

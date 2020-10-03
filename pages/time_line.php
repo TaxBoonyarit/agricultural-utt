@@ -41,8 +41,9 @@ $result = mysqli_fetch_array($query);
                         while ($result = mysqli_fetch_array($query)) {
                             $plants_step_id === $result['plants_step_id'] ? $color = "#d0ffb1" : $color = '';
                     ?>
-                            <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
+
                             <li id="<?php echo $result['plants_step_id'] ?>" style="background : <?php echo $color ?>;">
+                                <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
                                 <div class="row">
                                     <div class="col-6">
                                         <p><?php echo $result['title'] ?></p>
