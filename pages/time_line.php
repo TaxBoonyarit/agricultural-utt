@@ -83,4 +83,10 @@ $result = mysqli_fetch_array($query);
         image.src = "../images/plants/default.jpg";
         return true;
     }
+    $('.scrollup').click(function() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 600);
+        return false;
+    });
 </script>

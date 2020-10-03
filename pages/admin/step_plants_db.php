@@ -85,7 +85,9 @@ if ($action == "update") {
         exit();
     } else {
         if ($_FILES['img']['size']) {
-            @unlink('../../images/step_plants/' . $img);
+            if ($img) {
+                @unlink('../../images/step_plants/' . $img);
+            }
             //upload image
             $ext = pathinfo(basename($_FILES['img']['name']), PATHINFO_EXTENSION);
             $new_image_name = 'step_plants' . uniqid() . "." . $ext;
