@@ -85,7 +85,6 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                         </div>
                         <div class="modal-body text-center">
                             <h3 id="delName"></h3>
-
                         </div>
                         <div class="modal-footer">
                             <a class="cls"> <button type="button" class="btn btn-rounded btn-primary" data-dismiss="modal">ยกเลิก</button></a>
@@ -186,10 +185,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             }
         });
 
-
-
         $('#insert').click(function() {
-            resize2.hide();
             action = 'insert';
             $('#title').html('<i class="fas fa-plus-circle"></i> เพิ่มหมวดหมู่พืช');
             $('#per').hide();
@@ -200,13 +196,13 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
             enableExif: true,
             enableOrientation: true,
             viewport: {
-                width: 300,
-                height: 300,
+                width: 200,
+                height: 200,
                 type: 'square'
             },
             boundary: {
-                width: 350,
-                height: 350
+                width: 300,
+                height: 300
             }
         });
 
@@ -243,6 +239,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
         $('.reset').on('click', function() {
             id = '';
             action = '';
+            $('#upload-demo').attr('src', '');
             $('#name').val('');
             $('#image').val('');
             $('#messages').hide();
@@ -333,7 +330,7 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                 $('#modal').modal('show');
                                 Swal.fire({
                                     title: 'เกิดข้อผิดพลาด',
-                                    text: "ชื่อซ้ำกัน",
+                                    text: "ชื่อพืชซ้ำกัน",
                                     icon: 'error',
                                     confirmButtonText: 'ปิด'
                                 });

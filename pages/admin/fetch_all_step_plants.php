@@ -62,7 +62,7 @@ if ($result->num_rows > 0) {
             <li> <button  
             data-id = "' . $row['plants_step_id'] . '"
             data-name = "' . $row['title'] . '"
-            class="dropdown-item del" type="button" ><i class="fas fa-trash-alt"></i> ลบ</button> </li>
+            class="dropdown-item delete" type="button" ><i class="fas fa-trash-alt"></i> ลบ</button> </li>
         </ul>
     </div></h4>
         <p class="card-text">' . $row['description'] . '</p>

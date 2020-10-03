@@ -2,10 +2,9 @@
 session_start();
 include('../../config/conectDB.php');
 
-$register = isset($_POST['register']) ? $_POST['register'] : '';
-$update = isset($_POST['update']) ? $_POST['update'] : '';
-$delete = isset($_POST['delstatus']) ? $_POST['delstatus'] : '';
-if ($register) {
+$action = isset($_POST['action']) ? $_POST['action'] : '';
+$reponse  = [];
+if ($action == 'register') {
     $s_d =  $_POST['start_date'];
     $s = str_replace('/', '-', $s_d);
     $start_date = date('Y-m-d', strtotime($s));
@@ -16,15 +15,15 @@ if ($register) {
 
     $plantgroup_id  = $_POST['plantgroup'];
     $title = $_POST['title'];
-    $description = $_POST['description'];
+    $description = $_POST['content'];
     $img = '';
 
     //check name 
-    $check = "SELECT * FROM tb_plants_step WHERE title = '$title' AND plants_step_id='$plantgroup_id'";
+    $check = "SELECT * FROM tb_plants_step WHERE title = '$title' AND plantgroup_id='$plantgroup_id'";
     $check_name = mysqli_query($dbcon, $check);
     if ($check_name->num_rows > 0) {
-        $_SESSION['error'] = "ชื่อรายการซ้ำ '$title'";
-        header('location: step_plants.php');
+        $reponse = array('status' => 'error', 'messages' => 'nameDuplicate');
+        echo json_encode($reponse);
         exit();
     } else {
         if ($_FILES['img']['size']) {
@@ -35,10 +34,9 @@ if ($register) {
             $upload_path = $image_path . $new_image_name;
             //uploading picture
             $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
-            echo $success;
             if (!$success) {
-                $_SESSION['error'] = "ไม่สามารถอัพโหลดรูปได้";
-                header('location: step_plants.php');
+                $reponse = array('status' => 'error', 'messages' => 'notUpload');
+                echo json_encode($reponse);
                 exit();
             }
             $img = $new_image_name;
@@ -46,8 +44,8 @@ if ($register) {
             VALUES ('$plantgroup_id','$title','$description','$start_date','$end_date','$img')";
             $result = mysqli_query($dbcon, $sql);
             if ($result) {
-                $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
-                header('location: step_plants.php');
+                $reponse = array('status' => 'success', 'messages' => '');
+                echo json_encode($reponse);
                 exit();
             }
         } else {
@@ -55,20 +53,20 @@ if ($register) {
             VALUES ('$plantgroup_id','$title','$description','$start_date','$end_date','$img')";
             $result = mysqli_query($dbcon, $sql);
             if ($result) {
-                $_SESSION['success'] = "บันทึกข้อมูลสำเร็จ";
-                header('location: step_plants.php');
+                $reponse = array('status' => 'success', 'messages' => '');
+                echo json_encode($reponse);
                 exit();
             }
         }
     }
 }
 
-if ($update) {
+if ($action == "update") {
     $id = $_POST['id'];
-    $img = $_POST['eimg'];
+    $img = isset($_POST['eimg']) ? $_POST['eimg'] : '';
     $plantgroup_id  = $_POST['plantgroup'];
     $title = $_POST['title'];
-    $description = $_POST['description'];
+    $description = $_POST['content'];
 
     $s_d =  $_POST['start_date'];
     $s = str_replace('/', '-', $s_d);
@@ -82,8 +80,8 @@ if ($update) {
     $check = "SELECT * FROM tb_plants_step WHERE title = '$title' AND NOT plants_step_id='$id'";
     $check_name = mysqli_query($dbcon, $check);
     if ($check_name->num_rows > 0) {
-        $_SESSION['error'] = "ชื่อรายการซ้ำ '$title'";
-        header('location: step_plants.php');
+        $reponse = array('status' => 'error', 'messages' => 'notUpload');
+        echo json_encode($reponse);
         exit();
     } else {
         if ($_FILES['img']['size']) {
@@ -97,8 +95,8 @@ if ($update) {
             //uploading picture
             $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
             if (!$success) {
-                $_SESSION['error'] = "ไม่สามารถอัพโหลดรูปได้";
-                header('location: step_plants.php');
+                $reponse = array('status' => 'success', 'messages' => '');
+                echo json_encode($reponse);
                 exit();
             }
             $img = $new_image_name;
@@ -106,26 +104,24 @@ if ($update) {
         $sql = "UPDATE tb_plants_step SET plantgroup_id='$plantgroup_id',title='$title',description='$description',start_date='$start_date',end_date='$end_date',img='$img'  WHERE plants_step_id='$id'";
         $result = mysqli_query($dbcon, $sql);
         if ($result) {
-            $_SESSION['success'] = "อัพเดตข้อมูลสำเร็จ";
-            header('location: step_plants.php');
+            $reponse = array('status' => 'success', 'messages' => '');
+            echo json_encode($reponse);
             exit();
         }
     }
 }
 
-if ($delete) {
-    $id = $_POST['delid'];
-    $find_img = "SELECT img FROM tb_plants_step WHERE  plants_step_id = '$id'";
-    $query = mysqli_query($dbcon, $find_img);
-    $result_img = mysqli_fetch_assoc($query);
-    if ($result_img['img']) {
-        @unlink('../../images/step_plants/' . $result_img['img']);
+if ($action == 'delete') {
+    $id = $_POST['id'];
+    $img = isset($_POST['img']) ? $_POST['img'] : '';
+    if ($img) {
+        @unlink('../../images/step_plants/' . $img);
     }
     $sql = "DELETE FROM tb_plants_step WHERE plants_step_id = '$id'";
     $result  = mysqli_query($dbcon, $sql);
     if ($result) {
-        $_SESSION['success'] = "ลบข้อมูลสำเร็จ";
-        header('location: step_plants.php');
+        $reponse = array('status' => 'success', 'messages' => '');
+        echo json_encode($reponse);
         exit();
     }
 }

@@ -34,8 +34,6 @@ if ($result->num_rows > 0) {
             width: 100%;
             overflow: hidden;                  
             "> ';
-
-
     $output2 = '   
         <div class="card" style =" position: relative;">
   <div class="row no-gutters">
@@ -62,6 +60,7 @@ if ($result->num_rows > 0) {
             <li> <button  
             data-id = "' . $row['plants_step_id'] . '"
             data-name = "' . $row['title'] . '"
+            data-img = "' . $row['img'] . '"
             class="dropdown-item del" type="button" ><i class="fas fa-trash-alt"></i> ลบ</button> </li>
         </ul>
     </div></h4>
@@ -71,7 +70,6 @@ if ($result->num_rows > 0) {
   </div>
 </div>
         ';
-
     echo $output2;
   }
 } else {

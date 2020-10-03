@@ -311,7 +311,6 @@ include('../../config/conectDB.php');
                                 data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
                             }
                         }
-                        console.log(data);
                         var modal = '<div id="content">' +
                             '<div id="siteNotice">' +
                             '</div>' +
