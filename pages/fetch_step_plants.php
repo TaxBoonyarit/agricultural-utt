@@ -6,21 +6,22 @@ include('../config/conectDB.php');
 $firstday = (date("Y") + 543) . "-" . date("n") . "-" .  date("01");
 // Last day of the month.
 $lastday =   (date("Y") + 543) . "-" . date("n") . "-" .  date("t");
+$today =  (date("Y") + 543) . "-" . date("n") . "-" . date("d");
 
 $id  = $_REQUEST['id'];
 
-$sql = "
-SELECT * FROM tb_users u 
-                                                    LEFT JOIN tb_plots p ON u.id = p.user_id
-                                                    LEFT JOIN tb_plotplants pp ON p.plot_id = pp.plot_id 
-                                                    LEFT JOIN tb_plants pl ON pp.plant_id = pl.plant_id
-                                                    LEFT JOIN tb_plants_group pg ON pl.plantgroup_id = pg.plantgroup_id
-                                                    LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
-                                                    WHERE p.`status` ='1' AND u.id = '$id' AND pp.`status` = 'active'
-                                                    AND ps.start_date >= CAST('$firstday' AS DATE)  
-                                                    OR ps.end_date <= CAST('$lastday' AS DATE)    
-                                                    GROUP BY ps.plantgroup_id
-                                                    ORDER BY ps.start_date
+$sql = "SELECT * FROM tb_users u 
+LEFT JOIN tb_plots p ON u.id = p.user_id
+LEFT JOIN tb_plotplants pp ON p.plot_id = pp.plot_id 
+LEFT JOIN tb_plants pl ON pp.plant_id = pl.plant_id
+LEFT JOIN tb_plants_group pg ON pl.plantgroup_id = pg.plantgroup_id
+LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
+WHERE p.`status` ='1' AND u.id = '$id' AND pp.`status` = 'active'
+AND '$today'
+BETWEEN ps.start_date
+AND ps.end_date
+GROUP BY ps.plantgroup_id
+ORDER BY ps.start_date
 ";
 
 $query = mysqli_query($dbcon, $sql);

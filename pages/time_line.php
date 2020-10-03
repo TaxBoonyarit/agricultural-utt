@@ -25,6 +25,9 @@ $query = mysqli_query($dbcon, $sql);
 $result = mysqli_fetch_array($query);
 ?>
 
+<!-- ajax -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <body>
     <div class="container mb-5">
         <div class="row">
@@ -38,13 +41,11 @@ $result = mysqli_fetch_array($query);
                         while ($result = mysqli_fetch_array($query)) {
                             $plants_step_id === $result['plants_step_id'] ? $color = "#d0ffb1" : $color = '';
                     ?>
+                            <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
                             <li id="<?php echo $result['plants_step_id'] ?>" style="background : <?php echo $color ?>;">
                                 <div class="row">
                                     <div class="col-6">
                                         <p><?php echo $result['title'] ?></p>
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
                                     </div>
                                 </div>
                                 <div class="row">

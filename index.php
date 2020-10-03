@@ -161,13 +161,13 @@ if (isset($_GET['update_profile'])) {
                                                 LEFT JOIN tb_plants_group pg ON pl.plantgroup_id = pg.plantgroup_id
                                                 LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
                                                 WHERE p.`status` ='1' AND u.id = '$user_id' AND pp.`status` = 'active'
-                                                AND DATE_FORMAT('$today','%m-%d')
-                                                BETWEEN DATE_FORMAT(ps.start_date,'%m-%d') 
-                                                AND DATE_FORMAT(ps.end_date,'%m-%d')
+                                                AND '$today'
+                                                BETWEEN ps.start_date
+                                                AND ps.end_date
                                                 GROUP BY ps.plantgroup_id
                                                 ORDER BY ps.start_date";
                                                 $q_noti = mysqli_query($dbcon, $s_noti);
-                                                $notification = isset($q_noti->num_rows) ? $q_noti->num_rows : 0;
+                                                $notification = isset($q_noti->num_rows) > 0 ? $q_noti->num_rows : 0;
                                                 ?>
                                                 <div class="dropdown" style="float: right;">
                                                     <?php if ($notification !== 0) : ?>
