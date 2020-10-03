@@ -32,7 +32,7 @@ $result = mysqli_fetch_array($query);
     <div class="container mb-5">
         <div class="row">
             <div class="col-md-12 col-12  col-lg-12" id="box">
-                <h5 class="text-center"> <i class="fas fa-lightbulb"></i> แนะนำช่วงเวลาปลูก <?php echo $result['name'] ?> </h5>
+                <h5 class="text-center"> <i class="fas fa-lightbulb"></i> แนะนำช่วงเวลาปลูกหรือดูแล <?php echo $result['name'] ?> </h5>
                 <ul class="timeline">
                     <?php
                     $sql = "SELECT * FROM tb_plants_step WHERE plantgroup_id='$plantgroup_id'";

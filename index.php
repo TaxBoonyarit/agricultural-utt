@@ -28,7 +28,7 @@ function thai_date_fullmonth($time)
     global $dayTH, $monthTH;
     $thai_date_return = date("j", $time);
     $thai_date_return .= " " . $monthTH[date("n", $time)];
-    $thai_date_return .= " " . (date("Y", $time) + 543);
+    $thai_date_return .= " " . (date("Y") + 543);
     return $thai_date_return;
 }
 ?>
@@ -161,9 +161,8 @@ if (isset($_GET['update_profile'])) {
                                                 LEFT JOIN tb_plants_group pg ON pl.plantgroup_id = pg.plantgroup_id
                                                 LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
                                                 WHERE p.`status` ='1' AND u.id = '$user_id' AND pp.`status` = 'active'
-                                                AND '$today'
-                                                BETWEEN ps.start_date
-                                                AND ps.end_date
+                                                AND DATE_FORMAT('$today','%m-%d') >= DATE_FORMAT(ps.start_date,'%m-%d') 
+                                                AND DATE_FORMAT('$today','%m-%d') <= DATE_FORMAT(ps.end_date,'%m-%d')
                                                 GROUP BY ps.plantgroup_id
                                                 ORDER BY ps.start_date";
                                                 $q_noti = mysqli_query($dbcon, $s_noti);
