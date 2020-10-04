@@ -37,8 +37,10 @@ $result = mysqli_fetch_array($query);
                     <?php
                     $sql = "SELECT * FROM tb_plants_step WHERE plantgroup_id='$plantgroup_id'";
                     $query = mysqli_query($dbcon, $sql);
+                    $i = 0;
                     if ($query->num_rows > 0) {
                         while ($result = mysqli_fetch_array($query)) {
+                            $i++;
                             $plants_step_id === $result['plants_step_id'] ? $color = "#d0ffb1" : $color = '';
                     ?>
 
