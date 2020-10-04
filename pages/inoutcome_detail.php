@@ -452,7 +452,6 @@ $data_outcome = $result;
                                 ORDER BY ps.user_id";
                                 $query = mysqli_query($dbcon, $sql);
                                 $result = mysqli_fetch_all($query);
-                                // print_r($result);
                                 $sum_outcome = 0;
                                 $sum_tatol = 0;
 
@@ -495,13 +494,21 @@ $data_outcome = $result;
                                 }
 
                                 $avg_all  = $sum_amount_unit / $count_user;
+                                $avg_me = $outcome / $amount;
+                                if ($avg_me  > $avg_all) {
+                                    $text4  = "<span class='badge badge-danger'> มากกว่าค่าเฉลี่ย</span>";
+                                } else if ($avg_me  < $avg_all) {
+                                    $text4  =  "<span class='badge badge-success'> น้อยกว่าค่าเฉลี่ย</span>";
+                                } else {
+                                    $text4  =  "<span class='badge badge-warning'> เท่ากับค่าเฉลี่ย</span>";
+                                }
 
                             ?>
                                 <div class="col-12">
                                     <h6><i class="fas fa-file-invoice-dollar"></i> ต้นทุน </h6>
                                     <p>ค่าเฉลี่ย <?php echo  number_format($avg_all, 2), ' บาท ต่อ', $unit, '<br>' ?> </p>
-                                    <p>ของฉัน <?php echo  number_format($avg_me = $outcome / $amount, 2), ' บาท ต่อ', $unit ?></p>
-                                    <p>ต้นทุนของฉัน <?php echo $avg_me  > $avg_all ? "<span class='badge badge-danger'> มากกว่าค่าเฉลี่ย</span>" : "<span class='badge badge-success'> น้อยกว่าค่าเฉลี่ย</span>"  ?></p>
+                                    <p>ของฉัน <?php echo  number_format($avg_me, 2), ' บาท ต่อ', $unit ?></p>
+                                    <p>ต้นทุนของฉัน <?php echo $text4   ?></p>
                                     <hr>
                                 </div>
                             <?php endif ?>
