@@ -19,7 +19,6 @@ LEFT JOIN tb_plants_step ps ON pg.plantgroup_id = ps.plantgroup_id
 WHERE p.`status` ='1' AND u.id = '$id' AND pp.`status` = 'active'
 AND DATE_FORMAT('$today','%m-%d') >= DATE_FORMAT(ps.start_date,'%m-%d') 
 AND DATE_FORMAT('$today','%m-%d') <= DATE_FORMAT(ps.end_date,'%m-%d')
-GROUP BY ps.plantgroup_id
 ORDER BY ps.start_date
 ";
 
