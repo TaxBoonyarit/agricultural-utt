@@ -98,11 +98,11 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                                                             <p class="card-text  text-center">
                                                                 ขั้นตอนการปลูกหรือช่วงเวลาแนะนำการดูแล
                                                             </p>
-                                                            <h4 class="card-text  text-center">
+                                                            <h3 class="card-text  text-center">
                                                                 <?php echo $count[$i][1] ? $count[$i][1] : 'ยังไม่มีข้อมูล' ?>
-                                                            </h4>
+                                                            </h3>
                                                             <div class="text-right">
-                                                                <a href="#" data-id="<?php echo $result['plantgroup_id'] ?>" class="btn btn-success btn-sm select_plants">เพิ่มเติม >></a>
+                                                                <a href="#" data-id="<?php echo $result['plantgroup_id'] ?>" class="btn btn-success btn-sm select_plants">เพิ่มเติม <i class="far fa-arrow-alt-circle-right"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>

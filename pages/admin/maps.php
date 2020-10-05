@@ -121,10 +121,12 @@ include('../../config/conectDB.php');
             mapTypeId: google.maps.MapTypeId.HYBRID,
             streetViewControl: false
         });
-
-
         seleteLocation();
     }
+
+    function formatMoney(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    };
 
     function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
@@ -164,7 +166,7 @@ include('../../config/conectDB.php');
                 var LatLng = new google.maps.LatLng(lat, lng);
                 for (var j = 0; j < json.length; j++) {
                     if (id == json[j].plot_id) {
-                        data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
+                        data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
                     }
                 }
                 var modal = '<div id="content">' +
@@ -174,10 +176,10 @@ include('../../config/conectDB.php');
                     '<div id="bodyContent">' +
                     '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
                     '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
-                    '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + Math.trunc(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
-                    '<span style="color:#33d;"> พักอาศัย :  </span> ' + Math.trunc(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
-                    '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + Math.trunc(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
-                    '<span style="color:#33d;"> การเกษตร :  </span> ' + Math.trunc(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
+                    '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
+                    '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
+                    '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
+                    '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
                     '<hr>' +
                     '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
                 for (var k = 0; k < data.length; k++) {
@@ -196,17 +198,6 @@ include('../../config/conectDB.php');
                     modal: modal,
                     location: LatLng
                 }
-
-                var circle = new google.maps.Circle({
-                    strokeColor: "#00b33c",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#b3ffb3",
-                    fillOpacity: 0.2,
-                    map,
-                    center: LatLng,
-                    radius: (100)
-                });
 
                 info = new google.maps.InfoWindow();
                 marker = new google.maps.Marker(markeroption);
@@ -308,7 +299,7 @@ include('../../config/conectDB.php');
 
                         for (var j = 0; j < json.length; j++) {
                             if (id == json[j].plot_id) {
-                                data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + Math.trunc(json[j].amount) + " " + json[j].p_unit);
+                                data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
                             }
                         }
                         var modal = '<div id="content">' +
@@ -318,10 +309,10 @@ include('../../config/conectDB.php');
                             '<div id="bodyContent">' +
                             '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
                             '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
-                            '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + Math.trunc(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
-                            '<span style="color:#33d;"> พักอาศัย :  </span> ' + Math.trunc(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
-                            '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + Math.trunc(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
-                            '<span style="color:#33d;"> การเกษตร :  </span> ' + Math.trunc(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
+                            '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
+                            '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
+                            '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
+                            '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
                             '<hr>' +
                             '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
                         for (var k = 0; k < data.length; k++) {
@@ -357,16 +348,16 @@ include('../../config/conectDB.php');
                             optimized: false
                         };
 
-                        var circle = new google.maps.Circle({
-                            strokeColor: "#00b33c",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#b3ffb3",
-                            fillOpacity: 0.2,
-                            map,
-                            center: LatLng,
-                            radius: (100)
-                        });
+                        // var circle = new google.maps.Circle({
+                        //     strokeColor: "#00b33c",
+                        //     strokeOpacity: 0.8,
+                        //     strokeWeight: 2,
+                        //     fillColor: "#b3ffb3",
+                        //     fillOpacity: 0.2,
+                        //     map,
+                        //     center: LatLng,
+                        //     radius: (100)
+                        // });
 
                         myoverlay.setMap(map);
 
