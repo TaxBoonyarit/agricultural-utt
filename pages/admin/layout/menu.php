@@ -28,7 +28,7 @@
                                         <a class="nav-link" href="plants.php"><i class="fas fa-leaf"></i> พืช</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="step_plants.php"><i class="fas fa-seedling"></i> ขั้นตอนการปลูกพืช</a>
+                                        <a class="nav-link" href="step_plants.php"><i class="fas fa-seedling"></i> ขั้นตอนการปลูกหรือดูแลพืช</a>
                                     </li>
                                 </ul>
                             </div>

@@ -32,14 +32,14 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
             <div class="container-fluid dashboard-content">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h3 class="text"><i class="fas fa-seedling"></i> ขั้นตอนการปลูกพืช</h3>
+                        <h3 class="text"><i class="fas fa-seedling"></i> ขั้นตอนการปลูกหรือดูแลพืช</h3>
                         <hr>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">หมวดหมู่พืช : </label>
+                                    <label for="staticEmail" class="col-sm-2 col-form-label text-center">หมวดหมู่พืช : </label>
                                     <div class="col-sm-10">
                                         <select id="step" class="selectpicker show-tick" data-size="8" data-live-search="true" title="เลือกหมวดหมู่พืช" data-width="100%" required>
                                             <option value="all" selected>ทั้งหมด</option>
