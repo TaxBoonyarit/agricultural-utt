@@ -339,7 +339,7 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
 
     $('.insert').on('click', function() {
         $('#action').val('register');
-        $('#title').html('<i class="fas fa-plus-circle"></i> ขั้นตอนการปลูกพืช');
+        $('#modal_title').html('<i class="fas fa-plus-circle"></i> ขั้นตอนการปลูกพืช');
         $('#modal').modal('show');
     });
 
