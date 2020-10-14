@@ -12,6 +12,8 @@ $result = mysqli_fetch_assoc($query);
 
 ?>
 
+<!-- ajax -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <body>
     <div class="col-md-12 offset-md-3 col-lg-8 offset-lg-2" id="box">
