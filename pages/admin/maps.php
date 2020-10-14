@@ -148,6 +148,9 @@ include('../../config/conectDB.php');
         $.ajax({
             type: "POST",
             url: "json_location.php",
+            data: {
+                action: 'fecth'
+            }
         }).done(function(text) {
             json = text;
             for (var i = 0; i < json.length; i++) {
@@ -222,153 +225,143 @@ include('../../config/conectDB.php');
                 text: 'กรุณากรอกข้อมูลที่จะค้นหาด้วยค่ะ',
                 icon: 'error',
                 confirmButtonText: 'ปิด'
-            })
+            });
         }
         if (plants === "ทั้งหมด" && user === "ทั้งหมด" && amphure === "ทั้งหมด") {
             $.ajax({
                 type: "POST",
                 url: "json_location.php",
-
+                data: {
+                    action: 'count'
+                }
             }).done(function(text) {
-                var json = text;
-                var give_id = 0;
-                var give_row = 0;
-                for (let i = 0; i < json.length; i++) {
-                    give_id !== json[i].plot_id ? give_row += 1 : give_row;
-                    give_id = json[i].plot_id;
-                };
+                var c = text;
                 clearMarkers();
                 seleteLocation();
                 Swal.fire({
                     title: 'ค้นหาข้อมูลสำเร็จ',
-                    text: "มีทั้งหมด " + give_row + " พื้นที่",
+                    text: "มีทั้งหมด " + c + " พื้นที่",
                     icon: 'success',
                     confirmButtonText: 'ปิด'
-                })
-            })
+                });
+            });
 
         } else {
             $.ajax({
                 type: "POST",
                 data: {
+                    action: 'count',
                     plants: plants,
                     user: user,
                     amphure: amphure
                 },
                 url: "json_search.php",
             }).done(function(text) {
-                var json = text;
-                let give_id = 0;
-                let give_row = 0;
-                for (let i = 0; i < json.length; i++) {
-                    give_id !== json[i].plot_id ? give_row += 1 : give_row;
-                    give_id = json[i].plot_id;
-                };
-                if (json.length == 0) {
+
+                var c = text;
+                if (c == 0) {
                     Swal.fire({
                         title: 'เกิดข้อผิดพลาด!',
                         text: 'ไม่พบข้อมูลที่ค้นหา',
                         icon: 'warning',
                         confirmButtonText: 'ปิด'
-                    })
+                    });
                 } else {
                     clearMarkers();
                     Swal.fire({
                         title: 'ค้นหาข้อมูลสำเร็จ',
-                        text: plants + "จำนวน " + give_row + " พื้นที่",
+                        text: plants + "จำนวน " + c + " พื้นที่",
                         icon: 'success',
                         confirmButtonText: 'ปิด',
                         timer: 3000
                     });
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            action: 'fecth',
+                            plants: plants,
+                            user: user,
+                            amphure: amphure
+                        },
+                        url: "json_search.php",
+                    }).done(function(text) {
+                        var json = text;
+                        for (var i = 0; i < json.length; i++) {
+                            var data = [];
+                            var id = json[i].plot_id;
+                            var lat = json[i].lat;
+                            var lng = json[i].lon;
+                            var name = json[i].name;
+                            var area = json[i].area;
+                            var address = json[i].address;
+                            var home_area = json[i].home_area;
+                            var water_area = json[i].water_area;
+                            var farm_area = json[i].farm_area;
+                            var unit = json[i].unit;
+                            var icon = json[i].icon;
+                            var full_name = json[i].firstname + ' ' + json[i].lastname;
+                            var LatLng = new google.maps.LatLng(lat, lng);
 
-                    for (var i = 0; i < json.length; i++) {
-                        var data = [];
-                        var id = json[i].plot_id;
-                        var lat = json[i].lat;
-                        var lng = json[i].lon;
-                        var name = json[i].name;
-                        var area = json[i].area;
-                        var address = json[i].address;
-                        var home_area = json[i].home_area;
-                        var water_area = json[i].water_area;
-                        var farm_area = json[i].farm_area;
-                        var unit = json[i].unit;
-                        var icon = json[i].icon;
-                        var full_name = json[i].firstname + ' ' + json[i].lastname;
-                        var LatLng = new google.maps.LatLng(lat, lng);
-
-                        for (var j = 0; j < json.length; j++) {
-                            if (id == json[j].plot_id) {
-                                data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
+                            for (var j = 0; j < json.length; j++) {
+                                if (id == json[j].plot_id) {
+                                    data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
+                                }
                             }
+                            var modal = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h4 id="firstHeading" class="firstHeading text-center">' + name + '</h4>' +
+                                '<div id="bodyContent">' +
+                                '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
+                                '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
+                                '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
+                                '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
+                                '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
+                                '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
+                                '<hr>' +
+                                '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
+                            for (var k = 0; k < data.length; k++) {
+                                modal += "<li>" + data[k] + "</li>";
+                            }
+
+                            myoverlay = new google.maps.OverlayView();
+
+                            modal += '</div>';
+                            plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
+
+                            if (icon !== 'marker.png') {
+                                var icons = {
+                                    url: '../../images/plants/' + icon, // url
+                                    scaledSize: new google.maps.Size(40, 40) // scaled size
+                                };
+                                myoverlay.draw = function() {
+                                    this.getPanes().markerLayer.id = 'markerLayer';
+                                };
+                            } else {
+                                var icons = {
+                                    url: '../../images/plants/' + icon, // url                                
+                                };
+                                myoverlay.draw = function() {
+                                    this.getPanes().markerLayer.id = null;
+                                };
+                            }
+                            var markeroption = {
+                                icon: icons,
+                                map: map,
+                                html: modal,
+                                position: LatLng,
+                                optimized: false
+                            };
+                            myoverlay.setMap(map);
+                            info = new google.maps.InfoWindow();
+                            marker = new google.maps.Marker(markeroption);
+                            markers.push(marker);
+                            google.maps.event.addListener(marker, 'click', function(e) {
+                                info.setContent(this.html);
+                                info.open(map, this);
+                            });
                         }
-                        var modal = '<div id="content">' +
-                            '<div id="siteNotice">' +
-                            '</div>' +
-                            '<h4 id="firstHeading" class="firstHeading text-center">' + name + '</h4>' +
-                            '<div id="bodyContent">' +
-                            '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
-                            '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
-                            '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
-                            '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
-                            '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
-                            '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
-                            '<hr>' +
-                            '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
-                        for (var k = 0; k < data.length; k++) {
-                            modal += "<li>" + data[k] + "</li>";
-                        }
-
-                        myoverlay = new google.maps.OverlayView();
-
-                        modal += '</div>';
-                        plants !== 'ทั้งหมด' ? icon = icon : icon = 'marker.png';
-
-                        if (icon !== 'marker.png') {
-                            var icons = {
-                                url: '../../images/plants/' + icon, // url
-                                scaledSize: new google.maps.Size(40, 40) // scaled size
-                            };
-                            myoverlay.draw = function() {
-                                this.getPanes().markerLayer.id = 'markerLayer';
-                            };
-                        } else {
-                            var icons = {
-                                url: '../../images/plants/' + icon, // url                                
-                            };
-                            myoverlay.draw = function() {
-                                this.getPanes().markerLayer.id = null;
-                            };
-                        }
-                        var markeroption = {
-                            icon: icons,
-                            map: map,
-                            html: modal,
-                            position: LatLng,
-                            optimized: false
-                        };
-
-                        // var circle = new google.maps.Circle({
-                        //     strokeColor: "#00b33c",
-                        //     strokeOpacity: 0.8,
-                        //     strokeWeight: 2,
-                        //     fillColor: "#b3ffb3",
-                        //     fillOpacity: 0.2,
-                        //     map,
-                        //     center: LatLng,
-                        //     radius: (100)
-                        // });
-
-                        myoverlay.setMap(map);
-
-                        info = new google.maps.InfoWindow();
-                        marker = new google.maps.Marker(markeroption);
-                        markers.push(marker);
-                        google.maps.event.addListener(marker, 'click', function(e) {
-                            info.setContent(this.html);
-                            info.open(map, this);
-                        });
-                    }
+                    });
                 }
             });
         }
