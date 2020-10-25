@@ -48,9 +48,7 @@ $result = mysqli_fetch_array($query);
                             <li id="<?php echo $result['plants_step_id'] ?>" style="background : <?php echo $color ?>;">
                                 <small class="text-primary"><?php echo thai_date_short(strtotime($result['start_date'])) . " - " . thai_date_short(strtotime($result['end_date'])) ?></small>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <p><?php echo $result['title'] ?></p>
-                                    </div>
+                                    <p><?php echo $result['title'] ?></p>
                                 </div>
                                 <div class="row">
                                     <div class="col">

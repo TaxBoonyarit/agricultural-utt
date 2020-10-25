@@ -436,7 +436,6 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
     $(document).on('click', '.edit', function() {
         $('#action').val('update');
         $('#btn').html('อัพเดตข้อมูล');
-
         $('#modal_title').html('<i class="fas fa-redo-alt"></i> อัพเดตขั้นตอนการปลูกพืช');
         id = $(this).attr('data-id');
         $.ajax({

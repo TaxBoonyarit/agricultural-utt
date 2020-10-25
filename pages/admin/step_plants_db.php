@@ -77,14 +77,15 @@ if ($action == "update") {
     $end_date = date('Y-m-d', strtotime($e));
 
     // check name 
-    $check = "SELECT * FROM tb_plants_step WHERE title = '$title' AND NOT plants_step_id='$id'";
+    $check = "SELECT * FROM tb_plants_step WHERE title = '$title' AND plantgroup_id='$plantgroup_id' AND NOT plants_step_id = '$id'";
+
     $check_name = mysqli_query($dbcon, $check);
     if ($check_name->num_rows > 0) {
-        $reponse = array('status' => 'error', 'messages' => 'notUpload');
+        $reponse = array('status' => 'error', 'messages' => 'nameDuplicate');
         echo json_encode($reponse);
         exit();
     } else {
-        if ($_FILES['img']['size']) {
+        if ($_FILES['img']['size'] > 0) {
             if ($img) {
                 @unlink('../../images/step_plants/' . $img);
             }
@@ -94,10 +95,10 @@ if ($action == "update") {
             $image_path = "../../images/step_plants/";
             $upload_path = $image_path . $new_image_name;
 
-            //uploading picture
+            //uploading picture            
             $success = move_uploaded_file($_FILES['img']['tmp_name'], $upload_path);
             if (!$success) {
-                $reponse = array('status' => 'success', 'messages' => '');
+                $reponse = array('status' => 'error', 'messages' => 'notUpload');
                 echo json_encode($reponse);
                 exit();
             }
