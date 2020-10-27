@@ -22,7 +22,7 @@ $count_plant  = "SELECT p.plant_name  as plants ,COUNT( pp.plotplant_id) as amou
                 LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id
                 WHERE pp.status = 'active'
                 GROUP BY p.plant_id              
-                ORDER BY plants
+                ORDER BY amount DESC
                 LIMIT 10";
 
 $query_c_p = mysqli_query($dbcon, $count_plant);
