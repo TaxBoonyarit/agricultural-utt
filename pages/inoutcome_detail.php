@@ -57,10 +57,10 @@ $data_outcome = $result;
     <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2" id="box">
         <div class="row">
             <div class="col-6">
-                <a href="income.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>" id="btn" class="btn btn-outline-success  btn-block mb-2"><i class=" fas fa-plus-circle"></i> รายรับ </a>
+                <a href="income.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>" id="btn" class="btn btn-success  btn-block mb-2"><i class=" fas fa-plus-circle"></i> รายรับ </a>
             </div>
             <div class="col-6">
-                <a href="outcome.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>" id="btn" class="btn btn-outline-danger  btn-block mb-2"><i class=" fas fa-plus-circle"></i> รายจ่าย </a>
+                <a href="outcome.php?plot_id=<?php echo $plot_id ?>&plotplant_id=<?php echo $plotplant_id ?>" id="btn" class="btn btn-danger  btn-block mb-2"><i class=" fas fa-plus-circle"></i> รายจ่าย </a>
             </div>
         </div>
         <?php if (isset($_SESSION['success'])) : ?>

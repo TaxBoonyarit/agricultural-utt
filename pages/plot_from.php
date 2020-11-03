@@ -85,48 +85,64 @@ $id = isset($_REQUEST['plot_id']) ? $_REQUEST['plot_id'] : '';
                             <div class="col">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">ภูมิลำเนา</span>
+                                        <span class="input-group-text">ที่อยู่ของสถานที่</span>
                                     </div>
                                     <input type="text" class="form-control" value="<?php echo $address ? $address : '' ?>" name="address" id="address" maxlength="150" placeholder="ตัวอย่าง 27 ต.ท่าอิฐ อ.เมือง จ.อุตรดิตถ์" required>
                                 </div>
                             </div>
-                            <div class="col">
-                                <label for="">การจัดการพื้นที่ (หน่วย : ไร่)</label>
+                            <div class="col-md-12">
+                            <div style=" border-radius: 10px; border: 1.5px solid #C0C0C0;">
+                            <div class="col mt-2">
+                                <label for="">จัดสรรพื้นที่  (หน่วย : ไร่)</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">พื้นที่ทั้งหมด</span>
+                                        <span class="input-group-text">เป็นพื้นที่ทั้งหมด</span>
                                     </div>
                                     <input type="number" class="form-control" step="0.01" min="0" value="<?php echo $area ? $area : '' ?>" name="area" id="area" placeholder="ตัวอย่าง 400 " onKeyPress="if(this.value.length==5) return false;" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ไร่</span>
+                                    </div>
                                 </div>
                                 <div class="input-group mb-2 mt-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">พักอาศัย</span>
+                                        <span class="input-group-text">เป็นพักอาศัย</span>
                                     </div>
                                     <input type="number" class="form-control" step="0.01" min="0" value="<?php echo $home_area  | $result['home_area'] ?>" name="home_area" onKeyPress="if(this.value.length==5) return false;" id="home_area" onchange="checkArea()" placeholder="ตัวอย่าง 1 " required>
-
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ไร่</span>
+                                    </div>
                                 </div>
 
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">แหล่งน้ำ</span>
+                                        <span class="input-group-text">เป็นแหล่งน้ำ</span>
                                     </div>
                                     <input type="number" class="form-control" step="0.01" min="0" onKeyPress="if(this.value.length==5) return false;" value="<?php echo $water_area | $result['water_area']  ?>" name="water_area" onchange="checkArea()" id="water_area" placeholder="ตัวอย่าง  1" required>
-
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ไร่</span>
+                                    </div>
                                 </div>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">การเกษตร</span>
+                                        <span class="input-group-text">เป็นการเกษตร</span>
                                     </div>
                                     <input type="number" class="form-control" step="0.01" min="0" onKeyPress="if(this.value.length==5) return false;" value="<?php echo $farm_area | $result['farm_area'] ?>" name="farm_area" onchange="checkArea()" id="farm_area" placeholder="ตัวอย่าง 400 " required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ไร่</span>
+                                    </div>
                                 </div>
                                 <div class="input-group mb-1">
                                     <span id='message'></span>
                                 </div>
+                            </div>
+                           
+                            </div>
+                            
                                 <input hidden type="text" name="unit" value="ไร่">
                             </div>
                             <div class="col-md-12 text-center mt-4">
                                 <?php $name ? $btn = 'อัพเดตแปลงเกษตร' : $btn = 'ลงทะเบียนแปลงเกษตร' ?>
-                                <button type="submit" class="btn btn-outline-secondary btn-md btn-block" id="register" onclick="checkLatLon()" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
+                                <button type="submit" class="btn btn-secondary btn-md btn-block" id="register" onclick="checkLatLon()" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
                             </div>
                         </form>
                     </div>

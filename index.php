@@ -31,6 +31,17 @@ function thai_date_fullmonth($time)
     $thai_date_return .= " " . (date("Y") + 543);
     return $thai_date_return;
 }
+function num($number)
+{
+    $convert = number_format($number);
+    $result = $number - $convert;
+    if ($result >= 0) {
+        return number_format($number);
+    } else {
+        return number_format($number, 2, '.', '');
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -227,28 +238,28 @@ if (isset($_GET['update_profile'])) {
                                         if ($row['area']) {
                                             echo '<div class="col-6">
                                                 <h6 class="text-center mt-1"><i class="fas fa-chart-area"></i>  พื้นที่ทั้งหมด</h6>
-                                                <h5 class="text-center" style="color : #1e4785;">' . number_format($row['area']) . '</h5>
+                                                <h5 class="text-center" style="color : #1e4785;">' . num($row['area']) . '</h5>
                                                 <h6 class="text-center text-muted">' .  $row['unit'] . '</h6>
                                             </div>';
                                         }
                                         if ($row['home'] > 0) {
                                             echo '<div class="col-6">
                                                 <h6 class="text-center mt-1"><i class="fas fa-home"></i> ที่พักอาศัย</h6>
-                                                <h5 class="text-center" style="color : #1e4785;">' . number_format($row['home']) . '</h5>
+                                                <h5 class="text-center" style="color : #1e4785;">' . num($row['home']) . '</h5>
                                                 <h6 class="text-center text-muted">ไร่</h6>
                                              </div>';
                                         }
                                         if ($row['water'] > 0) {
                                             echo '<div class="col-6">
                                                 <h6 class="text-center mt-1"><i class="fas fa-water"></i> แหล่งน้ำ</h6>
-                                                <h5 class="text-center" style="color : #1e4785;">' . number_format($row['water']) . '</h5>
+                                                <h5 class="text-center" style="color : #1e4785;">' . num($row['water']) . '</h5>
                                                 <h6 class="text-center text-muted">ไร่</h6>
                                             </div>';
                                         }
                                         if ($row['farm'] > 0) {
                                             echo '<div class="col-6">
                                                 <h6 class="text-center mt-1"><i class="fas fa-tractor"></i> การเกษตร</h6>
-                                                <h5 class="text-center" style="color : #1e4785;">' . number_format($row['farm']) . '</h5>
+                                                <h5 class="text-center" style="color : #1e4785;">' . num($row['farm']) . '</h5>
                                                 <h6 class="text-center text-muted">ไร่</h6>
                                             </div>';
                                         }
@@ -299,10 +310,10 @@ if (isset($_GET['update_profile'])) {
                             </div>
 
                         <?php else : ?>
-                            <p class="text-center mt-5">
+                            <p class="text-center mt-5 text-danger">
                                 <i class="fas fa-exclamation-circle"></i> คุณยังไม่มีแปลงเกษตร <br> <br> <i class="fas fa-arrow-down"></i> กดปุ่มข้างล่างเพื่อเพิ่มแปลงเกษตร
                             </p>
-                            <a href="pages/plot_from.php" id="btn" class="btn btn-outline-secondary mb-2"><i class="fas fa-plus-circle"></i> เพิ่มแปลงเกษตร</a>
+                            <a href="pages/plot_from.php" id="btn" class="btn btn-secondary mb-2"><i class="fas fa-plus-circle"></i> เพิ่มแปลงเกษตร</a>
                         <?php endif ?>
                         </div>
                 </div>

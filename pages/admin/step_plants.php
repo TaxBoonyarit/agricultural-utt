@@ -84,31 +84,19 @@ $date = date("d") . "/" . date("n") . "/" .  (date("Y") + 543);
                                             GROUP BY pg.plantgroup_id limit $start,$num_per_page";
                                             $query_count =  mysqli_query($dbcon, $sql_count);
                                             $count = mysqli_fetch_all($query_count);
-
-
                                             $i = 0;
                                             while ($result = mysqli_fetch_array($query)) {
-
-
                                         ?>
                                                 <div class="col-md-3 ">
                                                     <div class="card" style="width: 15rem;">
                                                         <img src="<?php echo '../../images/plants/' . $result['icon'] ?>" class="card-img-top" alt="...">
-                                                        <div class="card-body">
-                                                            <h3 class="card-title text-center"><?php echo $result['name'] ?></h3>
-                                                            <p class="card-text  text-center">
-                                                                ขั้นตอนการปลูกหรือช่วงเวลาแนะนำการดูแล
-                                                            </p>
-                                                            <h3 class="card-text  text-center">
-                                                                <?php echo $count[$i][1] ? $count[$i][1] : 'ยังไม่มีข้อมูล' ?>
-                                                            </h3>
-                                                            <div class="text-right">
-                                                                <a href="#" data-id="<?php echo $result['plantgroup_id'] ?>" class="btn btn-success btn-sm select_plants">เพิ่มเติม <i class="far fa-arrow-alt-circle-right"></i></a>
+                                                        <div class="card-footer">                                                         
+                                                            <div class="text-center">
+                                                                <a href="#" data-id="<?php echo $result['plantgroup_id'] ?>" class="btn btn-success  select_plants">ดูข้อมูล "<?php  echo $result['name'] ?>" <i class="far fa-arrow-alt-circle-right"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                         <?php
                                                 $i++;
                                             }

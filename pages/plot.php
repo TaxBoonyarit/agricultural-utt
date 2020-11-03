@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 
 <body>
     <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2 col-sm-12" id="box">
-        <a href="plot_from.php" class="btn btn-outline-secondary mb-2" id="btn"><i class="fas fa-plus-circle"></i> เพิ่มแปลงเกษตร</a>
+        <a href="plot_from.php" class="btn btn-secondary mb-2" id="btn"><i class="fas fa-plus-circle"></i> เพิ่มแปลงเกษตร</a>
         <?php if (isset($_SESSION['success'])) : ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-user-check"></i>
@@ -55,7 +55,7 @@ $user_id = $_SESSION['user_id'];
                                                 $s = "SELECT * FROM tb_plotplants pp LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id                                                       
                                                         WHERE plot_id='$plot_id' AND pp.status ='active'";
                                                 $q = mysqli_query($dbcon, $s);
-                                                $plant = !$q->num_rows > 0 ? "<a  href='crop.php?plot_id=$plot_id'><span class='badge badge-success' id='btn'> <i class='fas fa-plus-circle'  ></i> ยังไม่มีพืชเพาะปลูก <i class='fas fa-seedling'></i> </span></a>" : "";
+                                                $plant = !$q->num_rows > 0 ? "<a  href='crop.php?plot_id=$plot_id'><span class='badge badge-danger' id='btn'> <i class='fas fa-plus-circle'  ></i> ยังไม่มีพืชเพาะปลูก <i class='fas fa-seedling'></i> </span></a>" : "";
                                                 echo  "<b>" . $i . ".</b> " . $row['name'] . "  " . $plant;
                                                 ?>
                                             </a>
@@ -149,7 +149,7 @@ $user_id = $_SESSION['user_id'];
                                             }
                                         } else {
                                             echo "<hr><div class='row'><div class='col'><span style='color:#33d;'><i class='fas fa-seedling'></i> พืชที่ปลูก </span>  <a style='margin-top : -7px' href='crop.php?plot_id=$plot_id'><h5><span class='badge badge-success ml-2' id='btn'> <i class='fas fa-plus-circle'></i> เพิ่มพืชลงแปลงเพาะปลูก </span></h5></a></div></div>";
-                                            echo "<p class='text-center'><i class='fas fa-exclamation-circle'></i> คุณยังไม่มีพืชเพาะปลูก</p> <hr>";
+                                            echo "<p class='text-center text-danger'><i class='fas fa-exclamation-circle'></i> คุณยังไม่มีพืชเพาะปลูก</p> <hr>";
                                         }
                                         ?>
                                     </div>

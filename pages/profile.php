@@ -148,7 +148,7 @@ $checkImg = $result['img'];
                     </div>
 
                     <div class="col-md-12 text-center mt-2">
-                        <button type="submit" class="btn btn-outline-secondary btn-md btn-block sub" id="update_profile"><i class="fas fa-sign-in-alt"></i> อัพเดพข้อมูลส่วนตัว</button>
+                        <button type="submit" class="btn btn-secondary btn-md btn-block sub" id="update_profile"><i class="fas fa-sign-in-alt"></i> อัพเดพข้อมูลส่วนตัว</button>
                     </div>
                     </form>
 

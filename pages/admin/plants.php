@@ -26,7 +26,6 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h3 class="text"><i class="fab fa-pagelines"></i> พืช</h3>
                         <hr>
-
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
@@ -71,9 +70,9 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                         <td class="text-center"><img src="../../images/plants/<?php echo $data[5] ?>" class="rounded mx-auto d-block" loading="lazy" alt="..." style="height:130px;width:auto"></td>
                                                         <td class="text-right">
                                                             <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-plantgroup_id="<?php echo $data[6] ?>" data-description="<?php echo $data[3] ?>" data-status="<?php echo $data[4] ?>" data-img="<?php echo $data[5] ?>" data-unit="<?php echo $data[7] ?>">
-                                                                <button type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
+                                                                <button type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> </button>
                                                             </a>
-                                                            <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-img="<?php echo $data[5] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button></a>
+                                                            <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-img="<?php echo $data[5] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> </button></a>
                                                         </td>
                                                     </tr>
                                             <?php
