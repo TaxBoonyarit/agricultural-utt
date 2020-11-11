@@ -10,6 +10,7 @@ include('../config/conectDB.php');
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <body>
+
     <div class="loading" id='loader'>Loading&#8230;</div>
     <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2" id="box">
         <div class="card">
@@ -143,6 +144,7 @@ include('../config/conectDB.php');
 
 <?php
 unset($_SESSION['checkemail']);
+session_destroy();
 ?>
 
 <script type="text/javascript">
