@@ -118,7 +118,7 @@ $p = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
                             <input hidden type="text" value="login" name="login">
 
                             <div class="col-md-12 text-center mt-2">
-                                <button type="submit" class="btn btn-outline-secondary btn-md btn-block sub"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+                                <button type="submit" class="btn btn-primary btn-md btn-block sub"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
                             </div>
                         </form>
                     </div>

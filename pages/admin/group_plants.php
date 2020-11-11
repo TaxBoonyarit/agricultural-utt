@@ -55,9 +55,9 @@ $status = isset($_SESSION['error']) ? isset($_SESSION['error']) : 0;
                                                     <td class="text-right">
 
                                                         <a class="edit" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-icon="<?php echo $data[2] ?>">
-                                                            <button type="button" class="btn btn-sm btn-warning "><i class="fas fa-edit"></i> แก้ไข</button>
+                                                            <button type="button" class="btn btn-sm btn-warning "><i class="fas fa-edit"></i> </button>
                                                         </a>
-                                                        <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-icon="<?php echo $data[2] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button></a>
+                                                        <a class="delete" data-id="<?php echo $data[0] ?>" data-name="<?php echo $data[1] ?>" data-icon="<?php echo $data[2] ?>"> <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> </button></a>
 
                                                     </td>
                                                 </tr>

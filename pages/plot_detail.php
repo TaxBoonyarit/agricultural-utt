@@ -9,6 +9,16 @@ $sql = "SELECT * FROM tb_plots WHERE plot_id ='$plot_id'";
 $query = mysqli_query($dbcon, $sql);
 $result = mysqli_fetch_assoc($query);
 
+function num($number)
+{
+    $convert = number_format($number);
+    $result = $number - $convert;
+    if ($result >= 0) {
+        return number_format($number);
+    } else {
+        return number_format($number, 2, '.', '');
+    }
+}
 ?>
 <!-- ajax -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -26,8 +36,8 @@ $result = mysqli_fetch_assoc($query);
                     <div class="col-12">
                         <?php
 
-                        $home_area =  $result['home_area'] != 0 ? $result['home_area'] . ' ' . $result['unit'] : ' ไม่มี';
-                        $water_area = $result['water_area'] != 0 ? $result['water_area'] . ' ' . $result['unit'] : 'ไม่มี';
+                        $home_area =  $result['home_area'] != 0 ? num($result['home_area']) . ' ' . $result['unit'] : ' ไม่มี';
+                        $water_area = $result['water_area'] != 0 ? num($result['water_area']) . ' ' . $result['unit'] : 'ไม่มี';
                         $data_set = [];
                         echo
                             "<div class=''><span style='color:#33d;'><i class='fas fa-map-pin'></i> ละติจูด   : </span>" . $result['lat'] . '<br />',
@@ -35,10 +45,10 @@ $result = mysqli_fetch_assoc($query);
                             "<span style='color:#33d;'><i class='fas fa-mountain'></i> ภูมิลำเนา :  </span>" . $result['address'] . '<br />',
                             "<hr>",
 
-                            "<span style='color:#33d;'><i class='fas fa-chart-area'></i> พื้นที่ทั้งหมด :  </span>" . $result['area']  . ' ' . $result['unit'] . '<br />',
+                            "<span style='color:#33d;'><i class='fas fa-chart-area'></i> พื้นที่ทั้งหมด :  </span>" . num($result['area'])  . ' ' . $result['unit'] . '<br />',
                             "<span style='color:#33d;'><i class='fas fa-home'></i> พักอาศัย : </span>" .   $home_area  .  ' <br />',
                             "<span style='color:#33d;'><i class='fas fa-water'></i> แหล่งน้ำ :  </span>" .   $water_area . ' <br />',
-                            "<span style='color:#33d;'><i class='fas fa-solar-panel'></i> การเกษตร :  </span>" . $result['farm_area'] . ' ' . $result['unit'] . ' <br />';
+                            "<span style='color:#33d;'><i class='fas fa-solar-panel'></i> การเกษตร :  </span>" . num($result['farm_area']) . ' ' . $result['unit'] . ' <br />';
                         echo '<canvas id="chart1" style="height: 200px; width: 100%; margin: 5px;"></canvas>';
 
                         $s = "SELECT * FROM tb_plotplants pp LEFT JOIN tb_plants p ON pp.plant_id = p.plant_id                                                       
@@ -126,7 +136,7 @@ $result = mysqli_fetch_assoc($query);
                     </div>
                 </div>
                 <div class="col-md-12 text-center mt-3">
-                    <a href="plot_plant.php?plot_id=<?php echo $plot_id ?>" id="btn" class="btn btn-outline-secondary btn-md btn-block"><i class="fas fa-sign-in-alt"></i> จัดการแปลงเพาะปลูกพืช</a>
+                    <a href="plot_plant.php?plot_id=<?php echo $plot_id ?>" id="btn" class="btn btn-secondary btn-md btn-block"><i class="fas fa-sign-in-alt"></i> จัดการแปลงเพาะปลูกพืช</a>
                 </div>
             </div>
         </div>

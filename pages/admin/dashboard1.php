@@ -111,7 +111,10 @@ if ($query_plant_iq->num_rows > 0) {
                                 <div class="card-header">
 
                                     <h3 class="text-center">จำนวนพืชที่ปลูกแต่ละอำเภอ </h3>
-                                    <select id="plantgroup" name="plantgroup" class="form-control" data-size="8" data-live-search="true" title="เลือกหมวดหมู่พืช" data-width="100%" required>
+                                    <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-3 col-form-label">เลือกกลุ่มพืช</label>
+                                <div class="col-sm-9">
+                                <select id="plantgroup" name="plantgroup" class="form-control" data-size="8" data-live-search="true" title="เลือกหมวดหมู่พืช" data-width="100%" required>
                                         <?php
                                         $sql = "SELECT * FROM tb_plants_group ";
                                         $result = mysqli_query($dbcon, $sql);
@@ -121,6 +124,8 @@ if ($query_plant_iq->num_rows > 0) {
                                         }
                                         ?>
                                     </select>
+                                    </div>
+                                    </div>                                 
 
                                 </div>
                                 <div class="card">

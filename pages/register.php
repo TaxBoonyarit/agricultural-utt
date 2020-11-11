@@ -129,7 +129,7 @@ include('../config/conectDB.php');
                     </div>
                     <input hidden name="submit" id="submit" value="Submit" />
                     <div class="col-md-12 text-center ">
-                        <button class="btn btn-outline-secondary btn-md btn-block" type="submit" id="register"><i class="fas fa-sign-in-alt"></i> ลงทะเบียน</button>
+                        <button class="btn btn-secondary btn-md btn-block" type="submit" id="register"><i class="fas fa-sign-in-alt"></i> ลงทะเบียน</button>
                     </div>
                     </form>
                 </div>

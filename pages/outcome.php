@@ -104,7 +104,7 @@ if ($startdate) {
                 </div>
                 <div class="col-md-12 text-center mt-4 mb-2">
                     <?php $inoutcome_id ? $btn = 'อัพเดตข้อมูล' : $btn = 'เพิ่มรายจ่าย' ?>
-                    <button type="submit" class="btn btn-outline-secondary btn-md btn-block" id="register" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
+                    <button type="submit" class="btn btn-secondary btn-md btn-block" id="register" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
                 </div>
             </form>
         </div>

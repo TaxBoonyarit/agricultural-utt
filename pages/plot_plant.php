@@ -28,7 +28,7 @@ function thai_date_fullmonth($time)
 
 <body>
     <div class="col-md-6 offset-md-3 col-lg-8 offset-lg-2" id="box">
-        <a href="crop.php?plot_id=<?php echo $plot_id  ?>" id="btn" class="btn btn-outline-secondary mb-2"><i class=" fas fa-plus-circle"></i> เพิ่มพืชเพาะปลูก</a>
+        <a href="crop.php?plot_id=<?php echo $plot_id  ?>" id="btn" class="btn btn-secondary mb-2"><i class=" fas fa-plus-circle"></i> เพิ่มพืชเพาะปลูก</a>
         <?php if (isset($_SESSION['success'])) : ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success">
                 <i class="fas fa-user-check"></i>
@@ -133,12 +133,12 @@ function thai_date_fullmonth($time)
                         <div class="row mt-2">
                             <div class="col-6">
                                 <?php
-                                echo '<a href="income.php?plot_id=' . $plot_id . '&plotplant_id=' . $row['plotplant_id'] . '" class="btn btn-outline-success  btn-block mb-2" id="btn"><i class=" fas fa-plus-circle"></i> รายรับ </a>';
+                                echo '<a href="income.php?plot_id=' . $plot_id . '&plotplant_id=' . $row['plotplant_id'] . '" class="btn btn-success  btn-block mb-2" id="btn"><i class=" fas fa-plus-circle"></i> รายรับ </a>';
                                 ?>
                             </div>
                             <div class="col-6">
                                 <?php
-                                echo '<a href="outcome.php?plot_id=' . $plot_id . '&plotplant_id=' . $row['plotplant_id'] . '" class="btn btn-outline-danger  btn-block mb-2" id="btn"><i class=" fas fa-plus-circle"></i>  รายจ่าย</a>';
+                                echo '<a href="outcome.php?plot_id=' . $plot_id . '&plotplant_id=' . $row['plotplant_id'] . '" class="btn btn-danger  btn-block mb-2" id="btn"><i class=" fas fa-plus-circle"></i>  รายจ่าย</a>';
                                 ?>
                             </div>
                         </div>
@@ -203,7 +203,7 @@ function thai_date_fullmonth($time)
             else :
                 ?>
                 <div class=" col mt-2 text-center">
-                    <p><i class="fas fa-exclamation-circle"></i> คุณยังไม่มีพืชเพาะปลูก</p>
+                    <p class="text-danger"><i class="fas fa-exclamation-circle"></i> คุณยังไม่มีพืชเพาะปลูก</p>
                 </div>
             <?php endif ?>
             <!-- </div> -->

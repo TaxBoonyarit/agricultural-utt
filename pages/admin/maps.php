@@ -125,7 +125,11 @@ include('../../config/conectDB.php');
     }
 
     function formatMoney(num) {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        let conv = Math.floor(num); 
+        let result = num - conv;
+       if(result ==0)   return  conv
+       else     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+       
     };
 
     function setMapOnAll(map) {
@@ -172,17 +176,17 @@ include('../../config/conectDB.php');
                         data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
                     }
                 }
-                var modal = '<div id="content">' +
+                var modal = '<div id="content" >' +
                     '<div id="siteNotice">' +
                     '</div>' +
                     '<h4 id="firstHeading" class="firstHeading text-center">' + name + '</h4>' +
-                    '<div id="bodyContent">' +
-                    '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
+                    '<div id="bodyContent" >' +
+                    '<span style="color:#33d;"> ที่อยู่ของสถานที่ :  </span> ' + address + '<br>' +
                     '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
-                    '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
-                    '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
-                    '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
-                    '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
+                    '<div class="row"><div class="col"><span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' </div><div class="col"> <span style="color:#33d;">เปอร์เซ็น  : </span>' + (area * 100) / area + '%</div></div>' +
+                    '<div class="row"><div class="col"><span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' </div><div class="col"> <span style="color:#33d;">เปอร์เซ็น  : </span>' + formatMoney((home_area * 100) / area) + '%</div></div>' +
+                    '<div class="row"><div class="col"><span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' </div><div class="col"><span style="color:#33d;">เปอร์เซ็น  : </span>' + formatMoney((water_area * 100) / area) + '%</div></div>' +
+                    '<div class="row"><div class="col"><span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' </div><div class="col"> <span style="color:#33d;"> เปอร์เซ็น  : </span>' + formatMoney((farm_area * 100) / area) + '%</div></div>' +
                     '<hr>' +
                     '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
                 for (var k = 0; k < data.length; k++) {
@@ -307,17 +311,17 @@ include('../../config/conectDB.php');
                                     data.push("<img class='pic-plants' src='../../images/plants/" + json[j].img + "'>" + " " + json[j].plant_name + " " + formatMoney(json[j].amount) + " " + json[j].p_unit);
                                 }
                             }
-                            var modal = '<div id="content">' +
+                            var modal = '<div id="content" >' +
                                 '<div id="siteNotice">' +
                                 '</div>' +
                                 '<h4 id="firstHeading" class="firstHeading text-center">' + name + '</h4>' +
-                                '<div id="bodyContent">' +
-                                '<span style="color:#33d;"> ภูมิลำเนา :  </span> ' + address + '<br>' +
+                                '<div id="bodyContent" >' +
+                                '<span style="color:#33d;"> ที่อยู่ของสถานที่ :  </span> ' + address + '<br>' +
                                 '<span style="color:#33d;"> เจ้าของแปลง :  </span> ' + full_name + '<br>' +
-                                '<span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + (area * 100) / area + '%<br>' +
-                                '<span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((home_area * 100) / area).toFixed(2) + '%<br>' +
-                                '<span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + ' &nbsp; &nbsp;<span style="color:#33d;">คิดเป็นเปอร์เซ็น  : </span>' + ((water_area * 100) / area).toFixed(2) + '%<br>' +
-                                '<span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' &nbsp; &nbsp; <span style="color:#33d;"> คิดเป็นเปอร์เซ็น  : </span>' + ((farm_area * 100) / area).toFixed(2) + '%<br>' +
+                                '<div class="row"><div class="col"><span style="color:#33d;"> พื้นที่ทั้งหมด :  </span> ' + formatMoney(area) + ' ' + unit + ' </div><div class="col"> <span style="color:#33d;">เปอร์เซ็น  : </span>' + formatMoney(area * 100) / area + '%</div></div>' +
+                                '<div class="row"><div class="col"><span style="color:#33d;"> พักอาศัย :  </span> ' + formatMoney(home_area) + ' ' + unit + ' </div><div class="col"> <span style="color:#33d;">เปอร์เซ็น  : </span>' + formatMoney((home_area * 100) / area) + '%</div></div>' +
+                                '<div class="row"><div class="col"><span style="color:#33d;"> แหล่งน้ำ :  </span> ' + formatMoney(water_area) + ' ' + unit + '</div><div class="col"><span style="color:#33d;">เปอร์เซ็น  : </span>' + formatMoney((water_area * 100) / area) + '%</div></div>' +
+                                '<div class="row"><div class="col"><span style="color:#33d;"> การเกษตร :  </span> ' + formatMoney(farm_area) + ' ' + unit + ' </div><div class="col"><span style="color:#33d;"> เปอร์เซ็น  : </span>' + formatMoney((farm_area * 100) / area) + '%</div></div>' +
                                 '<hr>' +
                                 '<span style="color:#33d;"> พืชที่ปลูก   </span><br>';
                             for (var k = 0; k < data.length; k++) {

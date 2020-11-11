@@ -62,7 +62,7 @@ $user_id = $_SESSION['user_id'];
                         </div>
                     </div>
                     <div class="col-md-12 text-center mt-3">
-                        <button type="submit" class="btn btn-outline-secondary btn-md btn-block" onclick="checkPassword()" id="register"><i class="fas fa-sign-in-alt"></i> อัพเดตรหัสผ่าน</button>
+                        <button type="submit" class="btn btn-secondary btn-md btn-block" onclick="checkPassword()" id="register"><i class="fas fa-sign-in-alt"></i> อัพเดตรหัสผ่าน</button>
                     </div>
                 </form>
             </div>

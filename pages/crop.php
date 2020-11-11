@@ -92,7 +92,7 @@ $status = $plant_id ? "update" : "register";
                     <?php
                     $status == "update" ? $btn = "อัพเดตข้อมูล" : $btn = "เพิ่มพืชเพาะปลูก";
                     ?>
-                    <button type="submit" class="btn btn-outline-secondary btn-md btn-block" id="register" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
+                    <button type="submit" class="btn btn-secondary btn-md btn-block" id="register" name="register"><i class="fas fa-sign-in-alt"></i> <?php echo $btn ?></button>
                 </div>
             </form>
         </div>
