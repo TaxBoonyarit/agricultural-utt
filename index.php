@@ -323,7 +323,6 @@ if (isset($_GET['update_profile'])) {
     <div class="mt-5"></div>
     <?php
     include('pages/layout/footer.php');
-    session_destroy();
     ?>
 
 
