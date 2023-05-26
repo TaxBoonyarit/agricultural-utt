@@ -2,12 +2,17 @@
 ```docker
 docker compose up || docker-compose up 
 ```
-
-
-## Database backup `database/backup.sql`
-
 ## Note!!!!
+- Database backup `database/backup.sql`
 - How to fix "SELECT list is not in GROUP BY clause and contains nonaggregated column .... incompatible with sql_mode=only_full_group_by' get command under run at MYSQL or Databse 
 ```sql
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+## Environments
+```php
+$_ENV["MYSQL_DATABASE"];
+$_ENV["MYSQL_USER"];
+$_ENV["MYSQL_PASSWORD"];
+$_ENV["MYSQL_DATABASE"];
 ```
