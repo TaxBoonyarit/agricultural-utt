@@ -10264,12 +10264,7 @@ CREATE TABLE IF NOT EXISTS `tb_users` (
 /*!40000 ALTER TABLE `tb_users` DISABLE KEYS */;
 INSERT INTO `tb_users` (`id`, `id_F_L_G`, `firstname`, `lastname`, `address`, `district`, `amphure`, `provinces`, `tel`, `img`, `email`, `password`, `start_date`, `status`) VALUES
 	(00001, NULL, 'Xxxxx', 'Xxxxx', 'Xxxx', 5518, 616, 41, '1234567890', 'user_5f6314d071d28.jpg', 'admin', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'admin'),
-	(00011, NULL, 'บุญญฤทธิ์', 'บุญคำ', '20​ ', 5584, 623, 41, '0904507604', 'user_5f70503719f84.png', 'taxboon@hotmail.com', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'user'),
-	(00021, NULL, 'Xxxx', 'Xxxxx', 'Xxx', 5518, 616, 41, '0111111111', 'user_5f650db00de8e.jpeg', 'test3@hotmail.com', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'user'),
-	(00031, NULL, 'บุญญฤทธิ์​', 'บุญคำ', '20​ หมู่​ 4', 5565, 621, 41, '0904507604', 'user_5f638ba39f584.jpg', 'test@test.com', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'user'),
-	(00041, NULL, 'พล', 'พล', 'แสนตอ', 5531, 616, 41, '0889996363', 'user_5f6436dd56ccf.jpg', 'polpod123@hotmail.co', '25d55ad283aa400af464c76d713c07ad', '2020-09-18', 'user'),
-	(00051, NULL, 'ณัฐพงศ์', 'สุปินะ', '128/3 หมู่ 4', 5565, 621, 41, '0806738509', 'user_5f6600356eb8f.jpeg', 's.o.s4138@hotmail.com', '86182f60cb061504a7141a00f9cd1520', '2020-09-19', 'user'),
-	(00061, NULL, 'อาบาดอน', 'ดาบทอง', '128/3 หมู่ 4', 5565, 621, 41, '0806738509', 'user_5f66061aa3cfe.jpeg', 'rasumanaytor05@gmail.com', '86182f60cb061504a7141a00f9cd1520', '2020-09-19', 'user');
+	(00011, NULL, 'บุญญฤทธิ์', 'บุญคำ', '20​ ', 5584, 623, 41, '0904507604', 'user_5f70503719f84.png', 'taxboon@hotmail.com', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'user');
 /*!40000 ALTER TABLE `tb_users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
