@@ -48,8 +48,6 @@
 <title>Agricultural@UTT</title>
 
 <?php
-session_start();
-
 //check email repeatedly
 $email = isset($_SESSION['checkemail']) ? $_SESSION['checkemail']  : '';
 include('../config/conectDB.php');

@@ -15,12 +15,12 @@ WHERE am.PROVINCE_ID =41 AND p.`status` = 1 AND pg.plantgroup_id  = '$plantsgrou
 AND pp.status= 'active'
 GROUP BY am.AMPHUR_ID";
 
-    $query = mysqli_query($dbcon, $sql);
+    $query = mysqli_query($dbcon, $sql) or die( mysqli_error($dbcon));
     $data = mysqli_fetch_all($query);
 
     $data_set = [];
     $sql = "SELECT am.AMPHUR_NAME FROM amphurs am WHERE am.PROVINCE_ID =41";
-    $query = mysqli_query($dbcon, $sql);
+    $query = mysqli_query($dbcon, $sql) or die( mysqli_error($db));
     $amhurs = [];
     $amhurs  = mysqli_fetch_all($query);
 

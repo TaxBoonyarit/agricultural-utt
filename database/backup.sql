@@ -13,8 +13,8 @@
 
 
 -- Dumping database structure for heroku_bd4ae28e630dc6d
-CREATE DATABASE IF NOT EXISTS `heroku_bd4ae28e630dc6d` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `heroku_bd4ae28e630dc6d`;
+CREATE DATABASE IF NOT EXISTS `db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `db`;
 
 -- Dumping structure for table heroku_bd4ae28e630dc6d.amphurs
 CREATE TABLE IF NOT EXISTS `amphurs` (
