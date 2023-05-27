@@ -3,6 +3,7 @@
 docker compose up || docker-compose up 
 ```
 ## Note!!!!
+- This project uses API from google map, if you will use it should get API from google map.
 - Database backup `database/backup.sql`
 - How to fix "SELECT list is not in GROUP BY clause and contains nonaggregated column .... incompatible with sql_mode=only_full_group_by' get command under run at MYSQL or Databse 
 ```sql
@@ -25,5 +26,3 @@ $_ENV["MYSQL_DATABASE"];
     "password" : "12345678"
 }
 ```
-
-### Account user or you can register 
