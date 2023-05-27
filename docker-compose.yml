@@ -15,15 +15,10 @@ services:
         MYSQL_DATABASE: 'db'
         MYSQL_USER: 'root'
         MYSQL_PASSWORD: 'password'
-        MYSQL_ROOT_PASSWORD: 'password'
   db:
       image: mysql:5.7
-      command: mysqld --user=root
       restart: always
       environment:
-        MYSQL_DATABASE: 'db'
-        MYSQL_USER: 'root'
-        MYSQL_PASSWORD: 'password'
         MYSQL_ROOT_PASSWORD: 'password'
       ports:
         - '3306:3306'

@@ -10267,6 +10267,7 @@ INSERT INTO `tb_users` (`id`, `id_F_L_G`, `firstname`, `lastname`, `address`, `d
 	(00011, NULL, 'บุญญฤทธิ์', 'บุญคำ', '20​ ', 5584, 623, 41, '0904507604', 'user_5f70503719f84.png', 'taxboon@hotmail.com', '25d55ad283aa400af464c76d713c07ad', '2020-09-17', 'user');
 /*!40000 ALTER TABLE `tb_users` ENABLE KEYS */;
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
