@@ -16,3 +16,14 @@ $_ENV["MYSQL_USER"];
 $_ENV["MYSQL_PASSWORD"];
 $_ENV["MYSQL_DATABASE"];
 ```
+
+
+### Account Admin 
+```json
+{
+    "username": "admin",
+    "password" : "12345678"
+}
+```
+
+### Account user or you can register 
